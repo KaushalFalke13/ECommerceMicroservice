@@ -9,6 +9,6 @@ public interface UserRepository  extends JpaRepository<UsersDetails,String> {
     @SuppressWarnings({ "null", "unchecked" })
     UsersDetails save(UsersDetails users);
 
-    UsersDetails findUsersByID(String id);
+    UsersDetails findUsersById(String id);
 
 }

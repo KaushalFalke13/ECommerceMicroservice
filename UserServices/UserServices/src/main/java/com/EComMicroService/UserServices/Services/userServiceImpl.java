@@ -24,9 +24,10 @@ public class userServiceImpl implements userService {
       return userRepository.save(users);
     }
 
+    @SuppressWarnings("null")
     @Override
     public UsersDTO getUserById(String id){
-        userRepository.findUsersByID(id);
+        userRepository.findById(id);
         return new UsersDTO();
     }
 

@@ -18,10 +18,13 @@ public class AuthController {
 
     private final UsersService usersService;
     private final EmailVerificationService emailService;
+    private final JwtToken JwtToken;
 
-    public AuthController(UsersService usersService,EmailVerificationService emailService) {
+
+    public AuthController(UsersService usersService,EmailVerificationService emailService, JwtToken JwtToken) {
         this.usersService = usersService;
         this.emailService = emailService;
+        this.JwtToken = JwtToken;
     }
 
     @GetMapping("/login")

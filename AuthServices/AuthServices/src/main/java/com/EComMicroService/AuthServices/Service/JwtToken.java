@@ -2,27 +2,36 @@ package com.EComMicroService.AuthServices.Service;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 
 @Service
 public class JwtToken {
 
-    private static final Key key = Keys.hmacShaKeyFor("supersecretkeysupersecretkey12345".getBytes());
+    private final Key key;
+    private final long expiration; 
+
+    public JwtToken(@Value("${jwt.secret}") String secret,
+                    @Value("${jwt.expiration}") long expirationMillis) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.expiration = expirationMillis;
+    }
 
 
-    public static String generateToken(String email) {
+    public String generateToken(String email) {
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) 
-                .signWith(key)
+                .setExpiration(new Date(System.currentTimeMillis() + expiration)) 
+                .signWith(key,SignatureAlgorithm.HS256)
                 .compact();
     }
 

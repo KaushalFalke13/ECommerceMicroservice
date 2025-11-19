@@ -5,9 +5,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class UserServicesApplication {
+    public static void main(String[] args) {
 
-	public static void main(String[] args) {
-		SpringApplication.run(UserServicesApplication.class, args);
-	}
 
+    SpringApplication app = new SpringApplication(UserServicesApplication.class);
+
+   
+    
+        app.run(args);
+    }
 }
