@@ -8,17 +8,22 @@ public class AuthServicesApplication {
 
 	public static void main(String[] args) {
 
-		// Start Spring and get application context
-		var ctx = SpringApplication.run(AuthServicesApplication.class, args);
+		// start Spring and get the application context
+		// ConfigurableApplicationContext ctx
+		SpringApplication.run(AuthServicesApplication.class, args);
 
-		// ✅ CHECK ENV AFTER SPRING CONTEXT STARTS (reads from Spring
-		// Environment/property sources)
-		var env = ctx.getEnvironment();
-		System.out.println("========== POST-START ENV CHECK ==========");
-		System.out.println("MAIL_HOST = " + env.getProperty("MAIL_HOST"));
-		System.out.println("MAIL_USER = " + env.getProperty("MAIL_USER"));
-		System.out.println("MAIL_PASS = " + env.getProperty("MAIL_PASS"));
-		System.out.println("MAIL_PORT = " + env.getProperty("MAIL_PORT"));
-		System.out.println("==========================================");
+		// // inspect the Environment for mail properties (safe: we do NOT print the
+		// // password value)
+		// Environment env = ctx.getEnvironment();
+		// System.out.println("========== SPRING MAIL PROPS ==========");
+		// System.out.println("spring.mail.host = " +
+		// env.getProperty("spring.mail.host"));
+		// System.out.println("spring.mail.username = " +
+		// env.getProperty("spring.mail.username"));
+		// System.out.println("spring.mail.password is null? " +
+		// (env.getProperty("spring.mail.password") == null));
+		// System.out.println("spring.mail.from = " +
+		// env.getProperty("spring.mail.from"));
+		// System.out.println("=======================================");
 	}
 }

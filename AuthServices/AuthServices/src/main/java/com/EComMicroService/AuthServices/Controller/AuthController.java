@@ -20,8 +20,7 @@ public class AuthController {
     private final EmailVerificationService emailService;
     private final JwtToken JwtToken;
 
-
-    public AuthController(UsersService usersService,EmailVerificationService emailService, JwtToken JwtToken) {
+    public AuthController(UsersService usersService, EmailVerificationService emailService, JwtToken JwtToken) {
         this.usersService = usersService;
         this.emailService = emailService;
         this.JwtToken = JwtToken;
@@ -38,14 +37,16 @@ public class AuthController {
     }
 
     @PostMapping("/requestEmailVerification")
-    public ResponseEntity<ApiResponse<Void>> requestEmailVerification(@RequestParam @Valid @Email(message = "Invalid email") String email) {
-    emailService.sendOtpToEmail(email);
-    return ResponseEntity.ok(new ApiResponse<>(200, "OTP sent to email"));
+    public ResponseEntity<ApiResponse<Void>> requestEmailVerification(
+            @RequestParam @Valid @Email(message = "Invalid email") String email) {
+        emailService.sendOtpToEmail(email);
+        return ResponseEntity.ok(new ApiResponse<>(200, "OTP sent to email"));
     }
 
     @PostMapping("/verifyEmail")
-    public ResponseEntity<ApiResponse<Void>> verifyEmailWithOtp(@RequestParam @Email(message = "Invalid email") String email,@RequestParam String otp) {
-   
+    public ResponseEntity<ApiResponse<Void>> verifyEmailWithOtp(
+            @RequestParam @Email(message = "Invalid email") String email, @RequestParam String otp) {
+
         boolean verified = emailService.verifyOTP(email, otp);
         if (verified) {
             return ResponseEntity.ok(new ApiResponse<>(200, "Email verified successfully"));
@@ -61,29 +62,33 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<Void>> loginUser(@Valid @RequestBody UsersDTO userDTO,HttpServletResponse response) {
+    public ResponseEntity<ApiResponse<Void>> loginUser(@Valid @RequestBody UsersDTO userDTO,
+            HttpServletResponse response) {
         boolean isUserVerified = usersService.loginUser(userDTO.getEmail(), userDTO.getPassword());
-        if(!isUserVerified) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse<>(401, "Invalid email or password"));
+        if (!isUserVerified) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new ApiResponse<>(401, "Invalid email or password"));
         }
         try {
             String token = JwtToken.generateToken(userDTO.getEmail());
-            response.setHeader("Authorization", "Bearer " + token); 
+            response.setHeader("Authorization", "Bearer " + token);
         } catch (Exception e) {
-            System.out.println(e.getMessage()); 
-       }
+            System.out.println(e.getMessage());
+        }
         return ResponseEntity.ok(new ApiResponse<>(200, "Login successful"));
     }
 
-    @GetMapping("/forgetPassword") 
-    public ResponseEntity<ApiResponse<Void>> forgetPassword(@RequestParam @Valid @Email(message = "Invalid email") String email) {
+    @GetMapping("/forgetPassword")
+    public ResponseEntity<ApiResponse<Void>> forgetPassword(
+            @RequestParam @Valid @Email(message = "Invalid email") String email) {
         emailService.sendOtpToEmail(email);
         return ResponseEntity.ok(new ApiResponse<>(200, "OTP Send Successfully"));
     }
 
     @PatchMapping("/resetPassword")
-    public ResponseEntity<ApiResponse<Void>> resetPassword(@RequestParam @Email(message = "Invalid email") String email,@RequestParam String otp,
-                                                          @RequestParam String newPassword) {
+    public ResponseEntity<ApiResponse<Void>> resetPassword(@RequestParam @Email(message = "Invalid email") String email,
+            @RequestParam String otp,
+            @RequestParam String newPassword) {
         boolean isOtpValid = emailService.verifyOTP(email, otp);
         if (!isOtpValid) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse<>(400, "Invalid or expired OTP"));

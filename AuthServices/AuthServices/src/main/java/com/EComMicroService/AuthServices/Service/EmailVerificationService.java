@@ -14,10 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 @Service
-@ConditionalOnProperty(prefix = "mail", name = "enabled", havingValue = "true")
 public class EmailVerificationService {
 
     private final JavaMailSender mailSender;
