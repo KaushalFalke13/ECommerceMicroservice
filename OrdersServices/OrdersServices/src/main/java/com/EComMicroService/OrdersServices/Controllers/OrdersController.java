@@ -1,13 +1,22 @@
 package com.EComMicroService.OrdersServices.Controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.EComMicroService.OrdersServices.OrderService;
+
+import com.EComMicroService.OrdersServices.DTO.ApiResponse;
+import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
+import com.EComMicroService.OrdersServices.Services.OrderService;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/orders")
@@ -20,38 +29,71 @@ public class OrdersController {
     }
 
     @GetMapping("/status")
-    public String getOrderStatus() {    
+    public ResponseEntity<ApiResponse<String>> getOrderStatus() {
         
-        return "Order service is up and running!";
+        return ResponseEntity.ok(new ApiResponse<>(200, "Order service is up and running!"));
     }
 
-    @PatchMapping("/updateAddress")
-    public String updateAddress(@RequestParam String orderId) {
-        return "Order with ID " + orderId + " has been updated.";
+     @PatchMapping("/updateAddress")
+    public ResponseEntity<ApiResponse<Void>> updateAddress(
+            @RequestParam @NotBlank(message = "orderId is required") String orderId,
+            @RequestParam @NotBlank(message = "address is required") String newAddress) {
+
+        // boolean updated = orderService(orderId, newAddress);
+        boolean updated = true;
+        if (updated) {
+            return ResponseEntity.ok(new ApiResponse<>(200, "Order address updated successfully"));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(400, "Failed to update order address"));
+        }
     }
 
     @PostMapping("/placeOrder")
-    public String createOrder() {
-        orderService.createOrder(null);
-        return "Order created successfully!";
+    public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody OrdersDTO orderDTO) {
+        // returns created order id (or null on failure)
+        String createdOrderId = orderService.createOrder(orderDTO);
+        if (createdOrderId != null) {
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new ApiResponse<>(201, "Order created successfully", createdOrderId));
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(500, "Failed to create order"));
+        }
     }
 
     @GetMapping("/listOrders")
-    public String listOrders(@RequestParam String userId) {
-        // Logic to list orders would go here
-        return "Listing all orders.";   
+    public ResponseEntity<ApiResponse<Object>> listOrders(
+            @RequestParam @NotBlank(message = "userId is required") String userId) {
+
+        Object orders = orderService.listOrdersForUser(userId); // can be List<OrderDTO> etc.
+        return ResponseEntity.ok(new ApiResponse<>(200, "Orders fetched successfully", orders));
     }
 
     @GetMapping("/orderDetails")
-    public String getOrderDetails(@RequestParam String orderId) {
-        // Logic to get order details would go here
-        return "Details for order ID: " + orderId;
+    public ResponseEntity<ApiResponse<Object>> getOrderDetails(
+            @RequestParam @NotBlank(message = "orderId is required") String orderId) {
+
+        Object details = orderService.getOrderDetails(orderId); // can return OrderDTO or Optional<OrderDTO>
+        if (details != null) {
+            return ResponseEntity.ok(new ApiResponse<>(200, "Order details fetched", details));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponse<>(404, "Order not found"));
+        }
     }
 
     @DeleteMapping("/cancelOrder")
-    public String cancelOrder(@RequestParam String orderId) {
-        // Logic to cancel an order would go here
-        return "Order with ID " + orderId + " has been canceled.";
+    public ResponseEntity<ApiResponse<Void>> cancelOrder(
+            @RequestParam @NotBlank(message = "orderId is required") String orderId) {
+
+        boolean cancelled = orderService.cancelOrder(orderId);
+        if (cancelled) {
+            return ResponseEntity.ok(new ApiResponse<>(200, "Order canceled successfully"));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(400, "Failed to cancel order"));
+        }
     }
 
 }

@@ -16,17 +16,16 @@ public class userServiceImpl implements userService {
     @Override
     public UsersDetails saveUser(UsersDTO usersDTO) {
         UsersDetails users = UsersDetails.builder()
-                            .id(UUID.randomUUID().toString())
-                            .name(usersDTO.getName())
-                            .email(usersDTO.getEmail())
-                            .password(usersDTO.getPassword())
-                            .build();
-      return userRepository.save(users);
+                .id(UUID.randomUUID().toString())
+                .name(usersDTO.getName())
+                .email(usersDTO.getEmail())
+                .password(usersDTO.getPassword())
+                .build();
+        return userRepository.save(users);
     }
 
-    @SuppressWarnings("null")
     @Override
-    public UsersDTO getUserById(String id){
+    public UsersDTO getUserById(String id) {
         userRepository.findById(id);
         return new UsersDTO();
     }

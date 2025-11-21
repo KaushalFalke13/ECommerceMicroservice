@@ -1,12 +1,13 @@
 {
-	"folders": [
-		{
-			"name": "EComWebsiteMicro",
-			"path": "."
-		}
-	],
-	"settings": {
-		"java.compile.nullAnalysis.mode": "automatic",
-		"java.configuration.updateBuildConfiguration": "interactive"
-	}
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "AuthServices"
+        }
+    ],
+    "settings": {
+        "java.configuration.updateBuildConfiguration": "interactive"
+    }
 }

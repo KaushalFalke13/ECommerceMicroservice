@@ -11,7 +11,7 @@ import com.EComMicroService.ProductsServices.Entity.products;
 import com.EComMicroService.ProductsServices.Repositorys.productRepository;
 
 @Service
-public class productServiceImpl  implements productService{
+public class productServiceImpl implements productService {
 
     @Autowired
     private productRepository productRepository;
@@ -19,32 +19,29 @@ public class productServiceImpl  implements productService{
     @Autowired
     private helperServices helperServices;
 
-    @SuppressWarnings("null")
     @Override
     public products saveProducts(productDTO productDTO) {
         products product = helperServices.changeDtoToProducts(productDTO);
         return productRepository.save(product);
     }
 
-    @SuppressWarnings("null")
     @Override
     public productDTO getProductById(String id) {
-        products products= productRepository.findById(id).orElse(null);
+        products products = productRepository.findById(id).orElse(null);
         return helperServices.changeProductToDto(products);
     }
 
     @Override
     public List<productDTO> getAllProduct(int pageNumber, int pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        List<products> products =  productRepository.findAll(pageable).getContent();
-        return  products.stream()
-                        .map(prod -> helperServices.changeProductToDto(prod))
-                        .toList();  
+        List<products> products = productRepository.findAll(pageable).getContent();
+        return products.stream()
+                .map(prod -> helperServices.changeProductToDto(prod))
+                .toList();
     }
 
-    @SuppressWarnings("null")
     @Override
-    public products updateProducts(productDTO product,String id) {
+    public products updateProducts(productDTO product, String id) {
         products existingProduct = productRepository.findById(id).orElse(null);
         if (existingProduct != null) {
             existingProduct.setTitle(product.getTitle());
@@ -63,7 +60,6 @@ public class productServiceImpl  implements productService{
         return null;
     }
 
-    @SuppressWarnings("null")
     @Override
     public void deleteProducts(String id) {
         productRepository.deleteById(id);
