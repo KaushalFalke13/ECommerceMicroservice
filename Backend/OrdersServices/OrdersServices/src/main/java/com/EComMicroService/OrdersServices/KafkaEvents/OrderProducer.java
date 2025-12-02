@@ -18,6 +18,7 @@ public class OrderProducer {
         try {
             String msg = mapper.writeValueAsString(event);
             kafka.send(topic, event.getOrderId(), msg);
+            
         } catch (Exception e) {
             throw new RuntimeException("Failed to serialize event", e);
         }

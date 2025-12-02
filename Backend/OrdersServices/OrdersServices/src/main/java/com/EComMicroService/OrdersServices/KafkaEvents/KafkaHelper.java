@@ -3,11 +3,14 @@ package com.EComMicroService.OrdersServices.KafkaEvents;
 import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import com.EComMicroService.OrdersServices.Entity.OrdersEventsLog;
 import com.EComMicroService.OrdersServices.Enums.EventStatus;
 import com.EComMicroService.OrdersServices.Services.OrderEventService;
 
+@Component
 public class KafkaHelper {
+
 
     private final OrderEventService orderEventService;
     private final OrderProducer producer;
@@ -17,11 +20,15 @@ public class KafkaHelper {
         this.producer = producer;
     }
 
-    @Scheduled(fixedDelay = 1000)
-    private void sendUnPublishedEvents() {
+   @Scheduled(fixedRate = 1000)
+public void sendUnPublishedEvents() {
+    try {
         List<OrdersEventsLog> unpublishedEvents = orderEventService.getUnpublishedEvents();
         unpublishedEvents.forEach(event -> sendEvent(event));
+    } catch (Throwable t) {
+        t.printStackTrace();
     }
+}
 
     private void markAsPublished(OrdersEventsLog event) {
         event.setPublished(EventStatus.SENT);
@@ -31,9 +38,10 @@ public class KafkaHelper {
     private void sendEvent(OrdersEventsLog event) {
         try {
             producer.sendOrderEvent(event.getEvent());
+            System.out.println("Order event Send for order id:" + event.getOrderId());
             markAsPublished(event);
         } catch (Exception e) {
-            
+
         }
     }
 

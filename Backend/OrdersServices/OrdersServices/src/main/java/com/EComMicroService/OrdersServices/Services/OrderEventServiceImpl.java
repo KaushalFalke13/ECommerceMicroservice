@@ -33,7 +33,7 @@ public class OrderEventServiceImpl implements OrderEventService {
 
     @Override
     public List<OrdersEventsLog> getUnpublishedEvents() {
-        return orderEventRepository.findAllNonPublishedEvent();
+        return  orderEventRepository.findAllNonPublishedEvent();
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 @Repository
 public interface OrderEventRepository extends JpaRepository<OrdersEventsLog,Long>{
 
-    @Query("SELECT e FROM OrdersEventsLog e WHERE e.published = 'No'")
+    @Query("SELECT e FROM OrdersEventsLog e WHERE e.published = 'PENDING'")
     List<OrdersEventsLog> findAllNonPublishedEvent();
 
     }
