@@ -12,12 +12,24 @@ public class OrderConsumer {
     public OrderConsumer() {
     }
 
-    @KafkaListener(topics = "order-events", groupId = "demo-group")
+    @KafkaListener(topics = "product-events", groupId = "OrderServiceGroup")
     public void listen(String message) {
         try {
             Events orderEvent = mapper.readValue(message, Events.class);
-            System.out.println(
-                    "Received OrderEvent: " + orderEvent.getEventType() + " for Order ID: " + orderEvent.getOrderId());
+
+            switch (orderEvent.getEventType().toString()) {
+                case "STOCK_RESERVED":
+
+                    break;
+                case "STOCK_RESERVATION_FAILED":
+                    if (true) {
+                        // create success event
+
+                    }
+                    break;
+                default:
+                    System.out.println("Unknown eventType: " + orderEvent.getEventType());
+            }
         } catch (Exception e) {
             System.err.println("Failed to parse OrderEvent: " + e.getMessage());
             e.printStackTrace();

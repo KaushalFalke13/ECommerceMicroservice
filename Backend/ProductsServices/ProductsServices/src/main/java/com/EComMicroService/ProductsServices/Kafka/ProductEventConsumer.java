@@ -2,15 +2,19 @@ package com.EComMicroService.ProductsServices.Kafka;
 
 import org.springframework.kafka.annotation.KafkaListener;
 
+import com.EComMicroService.ProductsServices.Enums.EventType;
 import com.EComMicroService.ProductsServices.Services.KafkaHelperService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProductEventConsumer {
 
     private final KafkaHelperService kafkaHelperService;
+    private final ProductEventProducer producer;
 
-    private ProductEventConsumer(KafkaHelperService kafkaHelperService) {
+    private ProductEventConsumer(KafkaHelperService kafkaHelperService,ProductEventProducer producer) {
         this.kafkaHelperService = kafkaHelperService;
+        this.producer = producer;
+
     }
 
     private final ObjectMapper mapper = new ObjectMapper();
@@ -23,14 +27,17 @@ public class ProductEventConsumer {
             switch (orderEvent.getEventType().toString()) {
                 case "ORDER_CREATED":
                     if (kafkaHelperService.reserveProducts(orderEvent)) {
-                        // create success event
+                        orderEvent.setEventType(EventType.STOCK_RESERVED);
+                        producer.sendProductEvents(orderEvent);
                     } else {
-                        // create failure event
+                        orderEvent.setEventType(EventType.STOCK_RESERVATION_FAILED);
+                        producer.sendProductEvents(orderEvent);
                     }
                     break;
                 case "ORDER_CANCELLED":
                     if (kafkaHelperService.releaseProducts(orderEvent)) {
                         // create success event
+
                     } else {
                         // create failure event
                     }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.EComMicroService.ProductsServices.Enums.EventType;
 import com.EComMicroService.ProductsServices.Kafka.Events;
 
 import jakarta.transaction.Transactional;
@@ -16,6 +17,14 @@ public class KafkaHelperService {
     public KafkaHelperService(productService productService) {
         this.productService = productService;
     }
+
+
+    public boolean sendProductEvents(Events event) {
+        event.setEventType(EventType.STOCK_RESERVED);
+        return true;    
+    }
+
+
 
     @Transactional
     public boolean reserveProducts(Events orderEvent) {
@@ -37,7 +46,7 @@ public class KafkaHelperService {
         return true;
     }
 
-        @Transactional
+    @Transactional
     public boolean releaseProducts(Events orderEvent) {
 
         if (orderEvent == null || orderEvent.getItems() == null) {
@@ -56,6 +65,5 @@ public class KafkaHelperService {
 
         return true;
     }
-
 
 }
