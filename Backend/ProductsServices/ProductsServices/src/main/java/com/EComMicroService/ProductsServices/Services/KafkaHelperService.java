@@ -14,7 +14,7 @@ public class KafkaHelperService {
 
     public void reserveProducts(Events orderEvent) {
 
-        orderEvent.getPayload().charAt(0);
+        // orderEvent.getPayload().charAt(0);
     }
 
 }

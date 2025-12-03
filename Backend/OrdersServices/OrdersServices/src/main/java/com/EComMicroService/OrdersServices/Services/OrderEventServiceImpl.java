@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
 import com.EComMicroService.OrdersServices.Entity.OrdersEventsLog;
 import com.EComMicroService.OrdersServices.Enums.EventStatus;
 import com.EComMicroService.OrdersServices.Enums.EventType;
@@ -19,12 +20,22 @@ public class OrderEventServiceImpl implements OrderEventService {
         this.orderEventRepository = orderEventRepository;
     }
 
+    
     @Override
     @Transactional(propagation = Propagation.MANDATORY)
-    public void saveOrderEvent(String orderId, String payload) {
-        Events event = new Events(orderId, EventType.ORDER_CREATED, payload);
+    public void saveOrderEvent(OrdersDTO ordersDTO) {
+        Events event = Events.builder()
+                .orderId(ordersDTO.getOrderId())
+                .eventType(EventType.ORDER_CREATED)
+                // .shippingAddress(ordersDTO.())
+                .discountAmount(ordersDTO.getDiscountAmount().longValue())
+                .userId(ordersDTO.getUserId())
+                .items(ordersDTO.getItems())
+                .total(ordersDTO.getTotalAmount().longValue())
+                .build();
+
         OrdersEventsLog ordersEvents = OrdersEventsLog.builder()
-                .orderId(orderId)
+                .orderId(ordersDTO.getOrderId())
                 .event(event)
                 .published(EventStatus.PENDING)
                 .build();
@@ -33,7 +44,7 @@ public class OrderEventServiceImpl implements OrderEventService {
 
     @Override
     public List<OrdersEventsLog> getUnpublishedEvents() {
-        return  orderEventRepository.findAllNonPublishedEvent();
+        return orderEventRepository.findAllNonPublishedEvent();
     }
 
     @Override

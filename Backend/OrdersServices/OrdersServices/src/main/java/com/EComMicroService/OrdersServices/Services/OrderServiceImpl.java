@@ -8,14 +8,14 @@ import com.EComMicroService.OrdersServices.Entity.Orders;
 import com.EComMicroService.OrdersServices.Enums.OrderStatus;
 import com.EComMicroService.OrdersServices.Repositorys.OrderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+// import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    // private final ObjectMapper mapper = new ObjectMapper();
     private final OrderRepository orderRepository;
     private final OrderEventService orderEventService;
 
@@ -28,9 +28,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public String createOrder(OrdersDTO order) throws JsonProcessingException {
         Orders newOrder = ChangeOrderDTOs.changeDTOtoOrders(order);
-        String payload = mapper.writeValueAsString(order);
         String orderId = orderRepository.save(newOrder).getOrderId();
-        orderEventService.saveOrderEvent(orderId, payload);
+        orderEventService.saveOrderEvent(order);
         return orderId;
     }
 

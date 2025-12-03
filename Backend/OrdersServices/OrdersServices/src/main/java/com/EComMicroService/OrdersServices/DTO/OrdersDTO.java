@@ -1,6 +1,7 @@
 package com.EComMicroService.OrdersServices.DTO;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +14,8 @@ public class OrdersDTO {
 
     private String orderId;
     private String userId;
-    private String productId;
-    private int quantity;
+    private String orderNumber;
+    private Map<String, Integer> items;
     private double totalPrice;
     private BigDecimal totalAmount;
     private BigDecimal discountAmount;
