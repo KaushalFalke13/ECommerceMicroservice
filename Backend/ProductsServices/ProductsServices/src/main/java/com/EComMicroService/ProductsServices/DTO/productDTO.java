@@ -18,6 +18,7 @@ public class productDTO {
     private Integer MRP;
     private float price;
     private Integer stock;
+    private Integer reservedStock;
     private Integer discount;
     private String images1;
     private String images2;

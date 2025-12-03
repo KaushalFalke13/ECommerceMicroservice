@@ -29,6 +29,7 @@ public class products {
     private Integer MRP;
     private float price;
     private Integer stock;
+    private Integer reservedStock;
     private Integer discount;
 
     @Column(unique = true)

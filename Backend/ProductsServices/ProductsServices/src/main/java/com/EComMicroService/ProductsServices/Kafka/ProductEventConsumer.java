@@ -22,10 +22,18 @@ public class ProductEventConsumer {
 
             switch (orderEvent.getEventType().toString()) {
                 case "ORDER_CREATED":
-                    kafkaHelperService.reserveProducts(orderEvent);
+                    if (kafkaHelperService.reserveProducts(orderEvent)) {
+                        // create success event
+                    } else {
+                        // create failure event
+                    }
                     break;
                 case "ORDER_CANCELLED":
-                    System.out.println("cancelled");
+                    if (kafkaHelperService.releaseProducts(orderEvent)) {
+                        // create success event
+                    } else {
+                        // create failure event
+                    }
                     break;
                 default:
                     System.out.println("Unknown eventType: " + orderEvent.getEventType());

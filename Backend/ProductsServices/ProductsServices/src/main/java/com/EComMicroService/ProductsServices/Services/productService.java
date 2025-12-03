@@ -9,9 +9,18 @@ import com.EComMicroService.ProductsServices.Entity.products;
 public interface productService {
 
     products saveProducts(productDTO product);
-    products updateProducts(productDTO product,String id);
+
+    products updateProducts(productDTO product, String id);
+
     productDTO getProductById(String id);
+
     List<productDTO> getAllProduct(int pageNumber, int pageSize);
+
     void deleteProducts(String id);
 
+    boolean reserveStock(String productId, int qty);
+
+    boolean releaseStock(String productId, int qty);
+
+    boolean confirmStock(String productId, int qty);
 }

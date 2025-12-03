@@ -65,4 +65,21 @@ public class productServiceImpl implements productService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public boolean reserveStock(String productId, int qty) {
+        int updated = productRepository.reserveStockIfAvailable(productId, qty);
+        return updated == 1;
+    }
+
+    @Override
+    public boolean releaseStock(String productId, int qty) {
+        int updated = productRepository.releaseReservedStock(productId, qty);
+        return updated == 1;
+    }
+
+    @Override
+    public boolean confirmStock(String productId, int qty) {
+        int updated = productRepository.confirmReservedStock(productId, qty);
+        return updated == 1;
+    }
 }

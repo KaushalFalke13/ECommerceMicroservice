@@ -34,6 +34,7 @@ public class helperServices {
                                 .description(products.getDescription())
                                 .price(products.getPrice())
                                 .stock(products.getStock())
+                                .reservedStock(products.getReservedStock())
                                 .discount(products.getDiscount())
                                 .images1(products.getImages().getImage1())
                                 .images2(products.getImages().getImage2())
