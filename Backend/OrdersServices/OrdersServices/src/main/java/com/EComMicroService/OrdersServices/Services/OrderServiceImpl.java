@@ -73,4 +73,14 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public Orders updateOrderStatus(String orderId, OrderStatus status) {
+        Orders order = orderRepository.findById(orderId).orElse(null);
+        if (order != null) {
+            order.setOrderStatus(status);
+            return orderRepository.save(order);
+        }
+        return null;
+    }
+
 }

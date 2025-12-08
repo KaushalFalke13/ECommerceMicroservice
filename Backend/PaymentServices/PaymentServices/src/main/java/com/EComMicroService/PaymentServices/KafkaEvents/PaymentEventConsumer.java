@@ -16,7 +16,7 @@ public class PaymentEventConsumer {
         this.producer = producer;
     }
 
-    @KafkaListener(topics = "product-events", groupId = "PaymentServiceGroup")
+    @KafkaListener(topics = "payment-events", groupId = "PaymentServiceGroup")
     public void listen(String message) {
         try {
             Events Event = mapper.readValue(message, Events.class);

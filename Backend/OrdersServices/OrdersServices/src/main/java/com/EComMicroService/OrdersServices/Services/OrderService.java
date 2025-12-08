@@ -3,6 +3,7 @@ package com.EComMicroService.OrdersServices.Services;
 import java.util.List;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
 import com.EComMicroService.OrdersServices.Entity.Orders;
+import com.EComMicroService.OrdersServices.Enums.OrderStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface OrderService {
@@ -10,6 +11,8 @@ public interface OrderService {
     String createOrder(OrdersDTO order) throws JsonProcessingException;
 
     List<Orders> getOrdersByUserId(String userId);
+
+    Orders updateOrderStatus(String orderId, OrderStatus status);
 
     Object listOrdersForUser(String userId);
 
