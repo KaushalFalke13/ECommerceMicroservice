@@ -6,7 +6,7 @@ import com.EComMicroService.PaymentServices.Entity.Payment;
 
 public interface PaymentService {
 
-    String startPayent(long orderId, double amount, String paymentMode);
+    Boolean startPayent(String orderId, long amount, String paymentMode);
 
     Payment getPaymentDetailsByOrderId(long orderId);
 

@@ -6,11 +6,7 @@ import com.EComMicroService.PaymentServices.Entity.Payment;
 
 public class PaymentServiceImpl implements PaymentService {
 
-    @Override
-    public String startPayent(long orderId, double amount, String paymentMode) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'startPayent'");
-    }
+
 
     @Override
     public Payment getPaymentDetailsByOrderId(long orderId) {
@@ -28,6 +24,12 @@ public class PaymentServiceImpl implements PaymentService {
     public String cancelPayment(long PaymentId) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'cancelPayment'");
+    }
+
+    @Override
+    public Boolean startPayent(String orderId, long amount, String paymentMode) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'startPayent'");
     }
 
 
