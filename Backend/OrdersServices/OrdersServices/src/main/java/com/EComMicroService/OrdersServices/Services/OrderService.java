@@ -17,4 +17,6 @@ public interface OrderService {
 
     Boolean cancelOrder(String orderId);
 
+    Boolean deleteOrder(String orderId);
+
 }

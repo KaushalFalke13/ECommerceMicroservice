@@ -1,5 +1,6 @@
 package com.EComMicroService.OrdersServices.KafkaEvents;
 
+import com.EComMicroService.OrdersServices.Services.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -8,27 +9,23 @@ import org.springframework.stereotype.Component;
 public class OrderConsumer {
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private final OrderService orderService;
 
-    public OrderConsumer() {
+    public OrderConsumer(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @KafkaListener(topics = "product-events", groupId = "OrderServiceGroup")
     public void listen(String message) {
         try {
-            Events orderEvent = mapper.readValue(message, Events.class);
+            Events Event = mapper.readValue(message, Events.class);
 
-            switch (orderEvent.getEventType().toString()) {
-                case "STOCK_RESERVED":
-
-                    break;
+            switch (Event.getEventType().toString()) {
                 case "STOCK_RESERVATION_FAILED":
-                    if (true) {
-                        // create success event
-
-                    }
+                    orderService.deleteOrder(Event.getOrderId());
                     break;
                 default:
-                    System.out.println("Unknown eventType: " + orderEvent.getEventType());
+                    System.out.println("Unknown eventType: " + Event.getEventType());
             }
         } catch (Exception e) {
             System.err.println("Failed to parse OrderEvent: " + e.getMessage());

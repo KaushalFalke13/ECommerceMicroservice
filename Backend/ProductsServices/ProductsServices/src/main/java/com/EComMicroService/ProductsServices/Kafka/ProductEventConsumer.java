@@ -11,7 +11,7 @@ public class ProductEventConsumer {
     private final KafkaHelperService kafkaHelperService;
     private final ProductEventProducer producer;
 
-    private ProductEventConsumer(KafkaHelperService kafkaHelperService,ProductEventProducer producer) {
+    private ProductEventConsumer(KafkaHelperService kafkaHelperService, ProductEventProducer producer) {
         this.kafkaHelperService = kafkaHelperService;
         this.producer = producer;
 
@@ -20,7 +20,7 @@ public class ProductEventConsumer {
     private final ObjectMapper mapper = new ObjectMapper();
 
     @KafkaListener(topics = "order-events", groupId = "ProductServiceGroup")
-    public void listen(String message) {
+    public void OrderListener(String message) {
         try {
             Events orderEvent = mapper.readValue(message, Events.class);
 
@@ -36,8 +36,8 @@ public class ProductEventConsumer {
                     break;
                 case "ORDER_CANCELLED":
                     if (kafkaHelperService.releaseProducts(orderEvent)) {
-                        // create success event
-
+                        orderEvent.setEventType(EventType.STOCK_RESERVATION_REVERSED);
+                        producer.sendProductEvents(orderEvent);
                     } else {
                         // create failure event
                     }
@@ -51,4 +51,29 @@ public class ProductEventConsumer {
             e.printStackTrace();
         }
     }
+
+    @KafkaListener(topics = "payment-events", groupId = "ProductServiceGroup")
+      public void PaymentListener(String message) {
+        try {
+            Events orderEvent = mapper.readValue(message, Events.class);
+
+            switch (orderEvent.getEventType().toString()) {
+                case "PAYMENT_FAILED":
+                    if (kafkaHelperService.releaseProducts(orderEvent)) {
+                        orderEvent.setEventType(EventType.STOCK_RESERVATION_REVERSED);
+                        producer.sendProductEvents(orderEvent);
+                    } else {
+                        // create failure event
+                    }
+                    break;
+                default:
+                    System.out.println("Unknown eventType: " + orderEvent.getEventType());
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to parse OrderEvent: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
 }
