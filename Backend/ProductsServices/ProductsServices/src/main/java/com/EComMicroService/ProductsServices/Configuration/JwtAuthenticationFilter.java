@@ -1,4 +1,5 @@
-package com.EComMicroService.OrdersServices.Config;
+package com.EComMicroService.ProductsServices.Configuration;
+
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -55,3 +56,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 }
+

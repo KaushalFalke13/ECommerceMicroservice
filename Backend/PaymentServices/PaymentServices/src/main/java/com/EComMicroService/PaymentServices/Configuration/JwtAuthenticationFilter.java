@@ -1,4 +1,5 @@
-package com.EComMicroService.OrdersServices.Config;
+package com.EComMicroService.PaymentServices.Configuration;
+
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
