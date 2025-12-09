@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.EComMicroService.AuthServices.DTO.ApiResponse;
 import com.EComMicroService.AuthServices.DTO.UsersDTO;
+import com.EComMicroService.AuthServices.Entity.Users;
 import com.EComMicroService.AuthServices.Service.EmailVerificationService;
 import com.EComMicroService.AuthServices.Service.JwtToken;
 import com.EComMicroService.AuthServices.Service.UsersService;
@@ -28,7 +29,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login() {
-        
+
         return "login Page";
     }
 
@@ -71,7 +72,8 @@ public class AuthController {
                     .body(new ApiResponse<>(401, "Invalid email or password"));
         }
         try {
-            String token = JwtToken.generateToken(userDTO.getEmail());
+            Users user = (Users) usersService.loadUserByUsername(userDTO.getEmail());
+            String token = JwtToken.generateToken(userDTO.getEmail(), user.getRole());
             response.setHeader("Authorization", "Bearer " + token);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -97,4 +99,5 @@ public class AuthController {
         usersService.updatePassword(email, newPassword);
         return ResponseEntity.ok(new ApiResponse<>(200, "Password updated successfully"));
     }
+
 }

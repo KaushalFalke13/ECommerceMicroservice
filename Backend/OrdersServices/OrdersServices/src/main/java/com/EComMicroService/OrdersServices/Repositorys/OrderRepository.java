@@ -9,7 +9,6 @@ import com.EComMicroService.OrdersServices.Entity.Orders;
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, String> {
 
-    @SuppressWarnings({ "unchecked" })
     Orders save(Orders order);
 
     List<Orders> findAllByUserId(String userId);
