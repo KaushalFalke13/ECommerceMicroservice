@@ -64,10 +64,35 @@ public class UsersServiceImpl implements UsersService {
         return false;
     }
 
-    public boolean changeRoles(String userId, List<String> newRoles) {
+    @Override
+    public Users getUserById(String userId) {
+        return usersRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public boolean addNewRoles(String userId, String newRoles) {
         Users users = usersRepository.findById(userId).orElse(null);
         if (users != null) {
-            users.setRole(newRoles);
+            List<String> roles = users.getRole();
+            if (!roles.contains(newRoles)) {
+                roles.add(newRoles);
+            }
+            users.setRole(roles);
+            usersRepository.save(users);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean removeRoles(String userId, String newRoles) {
+        Users users = usersRepository.findById(userId).orElse(null);
+        if (users != null) {
+            List<String> roles = users.getRole();
+            if (roles.contains(newRoles)) {
+                roles.remove(newRoles);
+            }
+            users.setRole(roles);
             usersRepository.save(users);
             return true;
         }

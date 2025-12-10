@@ -2,6 +2,7 @@ package com.EComMicroService.AuthServices.Controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.EComMicroService.AuthServices.DTO.ApiResponse;
 import com.EComMicroService.AuthServices.DTO.UsersDTO;
@@ -25,17 +26,6 @@ public class AuthController {
         this.usersService = usersService;
         this.emailService = emailService;
         this.JwtToken = JwtToken;
-    }
-
-    @GetMapping("/login")
-    public String login() {
-
-        return "login Page";
-    }
-
-    @GetMapping("/SignUp")
-    public String signUpPage() {
-        return "SignUp Page";
     }
 
     @PostMapping("/requestEmailVerification")
@@ -98,6 +88,20 @@ public class AuthController {
         }
         usersService.updatePassword(email, newPassword);
         return ResponseEntity.ok(new ApiResponse<>(200, "Password updated successfully"));
+    }
+
+    @PostMapping("/addRoles")
+    @PreAuthorize("hasRoles('ADMIN')")
+    public ResponseEntity<ApiResponse<?>> changeRoles(String userId, String role) {
+        usersService.addNewRoles(userId, role);
+        return new ResponseEntity<>(new ApiResponse<>(201, "Roles Changed Successfully"), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/addRoles")
+    @PreAuthorize("hasRoles('ADMIN')")
+    public ResponseEntity<ApiResponse<?>> removeRoles(String userId, String role) {
+        usersService.removeRoles(userId, role);
+        return new ResponseEntity<>(new ApiResponse<>(201, "Roles Changed Successfully"), HttpStatus.CREATED);
     }
 
 }

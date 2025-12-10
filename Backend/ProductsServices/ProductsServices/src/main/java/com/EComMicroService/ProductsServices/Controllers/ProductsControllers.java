@@ -3,6 +3,7 @@ package com.EComMicroService.ProductsServices.Controllers;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,18 +27,21 @@ public class ProductsControllers {
     }
     // search products
 
+    @PreAuthorize("hasRoles('ADMIN')")
     @PostMapping("/createProduct")
     public ResponseEntity<?> createProduct(@RequestBody productDTO productDTO) {
         productService.saveProducts(productDTO);
         return ResponseEntity.ok("Product Created Successfully");
     }
 
+    @PreAuthorize("hasRoles('ADMIN')")
     @PatchMapping("/updateProduct")
     public ResponseEntity<?> updateProduct(@ModelAttribute productDTO productDTO, @RequestParam String id) {
         productService.updateProducts(productDTO, id);
         return ResponseEntity.ok("Product Updated Successfully");
     }
 
+    @PreAuthorize("hasRoles('ADMIN')")
     @DeleteMapping("/deleteProduct")
     public ResponseEntity<?> deleteProduct(@RequestParam String id) {
         productService.deleteProducts(id);
