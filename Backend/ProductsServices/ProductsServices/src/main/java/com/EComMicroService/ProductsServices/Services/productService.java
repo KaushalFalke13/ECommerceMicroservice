@@ -16,6 +16,8 @@ public interface productService {
 
     List<productDTO> getAllProduct(int pageNumber, int pageSize);
 
+    List<productDTO> getAllProduct();
+
     void deleteProducts(String id);
 
     boolean reserveStock(String productId, int qty);

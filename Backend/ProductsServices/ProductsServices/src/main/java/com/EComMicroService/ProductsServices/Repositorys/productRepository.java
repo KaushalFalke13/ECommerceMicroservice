@@ -6,16 +6,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.EComMicroService.ProductsServices.Entity.products;
-
 import jakarta.transaction.Transactional;
 
 @Repository
 public interface productRepository extends JpaRepository<products, String> {
 
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Transactional
     @Query("""
-                UPDATE Product p
+                UPDATE products p
                 SET p.stock = p.stock - :qty,
                     p.reservedStock = p.reservedStock + :qty
                 WHERE p.id = :productId AND p.stock >= :qty
@@ -25,7 +24,7 @@ public interface productRepository extends JpaRepository<products, String> {
     @Modifying
     @Transactional
     @Query("""
-                UPDATE Product p
+                UPDATE products p
                 SET p.stock = p.stock + :qty,
                     p.reservedStock = p.reservedStock - :qty
                 WHERE p.id = :productId AND p.reservedStock >= :qty
@@ -35,7 +34,7 @@ public interface productRepository extends JpaRepository<products, String> {
     @Modifying
     @Transactional
     @Query("""
-                UPDATE Product p
+                UPDATE products p
                 SET p.reservedStock = p.reservedStock - :qty
                 WHERE p.id = :productId AND p.reservedStock >= :qty
             """)

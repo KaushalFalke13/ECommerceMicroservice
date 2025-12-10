@@ -23,7 +23,7 @@ import lombok.Setter;
 public class Users  implements UserDetails{
 
     @Id
-    private String id;
+    private String userId;
     private String email;
     private String password;
     private List<String> role;

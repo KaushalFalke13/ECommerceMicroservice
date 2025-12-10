@@ -1,5 +1,7 @@
 package com.EComMicroService.ProductsServices.Services;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import com.EComMicroService.ProductsServices.DTO.productDTO;
@@ -11,6 +13,7 @@ public class helperServices {
 
     products changeDtoToProducts(productDTO productDTO){
         return products.builder()
+                            .productId(UUID.randomUUID().toString())
                             .MRP(productDTO.getMRP())
                             .title(productDTO.getTitle())
                             .price(productDTO.getPrice())

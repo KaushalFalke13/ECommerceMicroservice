@@ -1,13 +1,15 @@
 package com.EComMicroService.UserServices.Configuration;
 
-
 import java.security.Key;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
+@Service
 public class jwtUtil {
     private final Key key;
 
@@ -30,20 +32,20 @@ public class jwtUtil {
 
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     public List<String> getRolesFromToken(String token) {
         return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .get("roles", List.class);
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles", List.class);
     }
 
 }

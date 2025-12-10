@@ -4,6 +4,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,10 +20,9 @@ import lombok.Setter;
 @Builder
 public class products {
 
-    
-    @Id  
+    @Id
     private String productId;
-    
+
     @Column(length = 1000)
     private String description;
     private String title;
@@ -34,50 +34,48 @@ public class products {
 
     @Column(unique = true)
     private String slug;
-    
+
     @OneToOne(cascade = CascadeType.ALL)
-    private Images images; 
-    
+    @JoinColumn(name = "images_image_id", referencedColumnName = "image_id")
+    private Images images;
+
     @Builder.Default
     private Integer returnPeriod = 7;
-    
 
     // private String color;
-    //   @Builder.Default
-    //   @Enumerated(EnumType.STRING)
-    //   private Status ProductStatus = Status.ACTIVE;
-    
-    //   @OneToOne(cascade = CascadeType.ALL)
-    //   @JoinColumn(name = "rating_id")
-    //   private rating rating;
+    // @Builder.Default
+    // @Enumerated(EnumType.STRING)
+    // private Status ProductStatus = Status.ACTIVE;
 
-    //   @ManyToOne(cascade = CascadeType.ALL)
-    //   @JoinColumn(name = "brand_id") 
-    //   private Brands brand; 
+    // @OneToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "rating_id")
+    // private rating rating;
 
-    //   @JsonManagedReference
-    //   @ManyToOne(cascade = CascadeType.ALL)
-    //   @JoinColumn(name = "cat_id")  
-    //   private Categories category;
+    // @ManyToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "brand_id")
+    // private Brands brand;
 
-    //   @ManyToMany(cascade = {CascadeType.ALL, CascadeType.MERGE })
-    //   @Builder.Default
-    //   @JoinTable(name = "Products_Keywords",
-    //   joinColumns = @JoinColumn(name = "Product_id"),
-    //   inverseJoinColumns = @JoinColumn  (name="searchKeywords_id"))  
-    //   private Set<searchKeywords> searchKeyword = new HashSet<>();
-    
-    //   @JsonManagedReference
-    //   @OneToMany(mappedBy = "products")
-    //   private Set<WatchListCart> watchListCarts;
+    // @JsonManagedReference
+    // @ManyToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "cat_id")
+    // private Categories category;
 
-    //   @JsonManagedReference
-    //   @OneToMany(mappedBy = "products")  
-    //   private Set<BagCart> bagCart;
+    // @ManyToMany(cascade = {CascadeType.ALL, CascadeType.MERGE })
+    // @Builder.Default
+    // @JoinTable(name = "Products_Keywords",
+    // joinColumns = @JoinColumn(name = "Product_id"),
+    // inverseJoinColumns = @JoinColumn (name="searchKeywords_id"))
+    // private Set<searchKeywords> searchKeyword = new HashSet<>();
 
-    //   @OneToMany(mappedBy = "products") 
-    //   private List<OrdersProducts> ordersProducts;
+    // @JsonManagedReference
+    // @OneToMany(mappedBy = "products")
+    // private Set<WatchListCart> watchListCarts;
 
+    // @JsonManagedReference
+    // @OneToMany(mappedBy = "products")
+    // private Set<BagCart> bagCart;
 
+    // @OneToMany(mappedBy = "products")
+    // private List<OrdersProducts> ordersProducts;
 
 }

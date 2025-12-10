@@ -1,5 +1,6 @@
 package com.EComMicroService.AuthServices.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,11 @@ public class UsersServiceImpl implements UsersService {
     }
 
     public String registerUser(String email, String password) {
+        List<String> role = List.of("USER");
         Users users = Users.builder()
-                .id(UUID.randomUUID().toString())
+                .userId(UUID.randomUUID().toString())
                 .email(email)
+                .role(role)
                 .password(passwordEncoder.encode(password))
                 .build();
         usersRepository.save(users);
@@ -55,6 +58,16 @@ public class UsersServiceImpl implements UsersService {
         Users users = usersRepository.findByEmail(email);
         if (users != null) {
             users.setPassword(passwordEncoder.encode(newPassword));
+            usersRepository.save(users);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean changeRoles(String userId, List<String> newRoles) {
+        Users users = usersRepository.findById(userId).orElse(null);
+        if (users != null) {
+            users.setRole(newRoles);
             usersRepository.save(users);
             return true;
         }

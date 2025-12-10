@@ -48,9 +48,12 @@ public class OrdersController {
     }
 
     @PostMapping("/placeOrder")
-    public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody OrdersDTO orderDTO) throws JsonProcessingException {
+    public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody OrdersDTO orderDTO)
+            throws JsonProcessingException {
+        System.out.println("placeOrder called");
         String createdOrderId = orderService.createOrder(orderDTO);
         if (createdOrderId != null) {
+            System.out.println("Order created with ID: " + createdOrderId);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(201, "Order created successfully", createdOrderId));
         } else {

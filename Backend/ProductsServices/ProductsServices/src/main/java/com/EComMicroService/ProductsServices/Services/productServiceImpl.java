@@ -40,6 +40,13 @@ public class productServiceImpl implements productService {
                 .toList();
     }
 
+    public List<productDTO> getAllProduct() {
+        List<products> products = productRepository.findAll();
+        return products.stream()
+                .map(prod -> helperServices.changeProductToDto(prod))
+                .toList();
+    }
+
     @Override
     public products updateProducts(productDTO product, String id) {
         products existingProduct = productRepository.findById(id).orElse(null);
