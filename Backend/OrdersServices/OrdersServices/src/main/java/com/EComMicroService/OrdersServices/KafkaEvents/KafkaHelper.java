@@ -11,7 +11,6 @@ import com.EComMicroService.OrdersServices.Services.OrderEventService;
 @Component
 public class KafkaHelper {
 
-
     private final OrderEventService orderEventService;
     private final OrderProducer producer;
 
