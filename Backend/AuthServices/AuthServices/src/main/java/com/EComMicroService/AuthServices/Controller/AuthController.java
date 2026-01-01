@@ -28,6 +28,11 @@ public class AuthController {
         this.JwtToken = JwtToken;
     }
 
+    @PostMapping("/test")
+    public String testApi() {
+        return "Auth Service is up and running";
+    }
+
     @PostMapping("/requestEmailVerification")
     public ResponseEntity<ApiResponse<Void>> requestEmailVerification(
             @RequestParam @Valid @Email(message = "Invalid email") String email) {
@@ -56,6 +61,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<Void>> loginUser(@Valid @RequestBody UsersDTO userDTO,
             HttpServletResponse response) {
+        System.out.println(userDTO.getEmail() + " " + userDTO.getPassword());
         boolean isUserVerified = usersService.loginUser(userDTO.getEmail(), userDTO.getPassword());
         if (!isUserVerified) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -97,7 +103,7 @@ public class AuthController {
         return new ResponseEntity<>(new ApiResponse<>(201, "Roles Changed Successfully"), HttpStatus.CREATED);
     }
 
-    @PostMapping("/addRoles")
+    @PostMapping("/removeRoles")
     @PreAuthorize("hasRoles('ADMIN')")
     public ResponseEntity<ApiResponse<?>> removeRoles(String userId, String role) {
         usersService.removeRoles(userId, role);

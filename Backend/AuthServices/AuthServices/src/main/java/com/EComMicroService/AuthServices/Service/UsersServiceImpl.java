@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.EComMicroService.AuthServices.Entity.Users;
+import com.EComMicroService.AuthServices.ExceptionHandler.EmailAlreadyExistsException;
 import com.EComMicroService.AuthServices.Repository.UsersRepository;
 
 @Service
@@ -24,6 +24,10 @@ public class UsersServiceImpl implements UsersService {
     }
 
     public String registerUser(String email, String password) {
+         if (usersRepository.findByEmail(email) != null) {
+            throw new EmailAlreadyExistsException("Email already registered");
+        }   
+
         List<String> role = List.of("USER");
         Users users = Users.builder()
                 .userId(UUID.randomUUID().toString())
