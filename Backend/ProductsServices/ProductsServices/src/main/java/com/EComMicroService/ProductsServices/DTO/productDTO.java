@@ -12,7 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class productDTO {
-    
+
+    private String id;
     private String description;
     private String title;
     private Integer MRP;
@@ -24,5 +25,5 @@ public class productDTO {
     private String images2;
     private String images3;
     private String images4;
-    private String images5; 
+    private String images5;
 }

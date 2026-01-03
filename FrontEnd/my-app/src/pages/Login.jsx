@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { login, signup } from "../services/authService";
 import { Lock, Mail, User } from "lucide-react";
 import Alert from "../components/Alert";
@@ -10,6 +11,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState(null);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -103,51 +105,60 @@ const Login = () => {
     return !Object.values(newErrors).some(Boolean);
   };
 
-  const handleSubmit = async () => {
-    if (!validateForm()) return;
+ const handleSubmit = async () => {
+  if (!validateForm()) return;
 
-    setIsLoading(true);
+  setIsLoading(true);
 
-    try {
-      if (mode === "login") {
-        await login({
+  try {
+    if (mode === "login") {
+     try {
+        const res = await login({
           email: formData.email,
           password: formData.password,
         });
-      } else {
-        await signup({
-          email: formData.email,
-          password: formData.password,
-        });
+
+        showNotification("success", "Successfully logged in!");
+        navigate("/home", { replace: true });
+
+      } catch (error) {
+        showNotification(
+          "error",
+          error.message || "Login failed"
+        );
       }
-
-      showNotification(
-        "success",
-        mode === "login"
-          ? "Successfully logged in!"
-          : "Account created successfully!"
-      );
-
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
+    } else {
+      await signup({
+        email: formData.email,
+        password: formData.password,
       });
-      setTouched({});
-      setErrors({});
-    } catch (error) {
-      showNotification(
-        "error",
-        error.response?.data?.message ||
-          error.message ||
-          "Something went wrong. Please try again.",
-        3000
-      );
-    } finally {
-      setIsLoading(false);
+
+      showNotification("success", "Account created successfully!");
+
+      navigate("/", { replace: true });
     }
-  };
+
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setTouched({});
+    setErrors({});
+  } catch (error) {
+    showNotification(
+      "error",
+      error.response?.data?.message ||
+        error.message ||
+        "Something went wrong. Please try again.",
+      3000
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") handleSubmit();

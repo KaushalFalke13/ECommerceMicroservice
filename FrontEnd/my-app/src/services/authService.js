@@ -1,22 +1,18 @@
 import axios from "axios";
+import api from "../services/api";
 
-const api = axios.create({
-  baseURL: "/auth", // Vite proxy → http://localhost:8081
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+export const login = async ({ email, password }) => {
+  const response = await api.post("/auth/login", {
+    email,
+    password,
+  });
 
-export const login = async (data) => {
-  const data1 = {
-    email: data.email,
-    password: data.password,
+  if (!response.data?.token) {
+    throw new Error("Token not received from server");
   }
-  // const response = await api.post("/login", data1);
-  const response = await axios.post("/auth/login", data1);
-  if (response.data?.token) {
-    localStorage.setItem("token", response.data.token);
-  }
+
+  // 🔐 Store token
+  localStorage.setItem("token", response.data.token);
 
   return response.data;
 };

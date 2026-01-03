@@ -1,5 +1,8 @@
 package com.EComMicroService.AuthServices.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,9 +62,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<Void>> loginUser(@Valid @RequestBody UsersDTO userDTO,
+    public ResponseEntity<?> loginUser(@Valid @RequestBody UsersDTO userDTO,
             HttpServletResponse response) {
-        System.out.println(userDTO.getEmail() + " " + userDTO.getPassword());
+        System.out.println("userDTO: " + userDTO.getEmail() + ", " + userDTO.getPassword());
         boolean isUserVerified = usersService.loginUser(userDTO.getEmail(), userDTO.getPassword());
         if (!isUserVerified) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -70,11 +73,20 @@ public class AuthController {
         try {
             Users user = (Users) usersService.loadUserByUsername(userDTO.getEmail());
             String token = JwtToken.generateToken(userDTO.getEmail(), user.getRole());
-            response.setHeader("Authorization", "Bearer " + token);
+
+            Map<String, Object> Requrestresponse = new HashMap<>();
+            Requrestresponse.put("token", token);
+            Requrestresponse.put("email", user.getUsername());
+            Requrestresponse.put("role", user.getRole());
+
+            return ResponseEntity.ok(Requrestresponse);
+
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of(
+                            "message", "Login failed due to server error"));
         }
-        return ResponseEntity.ok(new ApiResponse<>(200, "Login successful"));
     }
 
     @GetMapping("/forgetPassword")

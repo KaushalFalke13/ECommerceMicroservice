@@ -48,9 +48,9 @@ public class ProductsControllers {
         return ResponseEntity.ok("Product Deleted Successfully");
     }
 
-    @GetMapping("/products")
-    public ResponseEntity<?> getProducts(@RequestParam int pageNumber, @RequestParam int pageSize) {
-        List<productDTO> productDTOs = productService.getAllProduct(pageNumber, pageSize);
+    @GetMapping("/product")
+    public ResponseEntity<?> getProducts(@RequestParam int page, @RequestParam int size) {
+        List<productDTO> productDTOs = productService.getAllProduct(page, size);
         return ResponseEntity.ok(productDTOs);
     }
 

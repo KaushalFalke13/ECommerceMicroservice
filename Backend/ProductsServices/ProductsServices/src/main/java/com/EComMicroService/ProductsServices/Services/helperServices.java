@@ -32,6 +32,7 @@ public class helperServices {
 
     productDTO changeProductToDto(products products){
         return productDTO.builder()
+                                .id(products.getProductId())
                                 .title(products.getTitle())
                                 .MRP(products.getMRP())
                                 .description(products.getDescription())

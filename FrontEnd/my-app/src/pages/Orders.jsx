@@ -1,28 +1,89 @@
-import React, { useEffect, useState } from "react";
-import {
-  Heart,
-  ShoppingBag,
-  User,
-  ChevronLeft,
-  ChevronRight,
-  Search, // ✅ REQUIRED
-} from "lucide-react";
+import React, { useState } from 'react';
+import { Heart, Search, ShoppingBag, User, ChevronLeft, ChevronRight } from 'lucide-react';
 
-import { getAllProducts } from "../services/productService";
-
-/* ================= CONFIG ================= */
-
-const PAGE_SIZE = 16;
-
-/* ================= STATIC UI DATA ================= */
+// Mock Data
+const mockProducts = [
+  {
+    id: 1,
+    image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
+    brand: 'Roadster',
+    title: 'Men Slim Fit Casual Shirt',
+    price: 1299,
+    originalPrice: 2599,
+    discount: 50,
+  },
+  {
+    id: 2,
+    image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400',
+    brand: 'H&M',
+    title: 'Women Floral Print Dress',
+    price: 1799,
+    originalPrice: 3999,
+    discount: 55,
+  },
+  {
+    id: 3,
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
+    brand: 'Nike',
+    title: 'Running Shoes For Men',
+    price: 4999,
+    originalPrice: 7999,
+    discount: 37,
+  },
+  {
+    id: 4,
+    image: 'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400',
+    brand: 'Zara',
+    title: 'Women Handbag',
+    price: 2499,
+    originalPrice: 4999,
+    discount: 50,
+  },
+  {
+    id: 5,
+    image: 'https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400',
+    brand: 'Puma',
+    title: 'Sports T-Shirt',
+    price: 899,
+    originalPrice: 1999,
+    discount: 55,
+  },
+  {
+    id: 6,
+    image: 'https://images.unsplash.com/photo-1584370848010-d7fe6bc767ec?w=400',
+    brand: 'Levis',
+    title: 'Men Slim Fit Jeans',
+    price: 2199,
+    originalPrice: 3999,
+    discount: 45,
+  },
+  {
+    id: 7,
+    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400',
+    brand: 'Mango',
+    title: 'Women Casual Top',
+    price: 999,
+    originalPrice: 2499,
+    discount: 60,
+  },
+  {
+    id: 8,
+    image: 'https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=400',
+    brand: 'Adidas',
+    title: 'Sports Watch',
+    price: 3499,
+    originalPrice: 6999,
+    discount: 50,
+  },
+];
 
 const categories = [
-  { name: "Men", image: "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=300" },
-  { name: "Women", image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=300" },
-  { name: "Kids", image: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=300" },
-  { name: "Beauty", image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300" },
-  { name: "Home", image: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300" },
-  { name: "Footwear", image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=300" },
+  { name: 'Men', image: 'https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=300' },
+  { name: 'Women', image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=300' },
+  { name: 'Kids', image: 'https://images.unsplash.com/photo-1503919545889-aef636e10ad4?w=300' },
+  { name: 'Beauty', image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300' },
+  { name: 'Home', image: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300' },
+  { name: 'Footwear', image: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=300' },
 ];
 
 const banners = [
@@ -47,13 +108,11 @@ const banners = [
 ];
 
 const offers = [
-  { title: "Flat 60% OFF", subtitle: "On first purchase", color: "bg-pink-500" },
-  { title: "Buy 2 Get 1", subtitle: "On selected brands", color: "bg-purple-500" },
-  { title: "Free Shipping", subtitle: "Above ₹999", color: "bg-blue-500" },
-  { title: "Extra 20% OFF", subtitle: "Use SAVE20", color: "bg-orange-500" },
+  { id: 1, title: 'Flat 60% OFF', subtitle: 'On first purchase', color: 'bg-pink-500' },
+  { id: 2, title: 'Buy 2 Get 1', subtitle: 'On selected brands', color: 'bg-purple-500' },
+  { id: 3, title: 'Free Shipping', subtitle: 'On orders above ₹999', color: 'bg-blue-500' },
+  { id: 4, title: 'Extra 20% OFF', subtitle: 'Use code: SAVE20', color: 'bg-orange-500' },
 ];
-
-/* ================= COMPONENTS ================= */
 
 // Navbar Component
 const Navbar = () => {
@@ -129,23 +188,21 @@ const Navbar = () => {
   );
 };
 
-
-
+// Hero Banner Component
 const HeroBanner = () => {
-  const [index, setIndex] = useState(0);
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const nextSlide = () => {
-        setCurrentSlide((prev) => (prev + 1) % banners.length);
-    };
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-    const prevSlide = () => {
-        setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
-    };  
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % banners.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+  };
 
   return (
     <section className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[500px] overflow-hidden">
-      
-    {banners.map((banner, index) => (
+      {banners.map((banner, index) => (
         <div
           key={banner.id}
           className={`absolute inset-0 transition-opacity duration-700 ${
@@ -179,11 +236,13 @@ const HeroBanner = () => {
           </div>
         </div>
       ))}
-    <button
+
+      {/* Navigation Buttons */}
+      <button
         onClick={prevSlide}
         className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg transition-all"
         aria-label="Previous slide"
-    >
+      >
         <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" />
       </button>
       <button
@@ -194,6 +253,7 @@ const HeroBanner = () => {
         <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" />
       </button>
 
+      {/* Dots Indicator */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
         {banners.map((_, index) => (
           <button
@@ -210,6 +270,7 @@ const HeroBanner = () => {
   );
 };
 
+// Category Card Component
 const CategoryCard = ({ name, image }) => {
   return (
     <div className="flex flex-col items-center group cursor-pointer">
@@ -226,67 +287,48 @@ const CategoryCard = ({ name, image }) => {
     </div>
   );
 };
+
+// Product Card Component
 const ProductCard = ({ product }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   return (
-    <div className="cursor-pointer">
-      {/* IMAGE WRAPPER (HOVER TARGET) */}
-      <div className="relative group overflow-hidden rounded-lg bg-gray-100 aspect-[3/4]">
+    <div className="group cursor-pointer">
+      <div className="relative overflow-hidden rounded-lg bg-gray-100 aspect-[3/4]">
         <img
-          src={product.images1}
+          src={product.image}
           alt={product.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
-
-        {/* Wishlist Button */}
         <button
-          onClick={(e) => {
-            e.stopPropagation(); // ✅ prevents hover break
-            setIsWishlisted((prev) => !prev);
-          }}
+          onClick={() => setIsWishlisted(!isWishlisted)}
           className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:scale-110 transition-transform"
+          aria-label="Add to wishlist"
         >
           <Heart
             className={`w-5 h-5 ${
-              isWishlisted
-                ? "fill-pink-600 text-pink-600"
-                : "text-gray-600"
+              isWishlisted ? 'fill-pink-600 text-pink-600' : 'text-gray-600'
             }`}
           />
         </button>
-
-        {/* Discount */}
         {product.discount && (
           <div className="absolute top-3 left-3 px-2 py-1 bg-pink-600 text-white text-xs font-bold rounded">
             {product.discount}% OFF
           </div>
         )}
       </div>
-
-      {/* PRODUCT INFO */}
       <div className="mt-3">
-        <h4 className="text-sm font-bold text-gray-800 uppercase truncate">
-          {product.brand}
-        </h4>
-        <p className="text-sm text-gray-600 truncate">
-          {product.title}
-        </p>
-        <div className="flex items-center gap-2 mt-1">
-          <span className="text-lg font-bold text-gray-900">
-            ₹{product.price}
-          </span>
-          {product.originalPrice && (
-            <span className="text-sm text-gray-500 line-through">
-              ₹{product.originalPrice}
-            </span>
-          )}
+        <h4 className="text-sm font-bold text-gray-800 uppercase">{product.brand}</h4>
+        <p className="text-sm text-gray-600 mt-1 truncate">{product.title}</p>
+        <div className="flex items-center gap-2 mt-2">
+          <span className="text-lg font-bold text-gray-900">₹{product.price}</span>
+          <span className="text-sm text-gray-500 line-through">₹{product.originalPrice}</span>
+          <span className="text-sm text-orange-600 font-semibold">({product.discount}% OFF)</span>
         </div>
       </div>
     </div>
   );
 };
-
 
 // Offers Section Component
 const OffersSection = () => {
@@ -395,86 +437,53 @@ const Footer = () => {
   );
 };
 
-/* ================= MAIN HOME ================= */
-
+// Main Home Component
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [page, setPage] = useState(0);
-  const [hasNext, setHasNext] = useState(true);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-      try {
-        const data = await getAllProducts(page, PAGE_SIZE);
-        console.log("Fetched products:", data);
-        setProducts(data);
-
-        // ✅ if less than page size → no next page
-        setHasNext(data.length === PAGE_SIZE);
-      } catch (err) {
-        console.error("Failed to fetch products", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [page]);
-
   return (
-    <div className="bg-gray-50">
+    <div className="min-h-screen bg-white">
+      {/* Navbar */}
       <Navbar />
+
+      {/* Hero Banner */}
       <HeroBanner />
 
-      {/* Categories */}
-      <section className="py-10 max-w-7xl mx-auto grid grid-cols-3 md:grid-cols-6 gap-6">
-        {categories.map((c) => (
-          <CategoryCard key={c.name} {...c} />
-        ))}
-      </section>
-
-      {/* Products */}
-      <section className="py-10 max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold mb-6 text-center">Trending Now</h2>
-
-        {loading && <p className="text-center">Loading products...</p>}
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {products.map((p) => (
-            <ProductCard key={p.id || p.productId} product={p} />
-          ))}
-        </div>
-
-        </section>
-          <section>
-        {/* Pagination */}
-        <div className="flex justify-center gap-4 mt-8">
-          <button
-            disabled={page === 0}
-            onClick={() => setPage((p) => p - 1)}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Prev
-          </button>
-
-          <span className="px-4 py-2 font-semibold">
-            Page {page + 1}
-          </span>
-
-          <button
-            disabled={!hasNext}
-            onClick={() => setPage((p) => p + 1)}
-            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
-          >
-            Next
-          </button>
+      {/* Category Highlights Section */}
+      <section className="py-8 sm:py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8 md:mb-12 text-center">
+            Shop by Category
+          </h2>
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-4 sm:gap-6 md:gap-8">
+            {categories.map((category) => (
+              <CategoryCard key={category.name} {...category} />
+            ))}
+          </div>
         </div>
       </section>
 
-       <OffersSection /> 
+      {/* Trending Products Section */}
+      <section className="py-8 sm:py-12 md:py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 sm:mb-8 text-center">
+            Trending Now
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {mockProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+          <div className="text-center mt-8 sm:mt-12">
+            <button className="px-8 sm:px-12 py-3 sm:py-4 bg-pink-600 text-white font-semibold rounded-md hover:bg-pink-700 transition-colors text-sm sm:text-base">
+              View All Products
+            </button>
+          </div>
+        </div>
+      </section>
 
+      {/* Offers & Deals Section */}
+      <OffersSection />
+
+      {/* Footer */}
       <Footer />
     </div>
   );
