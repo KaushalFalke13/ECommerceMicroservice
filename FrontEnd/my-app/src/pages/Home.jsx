@@ -1,20 +1,13 @@
-  import { useEffect, useState } from "react";
-  import {
-    Heart,
-    ShoppingBag,
-    User,
-    ChevronLeft,
-    ChevronRight,
-    Search,
-  } from "lucide-react";
-  import { useWishlist } from "../context/WishlistContext";
-  import { getAllProducts } from "../services/productService";
+import { useEffect, useState } from "react";
+import {Heart,ChevronLeft,ChevronRight, } from "lucide-react";
+import { useWishlist } from "../context/WishlistContext";
+import { useBag } from "../context/BagContext";
+import { getAllProducts } from "../services/productService";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
-  /* ================= CONFIG ================= */
 
   const PAGE_SIZE = 16;
-
-  /* ================= STATIC UI DATA ================= */
 
   const categories = [
     { name: "Men", image: "https://images.unsplash.com/photo-1490114538077-0a7f8cb49891?w=300" },
@@ -52,87 +45,6 @@
     { title: "Free Shipping", subtitle: "Above ₹999", color: "bg-blue-500" },
     { title: "Extra 20% OFF", subtitle: "Use SAVE20", color: "bg-orange-500" },
   ];
-
-  /* ================= COMPONENTS ================= */
-
-  // Navbar Component
-  const Navbar = () => {
-    const { wishlistItems } = useWishlist();
-    return (
-      <nav className="sticky top-0 z-50 bg-white shadow-md">
-        {/* Top Bar */}
-        <div className="border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              {/* Logo */}
-              <div className="flex-shrink-0">
-                <h1 className="text-2xl sm:text-3xl font-bold text-pink-600">MYNTRA</h1>
-              </div>
-
-              {/* Category Menu - Hidden on mobile */}
-              <div className="hidden md:flex space-x-8">
-                {['Men', 'Women', 'Kids', 'Beauty', 'Home & Living'].map((category) => (
-                  <button
-                    key={category}
-                    className="text-sm font-semibold text-gray-700 hover:text-pink-600 transition-colors uppercase tracking-wide"
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-
-              {/* Search Bar */}
-              <div className="hidden lg:flex items-center flex-1 max-w-md mx-8">
-                <div className="relative w-full">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
-                    type="text"
-                    placeholder="Search for products, brands and more"
-                    className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
-                  />
-                </div>
-              </div>
-
-              {/* Icons */}
-              <div className="flex items-center space-x-4 sm:space-x-6">
-                <button className="flex flex-col items-center group" aria-label="Profile">
-                  <User className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 group-hover:text-pink-600 transition-colors" />
-                  <span className="text-xs mt-1 text-gray-700 group-hover:text-pink-600 hidden sm:block">Profile</span>
-                </button>
-                <button className="flex flex-col items-center group relative" aria-label="Wishlist">
-                  <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 group-hover:text-pink-600 transition-colors" />
-                  <span className="text-xs mt-1 text-gray-700 group-hover:text-pink-600 hidden sm:block">Wishlist</span>
-                {   wishlistItems.length > 0 && 
-                    <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    {wishlistItems.length}
-                     </span> }              
-                   </button>
-                <button className="flex flex-col items-center group relative" aria-label="Cart">
-                  <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 group-hover:text-pink-600 transition-colors" />
-                  <span className="text-xs mt-1 text-gray-700 group-hover:text-pink-600 hidden sm:block">Bag</span>
-                  <span className="absolute -top-1 -right-1 bg-pink-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                    5
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Search */}
-        <div className="lg:hidden px-4 py-3 border-b border-gray-200">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search for products"
-              className="w-full pl-10 pr-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm"
-            />
-          </div>
-        </div>
-      </nav>
-    );
-  };
 
 
   const HeroBanner = () => {
@@ -231,64 +143,69 @@
     );
   };
   const ProductCard = ({ product }) => {
-    const [isWishlisted, setIsWishlisted] = useState(false);
+  const { wishlistItems, addToWishlist, removeFromWishlist } = useWishlist();
+  const { bagItems, removeFromBag, addToBag } = useBag();
+
+    const isWishlisted = wishlistItems.some(
+    (item) => item.id === product.id
+    );
+
+    const isBaged = bagItems.some(
+    (item) => item.id === product.id
+    );
 
     return (
-      <div className="cursor-pointer">
-        {/* IMAGE WRAPPER (HOVER TARGET) */}
-        <div className="relative group overflow-hidden rounded-lg bg-gray-100 aspect-[3/4]">
-          <img
-            src={product.images1}
-            alt={product.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
+      <div className="relative group overflow-hidden rounded-lg bg-gray-100 aspect-[3/4]">
+  <img
+    src={product.images1}
+    alt={product.title}
+    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+  />
 
-          {/* Wishlist Button */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-            setIsWishlisted((prev) => !prev);
-            changeWishlistStatus(product.id, !isWishlisted);
-            }}
-            className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:scale-110 transition-transform"
-          >
-            <Heart
-              className={`w-5 h-5 ${
-                isWishlisted
-                  ? "fill-pink-600 text-pink-600"
-                  : "text-gray-600"
-              }`}
-            />
-          </button>
+  {/* Wishlist Button */}
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      isWishlisted
+        ? removeFromWishlist(product.id)
+        : addToWishlist(product);
+    }}
+    className="absolute top-3 right-3 z-10 p-2 bg-white rounded-full shadow-md hover:scale-110 transition-transform"
+  >
+    <Heart
+      className={`w-5 h-5 ${
+        isWishlisted
+          ? "fill-pink-600 text-pink-600"
+          : "text-gray-600"
+      }`}
+    />
+  </button>
 
-          {product.discount && (
-            <div className="absolute top-3 left-3 px-2 py-1 bg-pink-600 text-white text-xs font-bold rounded">
-              {product.discount}% OFF
-            </div>
-          )}
-        </div>
+  <button
+    onClick={(e) => {
+      e.stopPropagation();
+      isBaged
+        ? removeFromBag(product.id)
+        : addToBag(product);
+    }}
+    className="
+      absolute bottom-0 left-0 right-0
+      bg-pink-600 text-white font-semibold py-3
+      opacity-0 translate-y-full
+      group-hover:opacity-100 group-hover:translate-y-0
+      transition-all duration-300
+    "
+  >
+    {isBaged ? "Remove from Bag" : "Add to Bag"}
+  </button>
 
-        <div className="mt-3">
-          <h4 className="text-sm font-bold text-gray-800 uppercase truncate">
-            {product.id}
-          </h4>
-          <p className="text-sm text-gray-600 truncate">
-            {product.title} 
-          </p>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="text-lg font-bold text-gray-900">
-              ₹{product.price}
-            </span>
-            {product.mrp && (
-              <span className="text-sm text-gray-500 line-through">
-                ₹{product.mrp}
-              </span>
-            )}
-              <span className="text-sm text-orange-600 font-semibold">({product.discount}% OFF)
-              </span>
-          </div>
-        </div>
-      </div>
+  {product.discount && (
+    <div className="absolute top-3 left-3 px-2 py-1 bg-pink-600 text-white text-xs font-bold rounded">
+      {product.discount}% OFF
+    </div>
+  )}
+</div>
+
     );
   };
 
@@ -315,88 +232,7 @@
     );
   };
 
-  const Footer = () => {
-    return (
-      <footer className="bg-gray-900 text-gray-300 pt-12 pb-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            {/* Online Shopping */}
-            <div>
-              <h4 className="text-white font-bold mb-4 text-sm sm:text-base">ONLINE SHOPPING</h4>
-              <ul className="space-y-2 text-xs sm:text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Men</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Women</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Kids</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Beauty</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Home & Living</a></li>
-              </ul>
-            </div>
-
-            {/* Customer Policies */}
-            <div>
-              <h4 className="text-white font-bold mb-4 text-sm sm:text-base">CUSTOMER POLICIES</h4>
-              <ul className="space-y-2 text-xs sm:text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Terms Of Use</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Track Orders</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Shipping</a></li>
-              </ul>
-            </div>
-
-            {/* Useful Links */}
-            <div>
-              <h4 className="text-white font-bold mb-4 text-sm sm:text-base">USEFUL LINKS</h4>
-              <ul className="space-y-2 text-xs sm:text-sm">
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Site Map</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Corporate Info</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              </ul>
-            </div>
-
-            {/* Experience App */}
-            <div>
-              <h4 className="text-white font-bold mb-4 text-sm sm:text-base">EXPERIENCE APP</h4>
-              <p className="text-xs sm:text-sm mb-4">Download our app for exclusive deals</p>
-              <div className="flex gap-2 mb-6">
-                <div className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors cursor-pointer">
-                  <span className="text-xl">📱</span>
-                </div>
-                <div className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-gray-600 transition-colors cursor-pointer">
-                  <span className="text-xl">🤖</span>
-                </div>
-              </div>
-              <h4 className="text-white font-bold mb-4 text-sm sm:text-base">KEEP IN TOUCH</h4>
-              <div className="flex gap-3">
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors" aria-label="Facebook">
-                  <span className="text-sm">f</span>
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors" aria-label="Twitter">
-                  <span className="text-sm">𝕏</span>
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors" aria-label="Instagram">
-                  <span className="text-sm">📷</span>
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors" aria-label="YouTube">
-                  <span className="text-sm">▶</span>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Copyright */}
-          <div className="border-t border-gray-800 pt-6 text-center">
-            <p className="text-xs sm:text-sm text-gray-400">
-              © 2026 www.myntra.com. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
-    );
-  };
-
+ 
 
   const Home = () => {
     const [products, setProducts] = useState([]);
@@ -412,7 +248,6 @@
           console.log("Fetched products:", data);
           setProducts(data);
 
-          // ✅ if less than page size → no next page
           setHasNext(data.length === PAGE_SIZE);
         } catch (err) {
           console.error("Failed to fetch products", err);

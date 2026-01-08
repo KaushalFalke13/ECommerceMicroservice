@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Heart, ShoppingBag, Trash2, ShoppingCart } from 'lucide-react';
+import Navbar from '../components/Navbar';
+import { useWishlist } from "../context/WishlistContext";
 
 const mockWishlistData = [
   {
@@ -67,7 +69,7 @@ const mockWishlistData = [
 export default function WishlistPage() {
   const [wishlist, setWishlist] = useState(mockWishlistData);
   const [movedItems, setMovedItems] = useState([]);
-
+  const { wishlistItems, addToWishlist, removeFromWishlist } = useWishlist();
   const handleRemove = (id) => {
     setWishlist(wishlist.filter(item => item.id !== id));
   };
@@ -86,34 +88,20 @@ export default function WishlistPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Heart className="w-8 h-8 text-pink-500 fill-pink-500" />
-              <h1 className="text-2xl font-bold text-gray-900">FashionHub</h1>
-            </div>
-            <div className="flex items-center space-x-2">
-              <ShoppingBag className="w-6 h-6 text-gray-600" />
-              <span className="text-sm text-gray-600">Bag</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      
+      <Navbar />
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-900">
             My Wishlist 
             <span className="text-gray-500 font-normal text-lg ml-2">
-              ({wishlist.length} {wishlist.length === 1 ? 'item' : 'items'})
+              ({wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'})
             </span>
           </h2>
         </div>
 
-        {wishlist.length === 0 ? (
+        {wishlistItems.length === 0 ? (
           // Empty State
           <div className="bg-white rounded-lg shadow-sm p-12 text-center">
             <div className="flex justify-center mb-6">
@@ -136,7 +124,7 @@ export default function WishlistPage() {
         ) : (
           // Wishlist Grid
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {wishlist.map((item) => (
+            {wishlistItems.map((item) => (
               <div
                 key={item.id}
                 className={`bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 ${
@@ -146,7 +134,7 @@ export default function WishlistPage() {
                 {/* Product Image */}
                 <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
                   <img
-                    src={item.image}
+                    src={item.images1}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />

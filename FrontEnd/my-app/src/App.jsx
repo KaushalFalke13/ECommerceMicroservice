@@ -6,12 +6,12 @@ import Wishlist from "./pages/Wishlist.jsx";
 import Bag from "./pages/bag.jsx";
 
 import { WishlistProvider } from "./context/WishlistContext";
-// (Later you can add BagProvider, AuthProvider, etc.)
-
+import { BagProvider } from "./context/BagContext";
 function App() {
   return (
     <BrowserRouter>
       <WishlistProvider>
+      <BagProvider>
         <Routes>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/login" element={<Login />} />
@@ -20,6 +20,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/bags" element={<Bag />} />
         </Routes>
+        </BagProvider>
       </WishlistProvider>
     </BrowserRouter>
   );
