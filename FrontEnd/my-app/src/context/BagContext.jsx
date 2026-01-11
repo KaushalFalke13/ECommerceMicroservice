@@ -4,6 +4,7 @@ const BagContext = createContext();
 
 export const BagProvider = ({ children }) => {
   const [bagItems, setBagItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const addToBag = (product) => {
     setBagItems((prev) => {
@@ -25,32 +26,41 @@ export const BagProvider = ({ children }) => {
     setBagItems((prev) =>
       prev.filter((item) => item.id !== productId)
     );
-  };
-
-  const decreaseQuantity = (productId) => {
-    setBagItems((prev) =>
-      prev
-        .map((item) =>
-          item.id === productId
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-        .filter((item) => item.quantity > 0)
+    setSelectedItems((prev) =>
+      prev.filter((id) => id !== productId)
     );
   };
 
-  const isInBag = (productId) => {
-    return bagItems.some((item) => item.id === productId);
+  const addToSeletedItem = (productId) => {
+    setSelectedItems((prev) =>
+      prev.includes(productId) ? prev : [...prev, productId]
+    );
+  };
+
+  const removeFromSeletedItem = (productId) => {
+    setSelectedItems((prev) =>
+      prev.filter((id) => id !== productId)
+    );
+  };
+
+  const toggleSelectedItem = (productId) => {
+    setSelectedItems((prev) =>
+      prev.includes(productId)
+        ? prev.filter((id) => id !== productId)
+        : [...prev, productId]
+    );
   };
 
   return (
     <BagContext.Provider
       value={{
         bagItems,
+        selectedItems,
         addToBag,
         removeFromBag,
-        decreaseQuantity,
-        isInBag,
+        addToSeletedItem,
+        removeFromSeletedItem,
+        toggleSelectedItem,
       }}
     >
       {children}
