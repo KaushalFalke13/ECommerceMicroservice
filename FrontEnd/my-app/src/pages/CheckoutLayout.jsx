@@ -3,105 +3,47 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Check, Gift, Tag } from "lucide-react";
 import { useBag } from "../context/BagContext";
 
-
-
-const mockOrderData = {
-  items: [
-    {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
-      name: 'Brown & Orange Printed Super Soft Velvet Traditional Carpet',
-      brand: 'Kuber Industries',
-      seller: 'Kuber Mart Industries Private Limited',
-      size: 'Onesize',
-      quantity: 1,
-      mrp: 999,
-      discount: 570,
-      price: 329,
-      returnDays: 7,
-      deliveryDate: '14 Jan 2026'
-    },
-    {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400',
-      name: 'Creme Multi-Purpose Moisturiser Protective Skin Care',
-      brand: 'Nivea',
-      seller: 'Truecom Retail',
-      size: '75-100 ML',
-      quantity: 1,
-      mrp: 275,
-      discount: 97,
-      price: 178,
-      exchangeOnly: true,
-      deliveryDate: '14 Jan 2026'
-    }
-  ],
-  addresses: [
-    {
-      id: 1,
-      name: 'John Doe',
-      phone: '+91 9876543210',
-      address: '123, MG Road, Sector 14',
-      city: 'Bangalore',
-      state: 'Karnataka',
-      pincode: '560001',
-      type: 'Home',
-      isDefault: true
-    },
-    {
-      id: 2,
-      name: 'John Doe',
-      phone: '+91 9876543210',
-      address: '456, Park Street, Block B',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      pincode: '400001',
-      type: 'Work',
-      isDefault: false
-    }
-  ]
-};
-
-
-
-
-
-
-
 const CheckoutLayout = () => {
-  const location = useLocation();
   const navigate = useNavigate();
 
 
-  // ✅ LOCAL STATE (safe for layout)
-    const [cartItems, setCartItems] = useState(mockOrderData.items);
-    const [selectedItems, setSelectedItems] = useState(cartItems.map(item => item.id));
-    const [addresses, setAddresses] = useState(mockOrderData.addresses);
-    const [selectedAddress, setSelectedAddress] = useState(
-      addresses.find(addr => addr.isDefault)?.id || addresses[0]?.id
-    );
+const location = useLocation();
+
+useEffect(() => {
+  if (location.pathname.includes("bags")) setCurrentStep("bag");
+  if (location.pathname.includes("address")) setCurrentStep("address");
+  if (location.pathname.includes("payment")) setCurrentStep("payment");
+}, [location.pathname]);
+
+
+   const {
+    bagItems = [],
+    selectedItems = [],
+  } = useBag();
+
     const [selectedPayment, setSelectedPayment] = useState('');
     const [currentStep, setCurrentStep] = useState('bag');
-    const [pinCode, setPinCode] = useState('');
-    const [showOffers, setShowOffers] = useState(false);
     const [couponCode, setCouponCode] = useState('');
     const [donation, setDonation] = useState(0);
-    const [showAddressModal, setShowAddressModal] = useState(false);
   
-  
+ const totalMRP = bagItems.reduce((total, element) => {
+  if (selectedItems.includes(element.id)) {
+    return total + element.mrp * element.quantity;
+  }
+  return total;
+}, 0);
 
-  // ✅ Dummy values for now (to avoid crashes)
-  const selectedItemsCount = 1;
-  const totalMRP = 0;
-  const totalDiscount = 0;
-  const finalAmount = 0;
+ const totalDiscount = bagItems.reduce((total, element) => {
+  if (selectedItems.includes(element.id)) {
+    return (
+      total +
+      (element.mrp * element.discount / 100) * element.quantity
+    );
+  }
+  return total;
+}, 0);
 
-  const goToStep = (step) => {
-    const order = ["bag", "address", "payment"];
-    if (order.indexOf(step) <= order.indexOf(currentStep)) {
-      navigate(`/${step}`);
-    }
-  };
+  const finalAmount = totalMRP - totalDiscount;
 
   const handleApplyCoupon = () => {
     if (!couponCode.trim()) {
@@ -111,15 +53,7 @@ const CheckoutLayout = () => {
     alert(`Coupon "${couponCode}" applied`);
   };
 
-  const handlePrimaryAction = () => {
-    if (currentStep === "bag") navigate("/address");
-    else if (currentStep === "address") navigate("/payment");
-    else alert("Order placed successfully 🎉");
-  };
-
   return (
-
-    
     <div className="min-h-screen bg-white">
 
       {/* HEADER */}
@@ -132,7 +66,6 @@ const CheckoutLayout = () => {
                     </div>
                   </div>
                   
-                  {/* Step Indicator */}
                   <div className="flex items-center gap-12">
                     <div 
                       onClick={() => handleStepClick('bag')}

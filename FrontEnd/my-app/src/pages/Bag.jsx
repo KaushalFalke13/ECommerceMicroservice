@@ -236,7 +236,6 @@ const Bag = () => {
   const {
   bagItems = [],
   selectedItems = [],
-  addToBag,
   removeFromBag,
   toggleSelectedItem,
   addToSeletedItem,

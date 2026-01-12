@@ -28,11 +28,13 @@ function App() {
             <Route path="/orders" element={<Orders />} />
             <Route path="/wishlist" element={<Wishlist />} />
 
-            <Route element={<CheckoutLayout />}>
-              <Route path="/bags" element={<Bag />} />
-              <Route path="/address" element={<Address />} />
-              <Route path="/payment" element={<Payment />} />
-            </Route>
+           <Route path="/checkout" element={<CheckoutLayout />}>
+  <Route index element={<Navigate to="bags" replace />} />
+  <Route path="bags" element={<Bag />} />
+  <Route path="address" element={<Address />} />
+  <Route path="payment" element={<Payment />} />
+</Route>
+
 
           </Routes>
         </BagProvider>
