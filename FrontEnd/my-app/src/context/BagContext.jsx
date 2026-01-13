@@ -6,6 +6,15 @@ export const BagProvider = ({ children }) => {
   const [bagItems, setBagItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
+  const [selectedPayment, setSelectedPayment] = useState(null);
+
+  const paymentMethods = [
+    { id: 'card', name: 'Credit / Debit Card', description: 'Visa, Mastercard, Rupay and more' },
+    { id: 'upi', name: 'UPI', description: 'Google Pay, PhonePe, Paytm' },
+    { id: 'netbanking', name: 'Net Banking', description: 'All major banks supported' },
+    { id: 'cod', name: 'Cash on Delivery', description: 'Pay when you receive' }
+  ];
+
   const addToBag = (product) => {
     setBagItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
@@ -56,6 +65,9 @@ export const BagProvider = ({ children }) => {
       value={{
         bagItems,
         selectedItems,
+        paymentMethods,
+        selectedPayment,
+        setSelectedPayment,
         addToBag,
         removeFromBag,
         addToSeletedItem,

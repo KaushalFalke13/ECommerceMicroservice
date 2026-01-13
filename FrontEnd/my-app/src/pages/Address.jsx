@@ -127,7 +127,6 @@ const handleRemoveAddress = (addressId) => {
     }
   };
 
-
 const Address = () => {
 
   const [cartItems, setCartItems] = useState(mockOrderData.items);

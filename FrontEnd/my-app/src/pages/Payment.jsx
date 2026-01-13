@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import { ShoppingBag, MapPin, CreditCard, Check, Trash2, Heart, Plus, X, ChevronLeft, ChevronDown, Gift, Tag } from 'lucide-react';
-
+import { useState } from 'react';
+import {  Check } from 'lucide-react';
+import { useBag } from '../context/BagContext';
 
 const PaymentOptions = ({ selectedPayment, onSelect }) => {
-  const paymentMethods = [
-    { id: 'card', name: 'Credit / Debit Card', description: 'Visa, Mastercard, Rupay and more' },
-    { id: 'upi', name: 'UPI', description: 'Google Pay, PhonePe, Paytm' },
-    { id: 'netbanking', name: 'Net Banking', description: 'All major banks supported' },
-    { id: 'cod', name: 'Cash on Delivery', description: 'Pay when you receive' }
-  ];
+  const { paymentMethods  } = useBag(); 
 
   return (
     <div className="space-y-3">
@@ -41,11 +36,10 @@ const PaymentOptions = ({ selectedPayment, onSelect }) => {
   );
 };
 
-
 const Payment = () => {
 
-  const [selectedPayment, setSelectedPayment] = useState('');
-  
+  const { selectedPayment, setSelectedPayment } = useBag();
+
   return (
     <div className="bg-white border border-gray-200 rounded p-5">
                 <h2 className="text-sm font-bold text-gray-900 mb-4">Choose Payment Method</h2>

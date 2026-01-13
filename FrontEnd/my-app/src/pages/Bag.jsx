@@ -9,7 +9,7 @@ const OrderItemCard = ({ item, onQuantityChange}) => {
 
   
   const discountPercent = Math.round((item.discount / item.mrp) * 100);
-    const { selectedItems, toggleSelectedItem , removeFromBag } = useBag();
+  const { selectedItems, toggleSelectedItem , removeFromBag } = useBag();
 
   const handleRemoveItem = () => {
     if (window.confirm('Remove this item from bag?')) {
@@ -99,7 +99,6 @@ const OrderItemCard = ({ item, onQuantityChange}) => {
     </div>
   );
 };
-
 
 const Bag = () => {
 

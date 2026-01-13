@@ -16,9 +16,9 @@ useEffect(() => {
   const {
     bagItems = [],
     selectedItems = [],
+    selectedPayment,
   } = useBag();
 
-  const [selectedPayment, setSelectedPayment] = useState('');
   const [currentStep, setCurrentStep] = useState('bag');
   const [couponCode, setCouponCode] = useState('');
   const [donation, setDonation] = useState(0);
