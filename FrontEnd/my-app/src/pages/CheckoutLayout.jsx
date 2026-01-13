@@ -2,29 +2,26 @@ import { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Check, Gift, Tag } from "lucide-react";
 import { useBag } from "../context/BagContext";
-
+import { useEffect } from "react";
 const CheckoutLayout = () => {
-  const navigate = useNavigate();
-
+const navigate = useNavigate();
 
 const location = useLocation();
-
 useEffect(() => {
   if (location.pathname.includes("bags")) setCurrentStep("bag");
   if (location.pathname.includes("address")) setCurrentStep("address");
   if (location.pathname.includes("payment")) setCurrentStep("payment");
 }, [location.pathname]);
 
-
-   const {
+  const {
     bagItems = [],
     selectedItems = [],
   } = useBag();
 
-    const [selectedPayment, setSelectedPayment] = useState('');
-    const [currentStep, setCurrentStep] = useState('bag');
-    const [couponCode, setCouponCode] = useState('');
-    const [donation, setDonation] = useState(0);
+  const [selectedPayment, setSelectedPayment] = useState('');
+  const [currentStep, setCurrentStep] = useState('bag');
+  const [couponCode, setCouponCode] = useState('');
+  const [donation, setDonation] = useState(0);
   
  const totalMRP = bagItems.reduce((total, element) => {
   if (selectedItems.includes(element.id)) {
@@ -51,6 +48,16 @@ useEffect(() => {
       return;
     }
     alert(`Coupon "${couponCode}" applied`);
+  };
+
+  const handlePlaceOrder = () => {
+    if (currentStep === 'bag') {
+      navigate('/checkout/address');  
+    } else if (currentStep === 'address') {
+      navigate('/checkout/payment');  
+    } else if (currentStep === 'payment') {
+      alert('Order Placed Successfully!');
+    }
   };
 
   return (
@@ -239,13 +246,14 @@ useEffect(() => {
          
                        {/* Place Order Button */}
                        <button
-                        //  onClick={}
+                      
                          disabled={currentStep === 'bag' && selectedItems.length === 0}
                          className={`w-full py-4 rounded font-bold text-sm transition-all ${
-                           (currentStep === 'bag' && selectedItems.length === 0) || (currentStep === 'payment' && !selectedPayment)
+                           (currentStep === 'bag' && selectedItems.length === 0) || (currentStep === 'payment' && !selectedPayment )
                              ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                              : 'bg-pink-500 text-white hover:bg-pink-600'
                          }`}
+                         onClick={handlePlaceOrder}
                        >
                          {currentStep === 'payment' ? 'PLACE ORDER' : 'PLACE ORDER'}
                        </button>

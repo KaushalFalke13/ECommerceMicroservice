@@ -58,7 +58,7 @@ import { useBag } from "../context/BagContext";
                     {wishlistItems.length}
                      </span> }              
                    </button>
-                <button className="flex flex-col items-center group relative" aria-label="Cart" onClick={() => navigate("/bags")}>
+                <button className="flex flex-col items-center group relative" aria-label="Cart" onClick={() => navigate("/checkout/bags")}>
                   <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 group-hover:text-pink-600 transition-colors" />
                   <span className="text-xs mt-1 text-gray-700 group-hover:text-pink-600 hidden sm:block">Bag</span>
                   {   bagItems.length > 0 && 
