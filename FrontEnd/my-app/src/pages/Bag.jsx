@@ -1,142 +1,19 @@
-import React, { useState } from 'react';
-import { ShoppingBag, MapPin, CreditCard, Check, Trash2, Heart, Plus, X, ChevronLeft, ChevronDown, Gift, Tag, IterationCcw } from 'lucide-react';
+import { useState } from 'react';
+import {  Check, X, ChevronDown, Tag } from 'lucide-react';
 import { useBag } from '../context/BagContext';
 import { useWishlist } from '../context/WishlistContext';
 
 
-// AddAddressModal Component
-const AddAddressModal = ({ onClose, onSave }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: '',
-    type: 'Home'
-  });
-
-  const handleSubmit = () => {
-    if (!formData.name || !formData.phone || !formData.address || !formData.city || !formData.state || !formData.pincode) {
-      alert('Please fill all required fields');
-      return;
-    }
-    onSave(formData);
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-gray-900">ADD NEW ADDRESS</h3>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <X size={20} />
-          </button>
-        </div>
-        
-        <div className="p-4 space-y-4">
-          <div>
-            <input
-              type="text"
-              placeholder="Name*"
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-pink-500"
-            />
-          </div>
-          
-          <div>
-            <input
-              type="tel"
-              placeholder="Phone Number*"
-              value={formData.phone}
-              onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-pink-500"
-            />
-          </div>
-          
-          <div>
-            <input
-              type="text"
-              placeholder="Address (House No, Building, Street)*"
-              value={formData.address}
-              onChange={(e) => setFormData({...formData, address: e.target.value})}
-              className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-pink-500"
-            />
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <input
-              type="text"
-              placeholder="City*"
-              value={formData.city}
-              onChange={(e) => setFormData({...formData, city: e.target.value})}
-              className="px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-pink-500"
-            />
-            <input
-              type="text"
-              placeholder="Pincode*"
-              value={formData.pincode}
-              onChange={(e) => setFormData({...formData, pincode: e.target.value})}
-              className="px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-pink-500"
-            />
-          </div>
-          
-          <div>
-            <input
-              type="text"
-              placeholder="State*"
-              value={formData.state}
-              onChange={(e) => setFormData({...formData, state: e.target.value})}
-              className="w-full px-4 py-3 border border-gray-300 rounded focus:outline-none focus:border-pink-500"
-            />
-          </div>
-          
-          <div>
-            <p className="text-sm font-semibold text-gray-700 mb-2">Address Type</p>
-            <div className="flex gap-3">
-              {['Home', 'Work'].map(type => (
-                <button
-                  key={type}
-                  onClick={() => setFormData({...formData, type})}
-                  className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors ${
-                    formData.type === type
-                      ? 'bg-pink-500 text-white'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          <button
-            onClick={handleSubmit}
-            className="w-full py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded transition-colors"
-          >
-            SAVE ADDRESS
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 // OrderItemCard Component
-const OrderItemCard = ({ item, onRemove, onMoveToWishlist, onQuantityChange}) => {
+const OrderItemCard = ({ item, onQuantityChange}) => {
+
+  
   const discountPercent = Math.round((item.discount / item.mrp) * 100);
-    const { selectedItems, toggleSelectedItem } = useBag();
+    const { selectedItems, toggleSelectedItem , removeFromBag } = useBag();
 
   const handleRemoveItem = () => {
     if (window.confirm('Remove this item from bag?')) {
-      onRemove(item.id);
-    }
-  };
-
-  const handleMoveItem = () => {
-    if (window.confirm('Move this item to wishlist?')) {
-      onMoveToWishlist(item.id);
+      removeFromBag(item.id);
     }
   };
   
@@ -226,11 +103,7 @@ const OrderItemCard = ({ item, onRemove, onMoveToWishlist, onQuantityChange}) =>
 
 const Bag = () => {
 
-  const [selectedPayment, setSelectedPayment] = useState('');
-  const [currentStep, setCurrentStep] = useState('bag');
   const [showOffers, setShowOffers] = useState(false);
-  const [couponCode, setCouponCode] = useState('');
-  const [donation, setDonation] = useState(0);
   const { addToWishlist } = useWishlist();
   
   const {
@@ -241,8 +114,6 @@ const Bag = () => {
   addToSeletedItem,
   removeFromSeletedItem,
 } = useBag();
-
-  
 
   const handleSelectItem = (item) => {
     toggleSelectedItem(item);
@@ -260,78 +131,13 @@ const Bag = () => {
     }
   };
 
-  // Update quantity
-  // const handleQuantityChange = (itemId, newQuantity) => {
-  //   setCartItems(cartItems.map(item => 
-  //     item.id === itemId ? {...item, quantity: newQuantity} : item
-  //   ));
-  // }; 
+  const handleQuantityChange = (itemId, newQuantity) => {
+    setCartItems(bagItems.map(item => 
+      item.id === itemId ? {...item, quantity: newQuantity} : item
+    ));
+  }; 
 
-  // const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.id));
-  // const totalMRP = selectedCartItems.reduce((sum, item) => sum + (item.mrp * item.quantity), 0);
-  // const totalDiscount = selectedCartItems.reduce((sum, item) => sum + (item.discount * item.quantity), 0);
-  // const totalPrice = selectedCartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  // const platformFee = 0; // FREE
-  // const finalAmount = totalPrice + platformFee + donation;
 
-  // Navigate steps
-  const handleContinue = () => {
-    if (currentStep === 'bag') {
-      if (selectedItems.length === 0) {
-        alert('Please select at least one item');
-        return;
-      }
-      setCurrentStep('address');
-    } else if (currentStep === 'address') {
-      if (!selectedAddress) {
-        alert('Please select a delivery address');
-        return;
-      }
-      setCurrentStep('payment');
-    }
-  };
-
-  const handleBack = () => {
-    if (currentStep === 'payment') {
-      setCurrentStep('address');
-    } else if (currentStep === 'address') {
-      setCurrentStep('bag');
-    }
-  };
-
-  const handlePlaceOrder = () => {
-    if (!selectedPayment) {
-      alert('Please select a payment method');
-      return;
-    }
-    alert('Order placed successfully! 🎉');
-  };
-
-  // Add new address
-  const handleSaveAddress = (addressData) => {
-    const newAddress = {
-      ...addressData,
-      id: Date.now(),
-      isDefault: addresses.length === 0
-    };
-    setAddresses([...addresses, newAddress]);
-    setSelectedAddress(newAddress.id);
-    setShowAddressModal(false);
-  };
-
-  // Remove address
-  const handleRemoveAddress = (addressId) => {
-    if (addresses.length === 1) {
-      alert('You must have at least one address');
-      return;
-    }
-    setAddresses(addresses.filter(addr => addr.id !== addressId));
-    if (selectedAddress === addressId) {
-      setSelectedAddress(addresses.find(addr => addr.id !== addressId)?.id);
-    }
-  };
-
-  // Remove selected items
   const handleRemoveSelected = () => {
     if (selectedItems.length === 0) {
       alert('Please select items to remove');
@@ -344,7 +150,6 @@ const Bag = () => {
       }
   };    
 
-  // Move selected items to wishlist
   const handleMoveToWishlist = () => {
     if (selectedItems.length === 0) {
       alert('Please select items to move');
@@ -359,29 +164,7 @@ const Bag = () => {
         }); 
     }
   };
-
-  // Apply coupon
-  const handleApplyCoupon = () => {
-    if (!couponCode.trim()) {
-      alert('Please enter a coupon code');
-      return;
-    }
-    alert(`Coupon "${couponCode}" applied successfully!`);
-  };
-
-  // Navigate to specific step (from header)
-  const handleStepClick = (step) => {
-    // Can only go back or to current step
-    const stepOrder = ['bag', 'address', 'payment'];
-    const currentIndex = stepOrder.indexOf(currentStep);
-    const targetIndex = stepOrder.indexOf(step);
-    
-    if (targetIndex <= currentIndex) {
-      setCurrentStep(step);
-    }
-  };
   
-
   return (
       <>
       {/* Delivery Check */}
@@ -458,7 +241,7 @@ const Bag = () => {
               item={item}
               isSelected={selectedItems.includes(item.id)}
               onChange={() => handleSelectItem(item.id)}
-              // onQuantityChange={handleQuantityChange}
+              onQuantityChange={handleQuantityChange}
             />
           ))}
         </div>
