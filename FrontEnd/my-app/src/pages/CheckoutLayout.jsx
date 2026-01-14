@@ -60,6 +60,16 @@ useEffect(() => {
     }
   };
 
+  const handleStepClick = (step) => {
+    if (step === 'bag' && currentStep !== 'bag') {
+      navigate('/checkout/bags');
+    } else if (step === 'address' && currentStep !== 'bag' ) {
+      navigate('/checkout/address');
+    } else if (step === 'payment' && currentStep !== 'bag' && currentStep !== 'address' ) {
+      navigate('/checkout/payment');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
 

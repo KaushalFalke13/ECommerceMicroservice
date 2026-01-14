@@ -36,7 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             try {
                 if (jwtUtil.validateToken(token)) {
-
                     String username = jwtUtil.getUsernameFromToken(token);
                     List<String> roles = jwtUtil.getRolesFromToken(token);
 
@@ -46,7 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
-
                 }
             } catch (JwtException ex) {
                 System.out.println("Invalid JWT: " + ex.getMessage());

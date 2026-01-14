@@ -72,7 +72,7 @@ public class AuthController {
         }
         try {
             Users user = (Users) usersService.loadUserByUsername(userDTO.getEmail());
-            String token = JwtToken.generateToken(userDTO.getEmail(), user.getRole());
+            String token = JwtToken.generateToken(userDTO.getEmail(), user.getRole(), user.getUserId());
 
             Map<String, Object> Requrestresponse = new HashMap<>();
             Requrestresponse.put("token", token);

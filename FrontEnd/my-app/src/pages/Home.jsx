@@ -48,7 +48,6 @@ import Footer from "../components/Footer";
 
 
   const HeroBanner = () => {
-    const [index, setIndex] = useState(0);
       const [currentSlide, setCurrentSlide] = useState(0);
       const nextSlide = () => {
           setCurrentSlide((prev) => (prev + 1) % banners.length);

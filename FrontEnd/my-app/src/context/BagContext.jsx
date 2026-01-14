@@ -1,11 +1,11 @@
 import { createContext, useContext, useState } from "react";
+import {addProductToBag} from "../services/bagService";
 
 const BagContext = createContext();
 
 export const BagProvider = ({ children }) => {
   const [bagItems, setBagItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-
   const [selectedPayment, setSelectedPayment] = useState(null);
 
   const paymentMethods = [
@@ -18,6 +18,11 @@ export const BagProvider = ({ children }) => {
   const addToBag = (product) => {
     setBagItems((prev) => {
       const existing = prev.find((item) => item.id === product.id);
+
+
+      addProductToBag(product.id, 1).catch((error) => {
+        console.error("Failed to add item to bag:", error);
+      });
 
       if (existing) {
         return prev.map((item) =>

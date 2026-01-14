@@ -4,9 +4,7 @@ import { useBag } from '../context/BagContext';
 import { useWishlist } from '../context/WishlistContext';
 
 
-// OrderItemCard Component
 const OrderItemCard = ({ item, onQuantityChange}) => {
-
   
   const discountPercent = Math.round((item.discount / item.mrp) * 100);
   const { selectedItems, toggleSelectedItem , removeFromBag } = useBag();
