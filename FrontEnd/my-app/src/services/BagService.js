@@ -7,3 +7,8 @@ export const addProductToBag = async (productId) => {
   return response.data;
 };
 
+export const removeProductFromBag = async (productId) => {
+  const response = await api.post("/products/bag/remove", {productId});
+  console.log(response.data);
+  return response.data;
+};

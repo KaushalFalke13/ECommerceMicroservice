@@ -1,20 +1,19 @@
 package com.EComMicroService.ProductsServices.Controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
+import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
-
-import com.EComMicroService.ProductsServices.Configuration.jwtUtil;
+import com.EComMicroService.ProductsServices.DTO.productDTO;
 import com.EComMicroService.ProductsServices.Services.BagService;
 
 @RestController
 @RequestMapping("/products/bag")
 public class BagController {
+    
+    private final BagService bagService;
 
     public static class AddToBagRequest {
         private String productId;
@@ -28,28 +27,21 @@ public class BagController {
         }
     }
 
-    public BagController(BagService bagService, jwtUtil jwtUtil) {
+    public BagController(BagService bagService) {
         this.bagService = bagService;
-        this.jwtUtil = jwtUtil;
-    }
-    private final jwtUtil jwtUtil;
-    private final BagService bagService;
-
-    @GetMapping("/view")
-    public String viewBag() {
-        return "Viewing bag contents";
     }
 
     @PostMapping("/add")
-    public Integer addToBag(@RequestBody AddToBagRequest request,  @RequestHeader("Authorization") String authHeader) {
+    public List<productDTO> addToBag(@RequestBody AddToBagRequest request, @RequestHeader("Authorization") String authHeader) {
+        return bagService.addItem(authHeader, request.getProductId());
+    }
 
-        String token = authHeader.replace("Bearer ", "");
-        if (token == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT missing or invalid");
-        }
+    @PostMapping("/remove")
+    public List<productDTO> removeFromBag(@RequestBody AddToBagRequest request,@RequestHeader("Authorization") String authHeader) {
+        return bagService.removeItem(authHeader, request.getProductId());
+    }
 
-        String userId = jwtUtil.getUserIdFromToken(token);
-        System.err.println("userId in bag controller: " + userId);
-        return(Integer) bagService.addItem(userId, request.getProductId());
-    } 
+    public List<productDTO> getBagItems(@RequestHeader("Authorization") String authHeader) {
+        return bagService.getItems(authHeader);
+    }
 }

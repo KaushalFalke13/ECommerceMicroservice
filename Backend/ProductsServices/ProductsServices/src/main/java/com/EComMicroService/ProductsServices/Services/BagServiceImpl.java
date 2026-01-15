@@ -2,9 +2,13 @@ package com.EComMicroService.ProductsServices.Services;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.EComMicroService.ProductsServices.Configuration.jwtUtil;
+import com.EComMicroService.ProductsServices.DTO.productDTO;
 import com.EComMicroService.ProductsServices.Entity.Bag;
 import com.EComMicroService.ProductsServices.Entity.BagItem;
 import com.EComMicroService.ProductsServices.Repositorys.BagItemRepository;
@@ -14,50 +18,86 @@ import com.EComMicroService.ProductsServices.Repositorys.BagRepository;
 @Transactional
 public class BagServiceImpl implements BagService {
 
-    public BagServiceImpl(BagRepository bagRepository, BagItemRepository bagItemRepository) {
-        this.bagRepository = bagRepository;
-        this.bagItemRepository = bagItemRepository;
-    }
-
     private final BagRepository bagRepository;
     private final BagItemRepository bagItemRepository;
+    private final jwtUtil jwtUtil;
+    private final productService productService;
+
+    public BagServiceImpl(BagRepository bagRepository, BagItemRepository bagItemRepository, 
+    jwtUtil jwtUtil , productService productService) {
+        this.bagRepository = bagRepository;
+        this.bagItemRepository = bagItemRepository;
+        this.jwtUtil = jwtUtil;
+        this.productService = productService;
+    }
 
     @Override
-    public int addItem(String userId, String productId) {
-
+    public List<productDTO> addItem(String authHeader, String productId) {
+        String userId = getUserIdFromAuthHeader(authHeader);
+       
         Bag bag = bagRepository.findByUserId(userId)
                 .orElseGet(() -> bagRepository.save(
                         Bag.builder()
-                           .userId(userId)
-                           .build()
-                ));
+                            .userId(userId)
+                            .build()));
 
-                BagItem item = bagItemRepository
+        BagItem item = bagItemRepository
                 .findByBagAndProductId(bag, productId)
                 .orElseGet(() -> {
                     BagItem newItem = BagItem.builder()
-                            .bag(bag)         
+                            .bag(bag)
                             .productId(productId)
                             .quantity(0)
                             .build();
-                    bag.addItem(newItem);  
+                    bag.addItem(newItem);
                     return newItem;
                 });
 
-        item.setQuantity(item.getQuantity() + 1);   
+        item.setQuantity(item.getQuantity() + 1);
         bagRepository.save(bag);
-        return bagItemRepository.findAllByBag(bag).size();
-     }
-
-    @Override
-    public void removeItem(String userId, String productId) {
-        // bagRepository.removeItemFromBag(userId, productId);
+        return mapToProductDTOList(bagItemRepository.findAllByBag(bag));
     }
 
     @Override
-    public List<String> getItems(String userId) {
-        // return bagRepository.getItemsInBag(userId);
-        return null;
+    public List<productDTO> removeItem(String authHeader, String productId) {
+        String userId = getUserIdFromAuthHeader(authHeader);
+        List<BagItem> items = null;
+
+        Bag bag = bagRepository.findByUserId(userId)
+                .orElse(null);
+        if (bag != null) {
+            bagItemRepository.deleteByBagAndProductId(bag, productId);
+            items = bagItemRepository.findAllByBag(bag);
+        }
+
+        return mapToProductDTOList(items);
+    }
+
+    @Override
+    public List<productDTO> getItems(String authHeader) {
+        String userId = getUserIdFromAuthHeader(authHeader);
+        List<BagItem> items = null;
+        Bag bag = bagRepository.findByUserId(userId)
+                .orElse(null);
+        if (bag != null) {
+            items = bagItemRepository.findAllByBag(bag);
+        }
+        return mapToProductDTOList(items);
+    }
+
+    private List<productDTO> mapToProductDTOList(List<BagItem> items) {
+        return  items.stream().map(item -> {
+            productDTO product = productService.getProductById(item.getProductId());
+            return product;
+        }).toList();
+    }
+
+    private String getUserIdFromAuthHeader(String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        if (token == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "JWT missing or invalid");
+        }
+        return jwtUtil.getUserIdFromToken(token);
     }
 
 }

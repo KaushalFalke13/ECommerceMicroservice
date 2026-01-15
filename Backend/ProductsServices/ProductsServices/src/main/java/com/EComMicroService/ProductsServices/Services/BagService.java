@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.EComMicroService.ProductsServices.DTO.productDTO;
+
 @Service
 public interface BagService {
 
-    int addItem(String userId, String productId);
-    void removeItem(String userId, String productId);
-    List<String> getItems(String userId);
+    List<productDTO> addItem(String userId, String productId);
+    List<productDTO> removeItem(String userId, String productId);
+    List<productDTO> getItems(String userId);
     
 }
