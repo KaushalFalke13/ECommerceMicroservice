@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface BagService {
 
-    void addItem(String userId, String productId);
+    int addItem(String userId, String productId);
     void removeItem(String userId, String productId);
     List<String> getItems(String userId);
     

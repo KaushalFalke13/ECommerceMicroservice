@@ -1,35 +1,32 @@
 package com.EComMicroService.ProductsServices.Entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "bags")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Bag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
     private String userId;
 
-    @OneToMany(
-        mappedBy = "bag",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    @JsonManagedReference
+    @OneToMany(mappedBy = "bag", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<BagItem> items = new ArrayList<>();
 
-    // convenience methods
     public void addItem(BagItem item) {
         items.add(item);
         item.setBag(this);
@@ -39,5 +36,4 @@ public class Bag {
         items.remove(item);
         item.setBag(null);
     }
-
 }

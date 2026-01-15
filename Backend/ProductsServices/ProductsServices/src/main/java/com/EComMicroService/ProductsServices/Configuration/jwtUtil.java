@@ -50,4 +50,15 @@ public class jwtUtil {
                     .get("roles", List.class);
     }
 
+    public String getUserIdFromToken(String token) {
+        return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .get("userId", String.class);
+    }
+
+
+
 }

@@ -25,7 +25,16 @@ public class ProductsControllers {
     public ProductsControllers(@Autowired productService productService) {
         this.productService = productService;
     }
-    // search products
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("Hello from Products Service");
+    }
+
+    @GetMapping("/view")
+      public void viewBag() {
+        System.out.println("Viewing bag contents in Products Controller");
+    }
 
     @PreAuthorize("hasRoles('ADMIN')")
     @PostMapping("/createProduct")

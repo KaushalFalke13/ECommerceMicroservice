@@ -30,8 +30,4 @@ public class BagItem {
 
     private int quantity;
 
-    public BagItem orElse(Object object) {
-        throw new UnsupportedOperationException("Unimplemented method 'orElse'");
-    }
-
 }

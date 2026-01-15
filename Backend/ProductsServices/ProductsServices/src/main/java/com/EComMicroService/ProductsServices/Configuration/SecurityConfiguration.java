@@ -18,6 +18,7 @@ public class SecurityConfiguration {
         this.JwtAuthenticationFilter = jwtAuthiticationFilter;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
