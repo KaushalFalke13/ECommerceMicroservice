@@ -8,7 +8,6 @@ import { useBag } from "../context/BagContext";
     const { wishlistItems } = useWishlist();
     const { bagItems } = useBag();
     const navigate = useNavigate();
-
     return (
       <nav className="sticky top-0 z-50 bg-white shadow-md">
         {/* Top Bar */}

@@ -1,21 +1,41 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState , useEffect} from "react";
+import {getProductsFromWatchlist ,addProductToWatchlist , removeProductFromWatchlist} from "../services/WishlistService.js";
 
 const WishlistContext = createContext();
 
 export const WishlistProvider = ({ children }) => {
   const [wishlistItems, setWishlistItems] = useState([]);
 
-  const addToWishlist = (product) => {
-    setWishlistItems((prev) => {
-      if (prev.find((item) => item.id === product.id)) return prev;
-      return [...prev, product];
-    });
+  const fetchWishlistItems = async () => {
+    try {
+      const products = await getProductsFromWatchlist();
+      setWishlistItems(products);  
+    } catch (error) {
+      console.error("Failed to fetch wishlist items:", error);
+    }
   };
 
-  const removeFromWishlist = (productId) => {
-    setWishlistItems((prev) =>
-      prev.filter((item) => item.id !== productId)
-    );
+    useEffect(() => {
+      fetchWishlistItems();
+    }, []);
+
+
+  const addToWishlist = async (product) => {
+    try {
+        await addProductToWatchlist(product.id);
+        fetchWishlistItems(); 
+      } catch (error) {
+        console.error("Failed to add item to wishlist:", error);
+      }
+  };
+
+  const removeFromWishlist =async (productId) => {
+    try {
+        await removeProductFromWatchlist(productId);
+        fetchWishlistItems(); 
+      } catch (error) {
+        console.error("Failed to add item to bag:", error);
+      }
   };
 
   const isWishlisted = (productId) => {

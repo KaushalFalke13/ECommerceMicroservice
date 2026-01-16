@@ -1,5 +1,5 @@
-import { createContext, useContext, useState } from "react";
-import {addProductToBag} from "../services/bagService";
+import { createContext, useContext, useState ,useEffect} from "react";
+import {addProductToBag , removeProductFromBag ,getProductsFromBag} from "../services/BagService.js";
 
 const BagContext = createContext();
 
@@ -7,6 +7,19 @@ export const BagProvider = ({ children }) => {
   const [bagItems, setBagItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState(null);
+  
+const fetchBagItems = async () => {
+  try {
+    const products = await getProductsFromBag();
+    setBagItems(products);  
+  } catch (error) {
+    console.error("Failed to fetch bag items:", error);
+  }
+};
+
+  useEffect(() => {
+    fetchBagItems();
+  }, []);
 
   const paymentMethods = [
     { id: 'card', name: 'Credit / Debit Card', description: 'Visa, Mastercard, Rupay and more' },
@@ -15,33 +28,25 @@ export const BagProvider = ({ children }) => {
     { id: 'cod', name: 'Cash on Delivery', description: 'Pay when you receive' }
   ];
 
-  const addToBag = (product) => {
-    setBagItems((prev) => {
-      // const existing = prev.find((item) => item.id === product.id);
+  
 
-      addProductToBag(product.id, 1).catch((error) => {
-        console.error("Failed to add item to bag:", error);
-      });
 
-      // if (existing) {
-      //   return prev.map((item) =>
-      //     item.id === product.id
-      //       ? { ...item, quantity: item.quantity + 1 }
-      //       : item
-      //   );
-      // }
+  const addToBag = async (product) => {
+  try {
+    await addProductToBag(product.id);
+    fetchBagItems(); 
+  } catch (error) {
+    console.error("Failed to add item to bag:", error);
+  }
+};
 
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
-
-  const removeFromBag = (productId) => {
-    setBagItems((prev) =>
-      prev.filter((item) => item.id !== productId)
-    );
-    setSelectedItems((prev) =>
-      prev.filter((id) => id !== productId)
-    );
+  const removeFromBag = async(productId) => {
+   try {
+    await removeProductFromBag(productId);
+    fetchBagItems(); 
+  } catch (error) {
+    console.error("Failed to add item to bag:", error);
+  }
   };
 
   const addToSeletedItem = (productId) => {
@@ -77,13 +82,14 @@ export const BagProvider = ({ children }) => {
         addToSeletedItem,
         removeFromSeletedItem,
         toggleSelectedItem,
+        fetchBagItems,
       }}
     >
       {children}
     </BagContext.Provider>
   );
-};
 
+  };
 export const useBag = () => {
   const context = useContext(BagContext);
   if (!context) {
@@ -91,3 +97,4 @@ export const useBag = () => {
   }
   return context;
 };
+

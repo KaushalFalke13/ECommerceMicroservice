@@ -10,10 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "bag_items",
-       uniqueConstraints = @UniqueConstraint(
-           columnNames = {"bag_id", "product_id"}
-       ))
+@Table(name = "bag_items", uniqueConstraints = @UniqueConstraint(columnNames = { "bag_id", "product_id" }))
 public class BagItem {
 
     @Id

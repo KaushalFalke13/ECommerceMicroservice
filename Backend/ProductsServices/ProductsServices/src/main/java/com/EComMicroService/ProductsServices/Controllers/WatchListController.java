@@ -33,7 +33,7 @@ public class WatchListController {
         return watchListService.removeItem(authHeader, request.getProductId());
     }
 
-    @GetMapping("/WatchListItems")
+    @GetMapping("/watchlistItems")
     public List<productDTO> getWatchListItems(@RequestHeader("Authorization") String authHeader) {
         return watchListService.getItems(authHeader);
     }

@@ -1,12 +1,10 @@
 package com.EComMicroService.ProductsServices.Services;
 
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.EComMicroService.ProductsServices.Configuration.jwtUtil;
 import com.EComMicroService.ProductsServices.DTO.productDTO;
 import com.EComMicroService.ProductsServices.Entity.Bag;
@@ -23,8 +21,8 @@ public class BagServiceImpl implements BagService {
     private final jwtUtil jwtUtil;
     private final productService productService;
 
-    public BagServiceImpl(BagRepository bagRepository, BagItemRepository bagItemRepository, 
-    jwtUtil jwtUtil , productService productService) {
+    public BagServiceImpl(BagRepository bagRepository, BagItemRepository bagItemRepository,
+            jwtUtil jwtUtil, productService productService) {
         this.bagRepository = bagRepository;
         this.bagItemRepository = bagItemRepository;
         this.jwtUtil = jwtUtil;
@@ -34,12 +32,12 @@ public class BagServiceImpl implements BagService {
     @Override
     public List<productDTO> addItem(String authHeader, String productId) {
         String userId = getUserIdFromAuthHeader(authHeader);
-       
+
         Bag bag = bagRepository.findByUserId(userId)
                 .orElseGet(() -> bagRepository.save(
                         Bag.builder()
-                            .userId(userId)
-                            .build()));
+                                .userId(userId)
+                                .build()));
 
         BagItem item = bagItemRepository
                 .findByBagAndProductId(bag, productId)
@@ -52,9 +50,10 @@ public class BagServiceImpl implements BagService {
                     bag.addItem(newItem);
                     return newItem;
                 });
-
+        
         item.setQuantity(item.getQuantity() + 1);
         bagRepository.save(bag);
+
         return mapToProductDTOList(bagItemRepository.findAllByBag(bag));
     }
 
@@ -86,9 +85,8 @@ public class BagServiceImpl implements BagService {
     }
 
     private List<productDTO> mapToProductDTOList(List<BagItem> items) {
-        return  items.stream().map(item -> {
-            productDTO product = productService.getProductById(item.getProductId());
-            return product;
+        return items.stream().map(item -> {
+            return productService.getProductById(item.getProductId());
         }).toList();
     }
 

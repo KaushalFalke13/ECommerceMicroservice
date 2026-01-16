@@ -12,6 +12,6 @@ export const removeProductFromBag = async (productId) => {
 };
 
 export const getProductsFromBag = async () => {
-  const response = await api.get("/products/bag/bagItems", {productId});
+  const response = await api.get("/products/bag/bagItems");
   return response.data;
 };

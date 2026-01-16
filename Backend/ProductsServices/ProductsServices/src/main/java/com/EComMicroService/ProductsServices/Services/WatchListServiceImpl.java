@@ -10,8 +10,10 @@ import com.EComMicroService.ProductsServices.Entity.Watchlist;
 import com.EComMicroService.ProductsServices.Entity.WatchlistItem;
 import com.EComMicroService.ProductsServices.Repositorys.WatchlistItemRepository;
 import com.EComMicroService.ProductsServices.Repositorys.WatchlistRepository;
+import jakarta.transaction.Transactional;
 
 @Service
+@Transactional
 public class WatchListServiceImpl implements WatchListService {
 
     private final WatchlistRepository watchlistRepository;

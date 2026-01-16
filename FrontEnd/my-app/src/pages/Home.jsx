@@ -5,8 +5,7 @@ import { useBag } from "../context/BagContext";
 import { getAllProducts } from "../services/productService";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-
-
+  
   const PAGE_SIZE = 16;
 
   const categories = [
@@ -144,7 +143,6 @@ import Footer from "../components/Footer";
   const ProductCard = ({ product }) => {
   const { wishlistItems, addToWishlist, removeFromWishlist } = useWishlist();
   const { bagItems, removeFromBag, addToBag } = useBag();
-
     const isWishlisted = wishlistItems.some(
     (item) => item.id === product.id
     );
@@ -244,9 +242,8 @@ import Footer from "../components/Footer";
         setLoading(true);
         try {
           const data = await getAllProducts(page, PAGE_SIZE);
-          console.log("Fetched products:", data);
           setProducts(data);
-
+          
           setHasNext(data.length === PAGE_SIZE);
         } catch (err) {
           console.error("Failed to fetch products", err);

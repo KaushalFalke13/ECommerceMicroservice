@@ -32,7 +32,7 @@ public class ProductsControllers {
     }
 
     @GetMapping("/view")
-      public void viewBag() {
+    public void viewBag() {
         System.out.println("Viewing bag contents in Products Controller");
     }
 
