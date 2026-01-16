@@ -1,6 +1,8 @@
 package com.EComMicroService.ProductsServices.Controllers;
 
 import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -41,6 +43,7 @@ public class BagController {
         return bagService.removeItem(authHeader, request.getProductId());
     }
 
+    @GetMapping("/bagItems")
     public List<productDTO> getBagItems(@RequestHeader("Authorization") String authHeader) {
         return bagService.getItems(authHeader);
     }

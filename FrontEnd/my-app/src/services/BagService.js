@@ -3,12 +3,15 @@ import api from "./api";
 
 export const addProductToBag = async (productId) => {
   const response = await api.post("/products/bag/add", {productId});
-  console.log(response.data);
   return response.data;
 };
 
 export const removeProductFromBag = async (productId) => {
   const response = await api.post("/products/bag/remove", {productId});
-  console.log(response.data);
+  return response.data;
+};
+
+export const getProductsFromBag = async () => {
+  const response = await api.get("/products/bag/bagItems", {productId});
   return response.data;
 };
