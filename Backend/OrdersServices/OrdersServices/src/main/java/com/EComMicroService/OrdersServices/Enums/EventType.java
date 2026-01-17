@@ -1,6 +1,7 @@
 package com.EComMicroService.OrdersServices.Enums;
 
 public enum EventType {
+    ORDER_PENDING,
     ORDER_CREATED,
     ORDER_PAID,
     ORDER_CANCELLED,

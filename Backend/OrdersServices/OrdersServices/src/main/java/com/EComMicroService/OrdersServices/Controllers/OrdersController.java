@@ -1,10 +1,12 @@
 package com.EComMicroService.OrdersServices.Controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
+// import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.EComMicroService.OrdersServices.DTO.ApiResponse;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
+import com.EComMicroService.OrdersServices.Entity.Address;
+import com.EComMicroService.OrdersServices.Services.AddressService;
 import com.EComMicroService.OrdersServices.Services.OrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
@@ -22,38 +26,71 @@ import jakarta.validation.constraints.NotBlank;
 public class OrdersController {
 
     private final OrderService orderService;
+    private final AddressService addressService;
 
-    public OrdersController(OrderService orderService) {
+    public OrdersController(OrderService orderService, AddressService addressService) {
         this.orderService = orderService;
+        this.addressService = addressService;
     }
 
     @GetMapping("/status")
     public ResponseEntity<ApiResponse<String>> getOrderStatus() {
+
         return ResponseEntity.ok(new ApiResponse<>(200, "Order service is up and running!"));
     }
 
-    @PatchMapping("/updateAddress")
-    public ResponseEntity<ApiResponse<Void>> updateAddress(
-            @RequestParam @NotBlank(message = "orderId is required") String orderId,
-            @RequestParam @NotBlank(message = "address is required") String newAddress) {
+    // @PatchMapping("/updateAddress")
+    // public ResponseEntity<ApiResponse<Void>> updateAddress(
+    // @RequestParam @NotBlank(message = "orderId is required") String orderId,
+    // @RequestParam @NotBlank(message = "address is required") String newAddress) {
+    // // boolean updated = orderService(orderId, newAddress);
+    // boolean updated = true;
+    // if (updated) {
+    // return ResponseEntity.ok(new ApiResponse<>(200, "Order address updated
+    // successfully"));
+    // } else {
+    // return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    // .body(new ApiResponse<>(400, "Failed to update order address"));
+    // }
+    // }
 
-        // boolean updated = orderService(orderId, newAddress);
-        boolean updated = true;
-        if (updated) {
-            return ResponseEntity.ok(new ApiResponse<>(200, "Order address updated successfully"));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse<>(400, "Failed to update order address"));
-        }
+    @PostMapping("/addNewAddress")
+    public ResponseEntity<ApiResponse<Address>> addNewAddress() {
+        addressService.addAddress();
+        return null;
     }
 
-    @PostMapping("/placeOrder")
+    @GetMapping("/address")
+    public ResponseEntity<ApiResponse<List<Address>>> getAddress() {
+
+        // id: 1,
+        // name: 'John Doe',
+        // phone: '+91 9876543210',
+        // address: '123, MG Road, Sector 14',
+        // city: 'Bangalore',
+        // state: 'Karnataka',
+        // pincode: '560001',
+        // type: 'Home',
+        // isDefault: true
+
+        // id: 2,
+        // name: 'John Doe',
+        // phone: '+91 9876543210',
+        // address: '456, Park Street, Block B',
+        // city: 'Mumbai',
+        // state: 'Maharashtra',
+        // pincode: '400001',
+        // type: 'Work',
+        // isDefault: false
+
+        return null;
+    }
+
+    @PostMapping("/place")
     public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody OrdersDTO orderDTO)
             throws JsonProcessingException {
-        System.out.println("placeOrder called");
         String createdOrderId = orderService.createOrder(orderDTO);
         if (createdOrderId != null) {
-            System.out.println("Order created with ID: " + createdOrderId);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(201, "Order created successfully", createdOrderId));
         } else {
@@ -83,7 +120,7 @@ public class OrdersController {
         }
     }
 
-    @DeleteMapping("/cancelOrder")
+    @DeleteMapping("/cancel")
     public ResponseEntity<ApiResponse<Void>> cancelOrder(
             @RequestParam @NotBlank(message = "orderId is required") String orderId) {
 

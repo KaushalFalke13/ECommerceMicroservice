@@ -2,7 +2,8 @@ package com.EComMicroService.OrdersServices.Services;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.EComMicroService.OrdersServices.DTO.ChangeOrderDTOs;
+
+import com.EComMicroService.OrdersServices.DTO.ChangeDTOs;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
 import com.EComMicroService.OrdersServices.Entity.Orders;
 import com.EComMicroService.OrdersServices.Enums.OrderStatus;
@@ -16,18 +17,20 @@ import jakarta.transaction.Transactional;
 public class OrderServiceImpl implements OrderService {
 
     // private final ObjectMapper mapper = new ObjectMapper();
+    private final ChangeDTOs changeDTOs;
     private final OrderRepository orderRepository;
     private final OrderEventService orderEventService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderEventService orderEventService) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderEventService orderEventService, ChangeDTOs changeDTOs) {
         this.orderRepository = orderRepository;
         this.orderEventService = orderEventService;
+        this.changeDTOs = changeDTOs;  
     }
 
     @Override
     @Transactional
     public String createOrder(OrdersDTO order) throws JsonProcessingException {
-        Orders newOrder = ChangeOrderDTOs.changeDTOtoOrders(order);
+        Orders newOrder = changeDTOs.changeDTOtoOrders(order);
         String orderId = orderRepository.save(newOrder).getOrderId();
         orderEventService.saveOrderEvent(order);
         return orderId;

@@ -26,7 +26,7 @@ public class OrderEventServiceImpl implements OrderEventService {
     public void saveOrderEvent(OrdersDTO ordersDTO) {
         Events event = Events.builder()
                 .orderId(ordersDTO.getOrderId())
-                .eventType(EventType.ORDER_CREATED)
+                .eventType(EventType.ORDER_PENDING)
                 // .shippingAddress(ordersDTO.())
                 .discountAmount(ordersDTO.getDiscountAmount().longValue())
                 .userId(ordersDTO.getUserId())

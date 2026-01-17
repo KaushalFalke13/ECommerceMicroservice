@@ -22,8 +22,7 @@ useEffect(() => {
   const [currentStep, setCurrentStep] = useState('bag');
   const [couponCode, setCouponCode] = useState('');
   const [donation, setDonation] = useState(0);
-    console.log(bagItems);
- const totalMRP = bagItems.reduce((total, element) => {
+  const totalMRP = bagItems.reduce((total, element) => {
   if (selectedItems.includes(element.id)) {
     return total + element.mrp * element.qty;
   }

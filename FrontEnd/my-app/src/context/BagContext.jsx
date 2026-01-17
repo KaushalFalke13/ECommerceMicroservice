@@ -7,6 +7,7 @@ export const BagProvider = ({ children }) => {
   const [bagItems, setBagItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState(null);
+  const [selectedAddress,setSelectedAddress] = useState(null);
   
 const fetchBagItems = async () => {
   try {
@@ -27,8 +28,6 @@ const fetchBagItems = async () => {
     { id: 'netbanking', name: 'Net Banking', description: 'All major banks supported' },
     { id: 'cod', name: 'Cash on Delivery', description: 'Pay when you receive' }
   ];
-
-  
 
 
   const addToBag = async (product) => {
@@ -76,6 +75,7 @@ const fetchBagItems = async () => {
         selectedItems,
         paymentMethods,
         selectedPayment,
+        selectedAddress,
         setSelectedPayment,
         addToBag,
         removeFromBag,
@@ -83,8 +83,8 @@ const fetchBagItems = async () => {
         removeFromSeletedItem,
         toggleSelectedItem,
         fetchBagItems,
-      }}
-    >
+        setSelectedAddress
+      }}>
       {children}
     </BagContext.Provider>
   );

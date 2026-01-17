@@ -1,36 +1,7 @@
 import  { useState } from 'react';
+import { useBag } from "../context/BagContext";
 
 const mockOrderData = {
-  items: [
-    {
-      id: 1,
-      image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
-      name: 'Brown & Orange Printed Super Soft Velvet Traditional Carpet',
-      brand: 'Kuber Industries',
-      seller: 'Kuber Mart Industries Private Limited',
-      size: 'Onesize',
-      quantity: 1,
-      mrp: 999,
-      discount: 570,
-      price: 329,
-      returnDays: 7,
-      deliveryDate: '14 Jan 2026'
-    },
-    {
-      id: 2,
-      image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400',
-      name: 'Creme Multi-Purpose Moisturiser Protective Skin Care',
-      brand: 'Nivea',
-      seller: 'Truecom Retail',
-      size: '75-100 ML',
-      quantity: 1,
-      mrp: 275,
-      discount: 97,
-      price: 178,
-      exchangeOnly: true,
-      deliveryDate: '14 Jan 2026'
-    }
-  ],
   addresses: [
     {
       id: 1,
@@ -115,7 +86,6 @@ const AddressCard = ({ address, isSelected, onSelect, onEdit, onRemove }) => {
   );
 };
 
-
 const handleRemoveAddress = (addressId) => {
     if (addresses.length === 1) {
       alert('You must have at least one address');
@@ -128,24 +98,12 @@ const handleRemoveAddress = (addressId) => {
   };
 
 const Address = () => {
-
-  const [cartItems, setCartItems] = useState(mockOrderData.items);
-    const [selectedItems, setSelectedItems] = useState(cartItems.map(item => item.id));
+    const [add] = useState(useBag);
     const [addresses, setAddresses] = useState(mockOrderData.addresses);
     const [selectedAddress, setSelectedAddress] = useState(
       addresses.find(addr => addr.isDefault)?.id || addresses[0]?.id
     );
-    const [selectedPayment, setSelectedPayment] = useState('');
-    const [currentStep, setCurrentStep] = useState('bag');
-    const [pinCode, setPinCode] = useState('');
-    const [showOffers, setShowOffers] = useState(false);
-    const [couponCode, setCouponCode] = useState('');
-    const [donation, setDonation] = useState(0);
-    const [showAddressModal, setShowAddressModal] = useState(false);
   
-
-
-
   return (
     <div className="bg-white border border-gray-200 rounded p-5">
                 <h2 className="text-sm font-bold text-gray-900 mb-4">Select Delivery Address</h2>
@@ -163,7 +121,7 @@ const Address = () => {
                 </div>
                 
                 <button className="mt-4 w-full py-3 border-2 border-pink-500 text-pink-500 font-bold rounded hover:bg-pink-50"
-                  onClick={() => setShowAddressModal(true)}>
+                  onClick={() => addNewAddress(true)}>
                   + ADD NEW ADDRESS
                 </button>
               </div>
