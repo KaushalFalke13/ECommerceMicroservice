@@ -1,5 +1,6 @@
 package com.EComMicroService.ProductsServices.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,8 +10,10 @@ import com.EComMicroService.ProductsServices.Configuration.jwtUtil;
 import com.EComMicroService.ProductsServices.DTO.productDTO;
 import com.EComMicroService.ProductsServices.Entity.Bag;
 import com.EComMicroService.ProductsServices.Entity.BagItem;
+import com.EComMicroService.ProductsServices.Entity.products;
 import com.EComMicroService.ProductsServices.Repositorys.BagItemRepository;
 import com.EComMicroService.ProductsServices.Repositorys.BagRepository;
+import com.EComMicroService.ProductsServices.Repositorys.productRepository;
 
 @Service
 @Transactional
@@ -19,14 +22,16 @@ public class BagServiceImpl implements BagService {
     private final BagRepository bagRepository;
     private final BagItemRepository bagItemRepository;
     private final jwtUtil jwtUtil;
-    private final productService productService;
+    private final helperServices helperService;
+    private final productRepository productRepository;
 
     public BagServiceImpl(BagRepository bagRepository, BagItemRepository bagItemRepository,
-            jwtUtil jwtUtil, productService productService) {
+            jwtUtil jwtUtil, productRepository productRepository, helperServices helperService) {
         this.bagRepository = bagRepository;
         this.bagItemRepository = bagItemRepository;
         this.jwtUtil = jwtUtil;
-        this.productService = productService;
+        this.helperService = helperService;
+        this.productRepository = productRepository;
     }
 
     @Override
@@ -50,7 +55,7 @@ public class BagServiceImpl implements BagService {
                     bag.addItem(newItem);
                     return newItem;
                 });
-        
+
         item.setQuantity(item.getQuantity() + 1);
         bagRepository.save(bag);
 
@@ -85,9 +90,13 @@ public class BagServiceImpl implements BagService {
     }
 
     private List<productDTO> mapToProductDTOList(List<BagItem> items) {
-        return items.stream().map(item -> {
-            return productService.getProductById(item.getProductId());
-        }).toList();
+        List<productDTO> bagitem = new ArrayList<>();
+        for (BagItem item : items) {
+            products product = productRepository.findById(item.getProductId()).orElse(null);
+            productDTO productDTO = helperService.changeProductAndQtyToDto(product, item.getQuantity());
+            bagitem.add(productDTO);
+        }
+        return bagitem;
     }
 
     private String getUserIdFromAuthHeader(String authHeader) {
