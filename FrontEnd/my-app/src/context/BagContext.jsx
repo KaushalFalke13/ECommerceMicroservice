@@ -1,13 +1,16 @@
 import { createContext, useContext, useState ,useEffect} from "react";
 import {addProductToBag , removeProductFromBag ,getProductsFromBag} from "../services/BagService.js";
+import { getAddressofUser ,addNewAddress} from "../services/Address.js";
 
 const BagContext = createContext();
 
 export const BagProvider = ({ children }) => {
   const [bagItems, setBagItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [addresses, setAddresses] = useState([]);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [selectedAddress,setSelectedAddress] = useState(null);
+  
   
 const fetchBagItems = async () => {
   try {
@@ -18,8 +21,24 @@ const fetchBagItems = async () => {
   }
 };
 
+const fetchAddresses = async () => {
+  try {
+    const address = await getAddressofUser();
+    setAddresses(address); 
+  } catch (error) {
+    console.error("Failed to fetch Address:", error);
+  }
+};
+
+const addNewAddresses = async(formData) => {
+  addNewAddress(formData);
+  fetchAddresses(); 
+}
+
+
   useEffect(() => {
     fetchBagItems();
+    fetchAddresses();
   }, []);
 
   const paymentMethods = [
@@ -76,14 +95,17 @@ const fetchBagItems = async () => {
         paymentMethods,
         selectedPayment,
         selectedAddress,
+        addresses,
         setSelectedPayment,
         addToBag,
         removeFromBag,
+        addNewAddresses,
         addToSeletedItem,
         removeFromSeletedItem,
         toggleSelectedItem,
         fetchBagItems,
-        setSelectedAddress
+        setSelectedAddress,
+        setAddresses,
       }}>
       {children}
     </BagContext.Provider>

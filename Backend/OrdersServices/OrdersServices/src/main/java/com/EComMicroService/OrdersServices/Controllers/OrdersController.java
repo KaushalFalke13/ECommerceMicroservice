@@ -1,7 +1,6 @@
 package com.EComMicroService.OrdersServices.Controllers;
 
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,9 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 // import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.EComMicroService.OrdersServices.DTO.AddressDTO;
 import com.EComMicroService.OrdersServices.DTO.ApiResponse;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
 import com.EComMicroService.OrdersServices.Entity.Address;
@@ -55,35 +57,21 @@ public class OrdersController {
     // }
 
     @PostMapping("/addNewAddress")
-    public ResponseEntity<ApiResponse<Address>> addNewAddress() {
-        addressService.addAddress();
+    public ResponseEntity<ApiResponse<AddressDTO>> addNewAddress(@RequestBody AddressDTO addressDTO, @RequestHeader("Authorization") String authHeader) {
+        addressService.addAddress(addressDTO,authHeader);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Address Created Sucessfully" ));
+    }   
+
+    @PostMapping("/removeAddress")
+    public ResponseEntity<ApiResponse<Address>> removeAddress(@RequestBody AddressDTO addressDTO) {
+        // addressService.addAddress(addressDTO);
         return null;
-    }
+    }   
 
     @GetMapping("/address")
-    public ResponseEntity<ApiResponse<List<Address>>> getAddress() {
-
-        // id: 1,
-        // name: 'John Doe',
-        // phone: '+91 9876543210',
-        // address: '123, MG Road, Sector 14',
-        // city: 'Bangalore',
-        // state: 'Karnataka',
-        // pincode: '560001',
-        // type: 'Home',
-        // isDefault: true
-
-        // id: 2,
-        // name: 'John Doe',
-        // phone: '+91 9876543210',
-        // address: '456, Park Street, Block B',
-        // city: 'Mumbai',
-        // state: 'Maharashtra',
-        // pincode: '400001',
-        // type: 'Work',
-        // isDefault: false
-
-        return null;
+    public ResponseEntity<ApiResponse<List<AddressDTO>>> getAddress(@RequestHeader("Authorization") String authHeader) {
+         List<AddressDTO> addresses = addressService.getAddressesByUserId(authHeader);
+        return ResponseEntity.ok(new ApiResponse<>(200, " ",addresses));
     }
 
     @PostMapping("/place")

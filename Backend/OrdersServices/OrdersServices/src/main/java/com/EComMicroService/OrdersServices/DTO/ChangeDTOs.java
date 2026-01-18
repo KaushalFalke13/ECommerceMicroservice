@@ -12,6 +12,7 @@ public class ChangeDTOs {
 
     public Address changeDTOtoAddress(AddressDTO address){
          return Address.builder()
+                .id(address.getId())
                 .name(address.getName())
                 .number(address.getNumber())
                 .street(address.getStreet())
@@ -26,6 +27,7 @@ public class ChangeDTOs {
 
     public AddressDTO changAddressToDTO(Address address){
         return AddressDTO.builder()
+                .Id(address.getId())
                 .name(address.getName())
                 .number(address.getNumber())
                 .street(address.getStreet())

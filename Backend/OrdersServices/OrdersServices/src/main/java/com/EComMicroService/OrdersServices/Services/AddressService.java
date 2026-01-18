@@ -4,15 +4,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.EComMicroService.OrdersServices.DTO.AddressDTO;
 import com.EComMicroService.OrdersServices.Entity.Address;
 
 @Service
 public interface AddressService {
 
-    Address addAddress();
+    Address addAddress(AddressDTO addressDTO,String authHeader);
     
-    List<Address> getAddressesByUserId(String userId);
+    List<AddressDTO> getAddressesByUserId(String authHeader);
 
-    Address updateAddress(Address updatedAddress , String userId); 
+    AddressDTO updateAddress(AddressDTO updatedAddress , String authHeader); 
 
 }

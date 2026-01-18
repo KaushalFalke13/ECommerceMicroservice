@@ -2,62 +2,62 @@ import React, { useState } from 'react';
 import { ShoppingBag, MapPin, CreditCard, Check, Trash2, Heart, Plus, X, ChevronLeft, ChevronDown, Gift, Tag } from 'lucide-react';
 
 // Mock Data
-// const mockOrderData = {
-//   items: [
-//     {
-//       id: 1,
-//       image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
-//       name: 'Brown & Orange Printed Super Soft Velvet Traditional Carpet',
-//       brand: 'Kuber Industries',
-//       seller: 'Kuber Mart Industries Private Limited',
-//       size: 'Onesize',
-//       quantity: 1,
-//       mrp: 999,
-//       discount: 570,
-//       price: 329,
-//       returnDays: 7,
-//       deliveryDate: '14 Jan 2026'
-//     },
-//     {
-//       id: 2,
-//       image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400',
-//       name: 'Creme Multi-Purpose Moisturiser Protective Skin Care',
-//       brand: 'Nivea',
-//       seller: 'Truecom Retail',
-//       size: '75-100 ML',
-//       quantity: 1,
-//       mrp: 275,
-//       discount: 97,
-//       price: 178,
-//       exchangeOnly: true,
-//       deliveryDate: '14 Jan 2026'
-//     }
-//   ],
-//   addresses: [
-//     {
-//       id: 1,
-//       name: 'John Doe',
-//       phone: '+91 9876543210',
-//       address: '123, MG Road, Sector 14',
-//       city: 'Bangalore',
-//       state: 'Karnataka',
-//       pincode: '560001',
-//       type: 'Home',
-//       isDefault: true
-//     },
-//     {
-//       id: 2,
-//       name: 'John Doe',
-//       phone: '+91 9876543210',
-//       address: '456, Park Street, Block B',
-//       city: 'Mumbai',
-//       state: 'Maharashtra',
-//       pincode: '400001',
-//       type: 'Work',
-//       isDefault: false
-//     }
-//   ]
-// };
+const mockOrderData = {
+  items: [
+    {
+      id: 1,
+      image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
+      name: 'Brown & Orange Printed Super Soft Velvet Traditional Carpet',
+      brand: 'Kuber Industries',
+      seller: 'Kuber Mart Industries Private Limited',
+      size: 'Onesize',
+      quantity: 1,
+      mrp: 999,
+      discount: 570,
+      price: 329,
+      returnDays: 7,
+      deliveryDate: '14 Jan 2026'
+    },
+    {
+      id: 2,
+      image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=400',
+      name: 'Creme Multi-Purpose Moisturiser Protective Skin Care',
+      brand: 'Nivea',
+      seller: 'Truecom Retail',
+      size: '75-100 ML',
+      quantity: 1,
+      mrp: 275,
+      discount: 97,
+      price: 178,
+      exchangeOnly: true,
+      deliveryDate: '14 Jan 2026'
+    }
+  ],
+  addresses: [
+    {
+      id: 1,
+      name: 'John Doe',
+      phone: '+91 9876543210',
+      address: '123, MG Road, Sector 14',
+      city: 'Bangalore',
+      state: 'Karnataka',
+      pincode: '560001',
+      type: 'Home',
+      isDefault: true
+    },
+    {
+      id: 2,
+      name: 'John Doe',
+      phone: '+91 9876543210',
+      address: '456, Park Street, Block B',
+      city: 'Mumbai',
+      state: 'Maharashtra',
+      pincode: '400001',
+      type: 'Work',
+      isDefault: false
+    }
+  ]
+};
 
 // AddAddressModal Component
 const AddAddressModal = ({ onClose, onSave }) => {
