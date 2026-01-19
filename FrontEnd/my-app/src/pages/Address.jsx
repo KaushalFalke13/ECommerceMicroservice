@@ -1,6 +1,6 @@
 import  { useState } from 'react';
 import { X } from 'lucide-react';
-import { useBag  } from '../context/BagContext';
+import { useBag } from '../context/BagContext';
 
 const AddAddressModal = ({ onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -178,25 +178,10 @@ const AddressCard = ({ address, isSelected, onSelect, onEdit, onRemove }) => {
   );
 };
 
-const handleRemoveAddress = (addressId) => {
-    if (addresses.length === 1) {
-      alert('You must have at least one address');
-      return;
-    }
-    setAddresses(addresses.filter(addr => addr.id !== addressId));
-    if (selectedAddress === addressId) {
-      setSelectedAddress(addresses.find(addr => addr.id !== addressId)?.id);
-    }
-  };
-
-
 const Address = () => {
-    const { addresses, setAddresses  } = useBag();
-  const { addNewAddresses } = useBag();
-
-    const [selectedAddress, setSelectedAddress] = useState(
-      // addresses.find(addr => addr.isDefault)?.id || addresses[0]?.id
-    );
+    const { addresses  } = useBag();
+    const { addNewAddresses,removeAddresses } = useBag();
+    const [selectedAddress, setSelectedAddress] = useBag();
     const [showAddressModal, setShowAddressModal] = useState(false);
     
     return (
@@ -210,7 +195,7 @@ const Address = () => {
                       address={address}
                       isSelected={selectedAddress === address.id}
                       onSelect={setSelectedAddress}
-                      onRemove={handleRemoveAddress}
+                      onRemove={removeAddresses}
                     />
                   ))}
                 </div>

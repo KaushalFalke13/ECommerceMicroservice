@@ -8,8 +8,8 @@ export const addNewAddress = async (formData) => {
 };
 
 
-export const deleteAddress = async () => {
-  const response = await api.post("/orders/removeAddress", {});
+export const deleteAddress = async (addressId) => {
+  const response = await api.post("/orders/removeAddress", {addressId});
   return response.data;
 };
 

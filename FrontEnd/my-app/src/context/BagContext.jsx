@@ -1,6 +1,6 @@
 import { createContext, useContext, useState ,useEffect} from "react";
 import {addProductToBag , removeProductFromBag ,getProductsFromBag} from "../services/BagService.js";
-import { getAddressofUser ,addNewAddress} from "../services/Address.js";
+import { getAddressofUser ,addNewAddress , deleteAddress} from "../services/Address.js";
 
 const BagContext = createContext();
 
@@ -32,6 +32,11 @@ const fetchAddresses = async () => {
 
 const addNewAddresses = async(formData) => {
   addNewAddress(formData);
+  fetchAddresses(); 
+}
+
+const removeAddresses = async(addressId) => {
+  deleteAddress(addressId);
   fetchAddresses(); 
 }
 
@@ -106,6 +111,7 @@ const addNewAddresses = async(formData) => {
         fetchBagItems,
         setSelectedAddress,
         setAddresses,
+        removeAddresses
       }}>
       {children}
     </BagContext.Provider>
