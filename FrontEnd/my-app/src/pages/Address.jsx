@@ -179,9 +179,8 @@ const AddressCard = ({ address, isSelected, onSelect, onEdit, onRemove }) => {
 };
 
 const Address = () => {
-    const { addresses  } = useBag();
-    const { addNewAddresses,removeAddresses } = useBag();
-    const [selectedAddress, setSelectedAddress] = useBag();
+    const { addresses ,selectedAddress, setSelectedAddress } = useBag();
+    const { addNewAddresses,removeAddresses } = useBag(); 
     const [showAddressModal, setShowAddressModal] = useState(false);
     
     return (
@@ -208,10 +207,10 @@ const Address = () => {
             {showAddressModal && (
               <AddAddressModal
                 onClose={() => setShowAddressModal(false)}
-                onSave={() => {
-                  setShowAddressModal(false);
-                  addNewAddresses()  }
-                }
+                 onSave={(data) => {
+                    addNewAddresses(data);
+                    setShowAddressModal(false);
+                  }}
               />
             )}
               </div> 

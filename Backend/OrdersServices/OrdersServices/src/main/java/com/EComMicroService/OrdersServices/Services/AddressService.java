@@ -16,4 +16,6 @@ public interface AddressService {
 
     AddressDTO updateAddress(AddressDTO updatedAddress , String authHeader); 
 
+    void removeAddress(Long addressId);
+
 }

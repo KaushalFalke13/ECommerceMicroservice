@@ -3,6 +3,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Check, Gift, Tag } from "lucide-react";
 import { useBag } from "../context/BagContext";
 import { useEffect } from "react";
+import {createNewOrder} from "../services/OrderService";
+
+
 const CheckoutLayout = () => {
 const navigate = useNavigate();
 
@@ -16,6 +19,7 @@ useEffect(() => {
   const {
     bagItems = [],
     selectedItems = [],
+    selectedAddress,
     selectedPayment,
   } = useBag();
 
@@ -53,6 +57,7 @@ useEffect(() => {
     if (currentStep === 'bag') {
       navigate('/checkout/address');  
     } else if (currentStep === 'address') {
+      createNewOrder(selectedItems,selectedAddress,totalDiscount,finalAmount);
       navigate('/checkout/payment');  
     } else if (currentStep === 'payment') {
       alert('Order Placed Successfully!');

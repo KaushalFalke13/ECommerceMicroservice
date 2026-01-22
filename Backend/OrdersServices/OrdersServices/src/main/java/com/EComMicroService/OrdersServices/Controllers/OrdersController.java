@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.EComMicroService.OrdersServices.DTO.AddressDTO;
 import com.EComMicroService.OrdersServices.DTO.ApiResponse;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
-import com.EComMicroService.OrdersServices.Entity.Address;
 import com.EComMicroService.OrdersServices.Services.AddressService;
 import com.EComMicroService.OrdersServices.Services.OrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -57,26 +55,28 @@ public class OrdersController {
     // }
 
     @PostMapping("/addNewAddress")
-    public ResponseEntity<ApiResponse<AddressDTO>> addNewAddress(@RequestBody AddressDTO addressDTO, @RequestHeader("Authorization") String authHeader) {
-        addressService.addAddress(addressDTO,authHeader);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Address Created Sucessfully" ));
-    }   
+    public ResponseEntity<ApiResponse<String>> addNewAddress(@RequestBody AddressDTO addressDTO,
+            @RequestHeader("Authorization") String authHeader) {
+        addressService.addAddress(addressDTO, authHeader);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Address Created Sucessfully"));
+    }
 
     @PostMapping("/removeAddress")
-    public ResponseEntity<ApiResponse<Address>> removeAddress(@RequestBody AddressDTO addressDTO) {
-        // addressService.addAddress(addressDTO);
-        return null;
-    }   
+    public ResponseEntity<ApiResponse<String>> removeAddress(@RequestBody Long addressId) {
+        addressService.removeAddress(addressId);
+        return ResponseEntity.ok(new ApiResponse<>(200, "Address Removed Sucessfully"));
+    }
 
     @GetMapping("/address")
     public ResponseEntity<ApiResponse<List<AddressDTO>>> getAddress(@RequestHeader("Authorization") String authHeader) {
-         List<AddressDTO> addresses = addressService.getAddressesByUserId(authHeader);
-        return ResponseEntity.ok(new ApiResponse<>(200, " ",addresses));
+        List<AddressDTO> addresses = addressService.getAddressesByUserId(authHeader);
+        return ResponseEntity.ok(new ApiResponse<>(200, " ", addresses));
     }
 
     @PostMapping("/place")
-    public ResponseEntity<ApiResponse<String>> createOrder(@Valid @RequestBody OrdersDTO orderDTO)
+    public ResponseEntity<ApiResponse<String>> createOrder(@RequestHeader("Authorization") String authHeader ,@Valid @RequestBody OrdersDTO orderDTO)
             throws JsonProcessingException {
+                
         String createdOrderId = orderService.createOrder(orderDTO);
         if (createdOrderId != null) {
             return ResponseEntity.status(HttpStatus.CREATED)

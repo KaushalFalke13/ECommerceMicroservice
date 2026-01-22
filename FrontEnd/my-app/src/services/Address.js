@@ -9,11 +9,22 @@ export const addNewAddress = async (formData) => {
 
 
 export const deleteAddress = async (addressId) => {
-  const response = await api.post("/orders/removeAddress", {addressId});
+  const response = await api.post(
+    "/orders/removeAddress",
+    addressId,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 };
+
 
 export const getAddressofUser = async () => {
   const response = await api.get("/orders/address");
   return response.data.data;
 };
+
+

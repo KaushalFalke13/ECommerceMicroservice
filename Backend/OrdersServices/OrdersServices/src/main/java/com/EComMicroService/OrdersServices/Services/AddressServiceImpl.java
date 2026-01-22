@@ -33,6 +33,11 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.save(address);    
     }
 
+   @Override
+    public void removeAddress(Long addressId) {
+        addressRepository.deleteById(addressId);
+    }
+
     @Override
     public List<AddressDTO> getAddressesByUserId(String authHeader) {
         String userId = getUserIdFromAuthHeader(authHeader);
@@ -56,4 +61,5 @@ public class AddressServiceImpl implements AddressService {
         return jwtUtil.getUserIdFromToken(token);
     }
 
+ 
 }
