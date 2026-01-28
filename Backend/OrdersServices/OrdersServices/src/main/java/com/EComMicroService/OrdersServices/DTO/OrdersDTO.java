@@ -20,5 +20,4 @@ public class OrdersDTO {
     private BigDecimal totalAmount;
     private BigDecimal discountAmount;
     
-
 }

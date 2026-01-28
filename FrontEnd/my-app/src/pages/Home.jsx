@@ -233,6 +233,7 @@ import Footer from "../components/Footer";
 
   const Home = () => {
     const [products, setProducts] = useState([]);
+    console.log(products);
     const [page, setPage] = useState(0);
     const [hasNext, setHasNext] = useState(true);
     const [loading, setLoading] = useState(false);

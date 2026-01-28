@@ -1,39 +1,22 @@
 import api from "./api";
 
 
-export const createNewOrder = async (selectedItems, selectedAddress) => {
-  // Convert items to Map<String, Integer> shape
-  const items = {};
-  let totalPrice = 0;
-  selectedItems.forEach(item => {
-    items[item.id] = item.quantity;
-    totalPrice += item.price * item.quantity;
-  });
-
-  const discountAmount = 0; 
-  const totalAmount = totalPrice - discountAmount;
+export const createNewOrder = async (selectedItems, selectedAddress ,totalDiscount,finalAmount,totalPrice) => {
 
   const payload = {
-    items,
+    selectedItems,
     totalPrice,
-    totalAmount,
-    discountAmount,
+    finalAmount,
+    totalDiscount,
     addressId: selectedAddress.id
   };
-
+  console.log(payload);
   const response = await api.post("/orders/place", payload);
   return response.data;
 };
 
-
-
-
-
-
-
-
-export const getOrderStatus = async () => {
-  const response = await api.post("/orders/status", {});
+export const getOrderStatus = async (orderId) => {
+  const response = await api.post("/orders/status", {orderId});
   return response.data; 
 };
 

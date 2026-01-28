@@ -57,7 +57,7 @@ useEffect(() => {
     if (currentStep === 'bag') {
       navigate('/checkout/address');  
     } else if (currentStep === 'address') {
-      createNewOrder(selectedItems,selectedAddress,totalDiscount,finalAmount);
+      createNewOrder(selectedItems,selectedAddress,totalDiscount,finalAmount,totalMRP);
       navigate('/checkout/payment');  
     } else if (currentStep === 'payment') {
       alert('Order Placed Successfully!');

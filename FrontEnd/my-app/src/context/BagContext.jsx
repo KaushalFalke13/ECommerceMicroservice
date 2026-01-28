@@ -13,8 +13,10 @@ export const BagProvider = ({ children }) => {
    const stored = localStorage.getItem("selectedAddress");
   return stored ? JSON.parse(stored) :null;}); 
   
+
+  //Convert the selected items to map with i=product id and qty
   const [selectedItems, setSelectedItems] = useState(() => {
-   const stored = localStorage.getItem("selectedItems");
+  const stored = localStorage.getItem("selectedItems");
   return stored ? JSON.parse(stored) : [];});
   
   const paymentMethods = [

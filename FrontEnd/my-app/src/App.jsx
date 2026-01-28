@@ -8,7 +8,6 @@ import Wishlist from "./pages/Wishlist.jsx";
 import Bag from "./pages/Bag.jsx";
 import Address from "./pages/Address.jsx";
 import Payment from "./pages/Payment.jsx";
-
 import CheckoutLayout from "./pages/CheckoutLayout.jsx";
 
 import { WishlistProvider } from "./context/WishlistContext";

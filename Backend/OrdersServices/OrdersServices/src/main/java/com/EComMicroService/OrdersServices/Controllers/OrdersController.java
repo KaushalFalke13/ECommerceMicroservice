@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 // import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,20 +40,19 @@ public class OrdersController {
         return ResponseEntity.ok(new ApiResponse<>(200, "Order service is up and running!"));
     }
 
-    // @PatchMapping("/updateAddress")
-    // public ResponseEntity<ApiResponse<Void>> updateAddress(
-    // @RequestParam @NotBlank(message = "orderId is required") String orderId,
-    // @RequestParam @NotBlank(message = "address is required") String newAddress) {
-    // // boolean updated = orderService(orderId, newAddress);
-    // boolean updated = true;
-    // if (updated) {
-    // return ResponseEntity.ok(new ApiResponse<>(200, "Order address updated
-    // successfully"));
-    // } else {
-    // return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    // .body(new ApiResponse<>(400, "Failed to update order address"));
-    // }
-    // }
+    @PatchMapping("/updateAddress")
+    public ResponseEntity<ApiResponse<Void>> updateAddress(
+    @RequestParam @NotBlank(message = "orderId is required") String orderId,
+    @RequestParam @NotBlank(message = "address is required") String newAddress) {
+    // boolean updated = orderService(orderId, newAddress);
+    boolean updated = true;
+    if (updated) {
+    return ResponseEntity.ok(new ApiResponse<>(200, "Order address updatedsuccessfully"));
+    } else {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body(new ApiResponse<>(400, "Failed to update order address"));
+    }
+    }
 
     @PostMapping("/addNewAddress")
     public ResponseEntity<ApiResponse<String>> addNewAddress(@RequestBody AddressDTO addressDTO,
@@ -76,7 +76,7 @@ public class OrdersController {
     @PostMapping("/place")
     public ResponseEntity<ApiResponse<String>> createOrder(@RequestHeader("Authorization") String authHeader ,@Valid @RequestBody OrdersDTO orderDTO)
             throws JsonProcessingException {
-                
+            
         String createdOrderId = orderService.createOrder(orderDTO);
         if (createdOrderId != null) {
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -84,7 +84,7 @@ public class OrdersController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(500, "Failed to create order"));
-        }
+        }   
     }
 
     @GetMapping("/listOrders")
