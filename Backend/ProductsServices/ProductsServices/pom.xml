@@ -126,11 +126,17 @@
         </dependency>
 
         <!-- MySQL Database Connector -->
-        <dependency>
+        <!-- <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.33</version>
-        </dependency>
+        </dependency> -->
+
+        <dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+    <version>42.7.7</version>
+</dependency>
 
         <!-- Spring Boot DevTools for live reload -->
         <dependency>

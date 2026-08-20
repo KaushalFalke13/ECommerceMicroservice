@@ -19,7 +19,7 @@ public class KafkaHelper {
         this.producer = producer;
     }
 
-   @Scheduled(fixedRate = 1000)
+   @Scheduled(fixedRate = 100000)
 public void sendUnPublishedEvents() {
     try {
         List<OrdersEventsLog> unpublishedEvents = orderEventService.getUnpublishedEvents();

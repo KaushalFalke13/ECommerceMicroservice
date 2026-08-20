@@ -1,8 +1,10 @@
 package com.EComMicroService.OrdersServices.Entity;
 
+
 import com.EComMicroService.OrdersServices.Enums.EventStatus;
 import com.EComMicroService.OrdersServices.KafkaEvents.Events;
 import com.EComMicroService.OrdersServices.KafkaEvents.OrderEventConverter;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -32,7 +34,7 @@ public class OrdersEventsLog {
     @Column(name = "order_id", nullable = false)
     private String orderId;
 
-    @Column(name = "event", columnDefinition = "LONGTEXT")
+    @Column(name = "event", columnDefinition = "TEXT")
     @Convert(converter = OrderEventConverter.class)
     private Events event;
 

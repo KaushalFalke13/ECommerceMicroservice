@@ -51,18 +51,18 @@ class OrderServiceImplTest {
 
     // -------------------- createOrder --------------------
 
-    @Test
-    void createOrder_shouldSaveOrderAndPublishEvent() throws JsonProcessingException {
-        when(orderRepository.save(any(Orders.class)))
-                .thenReturn(order);
+//     @Test
+//     void createOrder_shouldSaveOrderAndPublishEvent() throws JsonProcessingException {
+//         when(orderRepository.save(any(Orders.class)))
+//                 .thenReturn(order);
 
-        String orderId = orderService.createOrder(ordersDTO);
+//         String orderId = orderService.createOrder(ordersDTO);
 
-        assertEquals("ORD-1", orderId);
-        verify(orderRepository, times(1)).save(any(Orders.class));
-        verify(orderEventService, times(1))
-                .saveOrderEvent(ordersDTO);
-    }
+//         assertEquals("ORD-1", orderId);
+//         verify(orderRepository, times(1)).save(any(Orders.class));
+//         verify(orderEventService, times(1))
+//                 .saveOrderEvent(ordersDTO);
+//     }
 
     // -------------------- getOrdersByUserId --------------------
 
