@@ -8,17 +8,17 @@ pipeline {
             }
         }
 
-        stage('Check Java & Maven') {
+        stage('Check Java') {
             steps {
                 sh 'java -version'
-                sh 'mvn -version'
             }
         }
 
         stage('Build Orders Service') {
             steps {
                 dir('Backend/OrdersServices') {
-                    sh 'mvn clean package'
+                    sh 'chmod +x mvnw'
+                    sh './mvnw clean package'
                 }
             }
         }
