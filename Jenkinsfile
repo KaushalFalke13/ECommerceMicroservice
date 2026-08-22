@@ -8,10 +8,18 @@ pipeline {
             }
         }
 
-        stage('Verify Code') {
+        stage('Check Java & Maven') {
             steps {
-                sh 'pwd'
-                sh 'ls -la'
+                sh 'java -version'
+                sh 'mvn -version'
+            }
+        }
+
+        stage('Build Orders Service') {
+            steps {
+                dir('Backend/OrdersServices') {
+                    sh 'mvn clean package'
+                }
             }
         }
     }
