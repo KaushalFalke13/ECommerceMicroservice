@@ -1,0 +1,183 @@
+services:
+  # postgres:
+  #   image: postgres:16
+  #   container_name: ecommerce-postgres
+
+  #   environment:
+  #     POSTGRES_DB: ${DB_URL}
+  #     POSTGRES_USER: ${DB_USERNAME}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  #   ports:
+  #     - "5432:5432"
+  
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+  kafka:
+    image: apache/kafka:4.0.1
+    container_name: ecommerce-kafka
+
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LOG4J_ROOT_LOGLEVEL: WARN
+
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+
+      KAFKA_NUM_PARTITIONS: 3
+
+    ports:
+      - "9092:9092"
+
+  eureka:
+    build:
+      context: ./Backend/EurekaClient
+
+    container_name: ecommerce-eureka
+
+    ports:
+      - "8761:8761"
+
+  frontend:
+    build:
+      context: ./FrontEnd/my-app
+    container_name: ecommerce-frontend
+    ports:
+      - "3000:80"
+
+  orders:
+    build:
+      context: ./Backend/OrdersServices
+
+    container_name: orders-service
+
+    ports:
+      - "8082:8082"
+
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    depends_on:
+      - kafka
+      - eureka
+
+  products:
+    build:
+      context: ./Backend/ProductsServices
+
+    container_name: products-service
+
+    ports:
+      - "8084:8084"
+
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    depends_on:
+      - kafka
+      - eureka
+
+  api-gateway:
+    build:
+      context: ./Backend/Api-Gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    depends_on:
+      - eureka
+
+  auth:
+    build:
+      context: ./Backend/AuthServices
+
+    container_name: auth-service
+    ports:
+      - "8081:8081"
+
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    depends_on:
+      - kafka
+      - eureka
+
+  users:
+    build:
+      context: ./Backend/UserServices
+
+    container_name: users-service
+    ports:
+      - "8085:8085"
+
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      # SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    depends_on:
+      - kafka
+      - eureka
+
+  payment:
+    build:
+      context: ./Backend/PaymentServices
+
+    container_name: payment-service
+    ports:
+      - "8083:8083"
+
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      jwt.secret: ${JWT_SECRET}
+      jwt.expiration: ${JWT_EXPIRATION}
+      # SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka:8761/eureka/
+
+    depends_on:
+      - kafka
+      - eureka
