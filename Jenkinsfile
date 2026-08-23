@@ -22,5 +22,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Build Order Service Docker Image') {
+            steps {
+                dir('Backend/OrdersServices') {
+                    sh 'docker build -t orders-service:latest .'
+                }
+            }
+
+        }
     }
 }
