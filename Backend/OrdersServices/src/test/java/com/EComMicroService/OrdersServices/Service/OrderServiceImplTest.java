@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.EComMicroService.OrdersServices.DTO.ChangeDTOs;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
 import com.EComMicroService.OrdersServices.Entity.Orders;
 import com.EComMicroService.OrdersServices.Enums.OrderStatus;
@@ -23,204 +25,207 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
 
-    @Mock
-    private OrderRepository orderRepository;
+        @Mock
+        private OrderRepository orderRepository;
 
-    @Mock
-    private OrderEventService orderEventService;
+        @Mock
+        private OrderEventService orderEventService;
 
-    @InjectMocks
-    private OrderServiceImpl orderService;
+        @InjectMocks
+        private OrderServiceImpl orderService;
 
-    private OrdersDTO ordersDTO;
-    private Orders order;
+        @Mock
+        private ChangeDTOs changeDTOs;
 
-    @BeforeEach
-    void setup() {
-        ordersDTO = OrdersDTO.builder()
-        .userId("USER-1")
-        .totalAmount(BigDecimal.valueOf(500))
-        .build();
+        private OrdersDTO ordersDTO;
+        private Orders order;
 
-        order =  Orders.builder()
-        .OrderId("ORD-1")
-        .userId("USER-1") 
-        .orderStatus(OrderStatus.CREATED)  
-        .build();
-    }
+        @BeforeEach
+        void setup() {
+                ordersDTO = OrdersDTO.builder()
+                                .userId("USER-1")
+                                .totalAmount(BigDecimal.valueOf(500))
+                                .build();
 
-    // -------------------- createOrder --------------------
+                order = Orders.builder()
+                                .OrderId("ORD-1")
+                                .userId("USER-1")
+                                .orderStatus(OrderStatus.CREATED)
+                                .build();
+        }
 
-//     @Test
-//     void createOrder_shouldSaveOrderAndPublishEvent() throws JsonProcessingException {
-//         when(orderRepository.save(any(Orders.class)))
-//                 .thenReturn(order);
+        // -------------------- createOrder --------------------
 
-//         String orderId = orderService.createOrder(ordersDTO);
+        @Test
+        void createOrder_shouldSaveOrderAndPublishEvent()
+                        throws JsonProcessingException {
 
-//         assertEquals("ORD-1", orderId);
-//         verify(orderRepository, times(1)).save(any(Orders.class));
-//         verify(orderEventService, times(1))
-//                 .saveOrderEvent(ordersDTO);
-//     }
+                when(changeDTOs.changeDTOtoOrders(ordersDTO))
+                                .thenReturn(order);
 
-    // -------------------- getOrdersByUserId --------------------
+                when(orderRepository.save(any(Orders.class)))
+                                .thenReturn(order);
 
-    @Test
-    void getOrdersByUserId_shouldReturnOrders() {
-        when(orderRepository.findAllByUserId("USER-1"))
-                .thenReturn(List.of(order));
+                String orderId = orderService.createOrder(ordersDTO);
 
-        List<Orders> result =
-                orderService.getOrdersByUserId("USER-1");
+                // Assert
+                assertEquals("ORD-1", orderId);
 
-        assertEquals(1, result.size());
-        verify(orderRepository, times(1))
-                .findAllByUserId("USER-1");
-    }
+                verify(changeDTOs, times(1))
+                                .changeDTOtoOrders(ordersDTO);
 
-    // -------------------- listOrdersForUser --------------------
+                verify(orderRepository, times(1))
+                                .save(any(Orders.class));
 
-    @Test
-    void listOrdersForUser_shouldReturnOrders() {
-        when(orderRepository.findAllByUserId("USER-1"))
-                .thenReturn(List.of(order));
+                verify(orderEventService, times(1))
+                                .saveOrderEvent(ordersDTO);
+        }
+        // -------------------- getOrdersByUserId --------------------
 
-        Object result =
-                orderService.listOrdersForUser("USER-1");
+        @Test
+        void getOrdersByUserId_shouldReturnOrders() {
+                when(orderRepository.findAllByUserId("USER-1"))
+                                .thenReturn(List.of(order));
 
-        assertNotNull(result);
-        verify(orderRepository, times(1))
-                .findAllByUserId("USER-1");
-    }
+                List<Orders> result = orderService.getOrdersByUserId("USER-1");
 
-    // -------------------- getOrderDetails --------------------
+                assertEquals(1, result.size());
+                verify(orderRepository, times(1))
+                                .findAllByUserId("USER-1");
+        }
 
-    @Test
-    void getOrderDetails_shouldReturnOrder_whenFound() {
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.of(order));
+        // -------------------- listOrdersForUser --------------------
 
-        Object result =
-                orderService.getOrderDetails("ORD-1");
+        @Test
+        void listOrdersForUser_shouldReturnOrders() {
+                when(orderRepository.findAllByUserId("USER-1"))
+                                .thenReturn(List.of(order));
 
-        assertNotNull(result);
-        verify(orderRepository, times(1))
-                .findById("ORD-1");
-    }
+                Object result = orderService.listOrdersForUser("USER-1");
 
-    @Test
-    void getOrderDetails_shouldReturnNull_whenNotFound() {
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.empty());
+                assertNotNull(result);
+                verify(orderRepository, times(1))
+                                .findAllByUserId("USER-1");
+        }
 
-        Object result =
-                orderService.getOrderDetails("ORD-1");
+        // -------------------- getOrderDetails --------------------
 
-        assertNull(result);
-    }
+        @Test
+        void getOrderDetails_shouldReturnOrder_whenFound() {
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.of(order));
 
-    // -------------------- cancelOrder --------------------
+                Object result = orderService.getOrderDetails("ORD-1");
 
-    @Test
-    void cancelOrder_shouldReturnFalse_whenOrderNotFound() {
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.empty());
+                assertNotNull(result);
+                verify(orderRepository, times(1))
+                                .findById("ORD-1");
+        }
 
-        Boolean result =
-                orderService.cancelOrder("ORD-1");
+        @Test
+        void getOrderDetails_shouldReturnNull_whenNotFound() {
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.empty());
 
-        assertFalse(result);
-        verify(orderRepository, never()).save(any());
-    }
+                Object result = orderService.getOrderDetails("ORD-1");
 
-    @Test
-    void cancelOrder_shouldCancelOrder_whenNotDelivered() {
-        order.setOrderStatus(OrderStatus.CREATED);
+                assertNull(result);
+        }
 
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.of(order));
-        when(orderRepository.save(order))
-                .thenReturn(order);
+        // -------------------- cancelOrder --------------------
 
-        Boolean result =
-                orderService.cancelOrder("ORD-1");
+        @Test
+        void cancelOrder_shouldReturnFalse_whenOrderNotFound() {
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.empty());
 
-        assertTrue(result);
-        assertEquals(OrderStatus.CANCELED,
-                order.getOrderStatus());
-        verify(orderRepository, times(1)).save(order);
-    }
+                Boolean result = orderService.cancelOrder("ORD-1");
 
-    @Test
-    void cancelOrder_shouldReturnFalse_whenOrderDelivered() {
-        order.setOrderStatus(OrderStatus.DELEVERED);
+                assertFalse(result);
+                verify(orderRepository, never()).save(any());
+        }
 
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.of(order));
+        @Test
+        void cancelOrder_shouldCancelOrder_whenNotDelivered() {
+                order.setOrderStatus(OrderStatus.CREATED);
 
-        Boolean result =
-                orderService.cancelOrder("ORD-1");
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.of(order));
+                when(orderRepository.save(order))
+                                .thenReturn(order);
 
-        assertFalse(result);
-        verify(orderRepository, never()).save(any());
-    }
+                Boolean result = orderService.cancelOrder("ORD-1");
 
-    // -------------------- deleteOrder --------------------
+                assertTrue(result);
+                assertEquals(OrderStatus.CANCELED,
+                                order.getOrderStatus());
+                verify(orderRepository, times(1)).save(order);
+        }
 
-    @Test
-    void deleteOrder_shouldReturnFalse_whenOrderNotFound() {
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.empty());
+        @Test
+        void cancelOrder_shouldReturnFalse_whenOrderDelivered() {
+                order.setOrderStatus(OrderStatus.DELEVERED);
 
-        Boolean result =
-                orderService.deleteOrder("ORD-1");
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.of(order));
 
-        assertFalse(result);
-        verify(orderRepository, never()).delete(any());
-    }
+                Boolean result = orderService.cancelOrder("ORD-1");
 
-    @Test
-    void deleteOrder_shouldDeleteOrder_whenFound() {
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.of(order));
+                assertFalse(result);
+                verify(orderRepository, never()).save(any());
+        }
 
-        Boolean result =
-                orderService.deleteOrder("ORD-1");
+        // -------------------- deleteOrder --------------------
 
-        assertTrue(result);
-        verify(orderRepository, times(1)).delete(order);
-    }
+        @Test
+        void deleteOrder_shouldReturnFalse_whenOrderNotFound() {
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.empty());
 
-    // -------------------- updateOrderStatus --------------------
+                Boolean result = orderService.deleteOrder("ORD-1");
 
-    @Test
-    void updateOrderStatus_shouldUpdateStatus_whenOrderFound() {
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.of(order));
-        when(orderRepository.save(order))
-                .thenReturn(order);
+                assertFalse(result);
+                verify(orderRepository, never()).delete(any());
+        }
 
-        Orders updatedOrder =
-                orderService.updateOrderStatus("ORD-1",
-                        OrderStatus.SHIPPED);
+        @Test
+        void deleteOrder_shouldDeleteOrder_whenFound() {
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.of(order));
 
-        assertNotNull(updatedOrder);
-        assertEquals(OrderStatus.SHIPPED,
-                updatedOrder.getOrderStatus());
-        verify(orderRepository, times(1)).save(order);
-    }
+                Boolean result = orderService.deleteOrder("ORD-1");
 
-    @Test
-    void updateOrderStatus_shouldReturnNull_whenOrderNotFound() {
-        when(orderRepository.findById("ORD-1"))
-                .thenReturn(Optional.empty());
+                assertTrue(result);
+                verify(orderRepository, times(1)).delete(order);
+        }
 
-        Orders result =
-                orderService.updateOrderStatus("ORD-1",
-                        OrderStatus.SHIPPED);
+        // -------------------- updateOrderStatus --------------------
 
-        assertNull(result);
-        verify(orderRepository, never()).save(any());
-    }
+        @Test
+        void updateOrderStatus_shouldUpdateStatus_whenOrderFound() {
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.of(order));
+                when(orderRepository.save(order))
+                                .thenReturn(order);
+
+                Orders updatedOrder = orderService.updateOrderStatus("ORD-1",
+                                OrderStatus.SHIPPED);
+
+                assertNotNull(updatedOrder);
+                assertEquals(OrderStatus.SHIPPED,
+                                updatedOrder.getOrderStatus());
+                verify(orderRepository, times(1)).save(order);
+        }
+
+        @Test
+        void updateOrderStatus_shouldReturnNull_whenOrderNotFound() {
+                when(orderRepository.findById("ORD-1"))
+                                .thenReturn(Optional.empty());
+
+                Orders result = orderService.updateOrderStatus("ORD-1",
+                                OrderStatus.SHIPPED);
+
+                assertNull(result);
+                verify(orderRepository, never()).save(any());
+        }
 }

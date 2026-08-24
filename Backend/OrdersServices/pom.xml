@@ -133,6 +133,13 @@
     <artifactId>postgresql</artifactId>
     <version>42.7.7</version>
 </dependency>
+
+<!-- H2 for test embedded database -->
+<dependency>
+    <groupId>com.h2database</groupId>
+    <artifactId>h2</artifactId>
+    <scope>test</scope>
+</dependency>
    </dependencies>
 
 	<build>

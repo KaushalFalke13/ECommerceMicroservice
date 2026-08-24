@@ -37,7 +37,7 @@ public class OrdersController {
     @GetMapping("/status")
     public ResponseEntity<ApiResponse<String>> getOrderStatus() {
 
-        return ResponseEntity.ok(new ApiResponse<>(200, "Order service is up and running!"));
+        return ResponseEntity.ok(new ApiResponse<>(200, "Order service is up and running!", "Order service is up and running!"));
     }
 
     @PatchMapping("/updateAddress")
@@ -58,13 +58,13 @@ public class OrdersController {
     public ResponseEntity<ApiResponse<String>> addNewAddress(@RequestBody AddressDTO addressDTO,
             @RequestHeader("Authorization") String authHeader) {
         addressService.addAddress(addressDTO, authHeader);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Address Created Sucessfully"));
+        return ResponseEntity.ok(new ApiResponse<>(200, "Address Created Sucessfully", "Address Created Sucessfully"));
     }
 
     @PostMapping("/removeAddress")
     public ResponseEntity<ApiResponse<String>> removeAddress(@RequestBody Long addressId) {
         addressService.removeAddress(addressId);
-        return ResponseEntity.ok(new ApiResponse<>(200, "Address Removed Sucessfully"));
+        return ResponseEntity.ok(new ApiResponse<>(200, "Address Removed Sucessfully", "Address Removed Sucessfully"));
     }
 
     @GetMapping("/address")

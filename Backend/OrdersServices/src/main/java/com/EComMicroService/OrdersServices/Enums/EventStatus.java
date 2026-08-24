@@ -1,5 +1,5 @@
 package com.EComMicroService.OrdersServices.Enums;
 
 public enum EventStatus {
-PENDING, SENT, FAILED
+PENDING, SENT, FAILED, PUBLISHED
 }

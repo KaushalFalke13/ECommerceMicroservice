@@ -1,6 +1,7 @@
 package com.EComMicroService.OrdersServices.Entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.EComMicroService.OrdersServices.Enums.OrderStatus;
 
@@ -18,9 +19,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Orders {
 
     @Id
@@ -39,13 +40,18 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
+    private LocalDateTime createdAt;
+
+    public Object getItems() {
+        throw new UnsupportedOperationException("Unimplemented method 'getItems'");
+    }
+
     // PAYMENT
     // @Enumerated(EnumType.STRING)
     // private PaymentStatus paymentStatus;
 
     // @Enumerated(EnumType.STRING)
     // private PaymentMethod paymentMethod;
-
 
     // @Column(columnDefinition = "TEXT")
     // private String shippingAddressJson;
@@ -61,7 +67,7 @@ public class Orders {
 
     // @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     // private List<OrderItem> items;
-    
+
     // private BigDecimal taxAmount;
     // private BigDecimal shippingFee;
 

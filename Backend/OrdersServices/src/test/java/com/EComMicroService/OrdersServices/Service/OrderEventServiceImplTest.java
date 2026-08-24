@@ -44,28 +44,28 @@ class OrderEventServiceImplTest {
 
     // -------------------- saveOrderEvent --------------------
 
-    // @Test
-    // void saveOrderEventTest() {
-    //     ArgumentCaptor<OrdersEventsLog> captor = ArgumentCaptor.forClass(OrdersEventsLog.class);
+    @Test
+    void saveOrderEventTest() {
+        ArgumentCaptor<OrdersEventsLog> captor = ArgumentCaptor.forClass(OrdersEventsLog.class);
 
-    //     orderEventService.saveOrderEvent(ordersDTO);
+        orderEventService.saveOrderEvent(ordersDTO);
 
-    //     verify(orderEventRepository, times(1)).save(captor.capture());
+        verify(orderEventRepository, times(1)).save(captor.capture());
 
-    //     OrdersEventsLog savedEvent = captor.getValue();
-    //     Events event = savedEvent.getEvent();
+        OrdersEventsLog savedEvent = captor.getValue();
+        Events event = savedEvent.getEvent();
 
-    //     assertNotNull(savedEvent);
-    //     assertEquals(ordersDTO.getOrderId(), savedEvent.getOrderId());
-    //     assertEquals(EventStatus.PENDING, savedEvent.getPublished());
+        assertNotNull(savedEvent);
+        assertEquals(ordersDTO.getOrderId(), savedEvent.getOrderId());
+        assertEquals(EventStatus.PENDING, savedEvent.getPublished());
 
-    //     assertNotNull(event);
-    //     assertEquals(EventType.ORDER_CREATED, event.getEventType());
-    //     assertEquals(ordersDTO.getOrderId(), event.getOrderId());
-    //     assertEquals(ordersDTO.getUserId(), event.getUserId());
-    //     assertEquals(ordersDTO.getDiscountAmount().longValue(), event.getDiscountAmount());
-    //     assertEquals(ordersDTO.getTotalAmount().longValue(), event.getTotal());
-    // }
+        assertNotNull(event);
+        assertEquals(EventType.ORDER_PENDING, event.getEventType());
+        assertEquals(ordersDTO.getOrderId(), event.getOrderId());
+        assertEquals(ordersDTO.getUserId(), event.getUserId());
+        assertEquals(ordersDTO.getDiscountAmount().longValue(), event.getDiscountAmount());
+        assertEquals(ordersDTO.getTotalAmount().longValue(), event.getTotal());
+    }
 
     // -------------------- getUnpublishedEvents --------------------
 
