@@ -7,13 +7,26 @@ import com.EComMicroService.UserServices.DTO.UsersDTO;
 import com.EComMicroService.UserServices.Entity.UsersDetails;
 import com.EComMicroService.UserServices.Repository.UserRepository;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class userServiceImpl implements userService {
+
+    private static final String USER_SERVICE = "userService";
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
+    @CircuitBreaker(name = USER_SERVICE, fallbackMethod = "saveUserFallback")
+    @Retry(name = USER_SERVICE)
+    @Bulkhead(name = USER_SERVICE)
+    @RateLimiter(name = USER_SERVICE)
     public UsersDetails saveUser(UsersDTO usersDTO) {
         UsersDetails users = UsersDetails.builder()
                 .id(UUID.randomUUID().toString())
@@ -25,9 +38,25 @@ public class userServiceImpl implements userService {
     }
 
     @Override
+    @CircuitBreaker(name = USER_SERVICE, fallbackMethod = "getUserByIdFallback")
+    @Retry(name = USER_SERVICE)
+    @Bulkhead(name = USER_SERVICE)
+    @RateLimiter(name = USER_SERVICE)
     public UsersDTO getUserById(String id) {
         userRepository.findById(id);
         return new UsersDTO();
+    }
+
+    // ============ FALLBACK METHODS ============
+
+    public UsersDetails saveUserFallback(UsersDTO usersDTO, Throwable t) {
+        log.error("Save user fallback triggered: {}", t.getMessage());
+        throw new RuntimeException("User service is temporarily unavailable. Please try again later.", t);
+    }
+
+    public UsersDTO getUserByIdFallback(String id, Throwable t) {
+        log.error("Get user by id fallback triggered for id {}: {}", id, t.getMessage());
+        throw new RuntimeException("User service is temporarily unavailable. Please try again later.", t);
     }
 
 }

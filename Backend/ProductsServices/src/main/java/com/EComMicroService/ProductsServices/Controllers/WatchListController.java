@@ -2,6 +2,7 @@ package com.EComMicroService.ProductsServices.Controllers;
 
 import java.util.List;
 
+import io.micrometer.core.annotation.Timed;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,19 +21,24 @@ public class WatchListController {
     private final WatchListService watchListService;
 
     public WatchListController(WatchListService watchListService) {
-        this.watchListService = watchListService;   
+        this.watchListService = watchListService;
     }
 
-      @PostMapping("/add")
-    public List<productDTO> addToWatchList(@RequestBody AddToBagRequest request, @RequestHeader("Authorization") String authHeader) {
+    @Timed(value = "watchlist.add", histogram = true, percentiles = { 0.95, 0.99 })
+    @PostMapping("/add")
+    public List<productDTO> addToWatchList(@RequestBody AddToBagRequest request,
+            @RequestHeader("Authorization") String authHeader) {
         return watchListService.addItem(authHeader, request.getProductId());
     }
 
+    @Timed(value = "watchlist.remove", histogram = true, percentiles = { 0.95, 0.99 })
     @PostMapping("/remove")
-    public List<productDTO> removeFromWatchList(@RequestBody AddToBagRequest request,@RequestHeader("Authorization") String authHeader) {
+    public List<productDTO> removeFromWatchList(@RequestBody AddToBagRequest request,
+            @RequestHeader("Authorization") String authHeader) {
         return watchListService.removeItem(authHeader, request.getProductId());
     }
 
+    @Timed(value = "watchlist.getItems", histogram = true, percentiles = { 0.95, 0.99 })
     @GetMapping("/watchlistItems")
     public List<productDTO> getWatchListItems(@RequestHeader("Authorization") String authHeader) {
         return watchListService.getItems(authHeader);
