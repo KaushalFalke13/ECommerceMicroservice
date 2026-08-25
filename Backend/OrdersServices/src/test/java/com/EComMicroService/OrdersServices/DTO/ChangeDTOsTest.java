@@ -2,7 +2,6 @@ package com.EComMicroService.OrdersServices.DTO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,8 +24,8 @@ class ChangeDTOsTest {
         ordersDTO = OrdersDTO.builder()
                 .orderId("ORD-001")
                 .userId("USER-001")
-                .totalAmount(BigDecimal.valueOf(150.00))
-                .discountAmount(BigDecimal.valueOf(10.00))
+                .totalAmount(150.00f)
+                .discountAmount(10.00f)
                 .items(Map.of("item1", 2))
                 .build();
 
@@ -85,9 +84,9 @@ class ChangeDTOsTest {
         assertNotNull(result.getOrderId());
         assertNotNull(result.getOrderNumber());
         assertNull(result.getUserId());
-        assertNull(result.getTotalAmount());
-        assertNull(result.getDiscountAmount());
-        assertNull(result.getFinalAmount());
+        assertEquals(0.0f, result.getTotalAmount());
+        assertEquals(0.0f, result.getDiscountAmount());
+        assertEquals(0.0f, result.getFinalAmount());
         assertEquals(OrderStatus.CREATED, result.getOrderStatus());
     }
 
@@ -197,32 +196,32 @@ class ChangeDTOsTest {
     @Test
     void changeDTOtoOrders_shouldHandleLargeValues() {
         // Arrange
-        ordersDTO.setTotalAmount(BigDecimal.valueOf(Long.MAX_VALUE));
-        ordersDTO.setDiscountAmount(BigDecimal.valueOf(Long.MAX_VALUE));
+        ordersDTO.setTotalAmount(Float.MAX_VALUE);
+        ordersDTO.setDiscountAmount(Float.MAX_VALUE);
 
         // Act
         Orders result = changeDTOs.changeDTOtoOrders(ordersDTO);
 
         // Assert
         assertNotNull(result);
-        assertEquals(BigDecimal.valueOf(Long.MAX_VALUE), result.getTotalAmount());
-        assertEquals(BigDecimal.valueOf(Long.MAX_VALUE), result.getDiscountAmount());
-        assertEquals(BigDecimal.valueOf(Long.MAX_VALUE), result.getFinalAmount());
+        assertEquals(Float.MAX_VALUE, result.getTotalAmount(), 0.001);
+        assertEquals(Float.MAX_VALUE, result.getDiscountAmount(), 0.001);
+        assertEquals(Float.MAX_VALUE, result.getFinalAmount(), 0.001);
     }
 
     @Test
     void changeDTOtoOrders_shouldHandleNegativeValues() {
         // Arrange
-        ordersDTO.setTotalAmount(BigDecimal.valueOf(-100));
-        ordersDTO.setDiscountAmount(BigDecimal.valueOf(-10));
+        ordersDTO.setTotalAmount(-100.00f);
+        ordersDTO.setDiscountAmount(-10.00f);
 
         // Act
         Orders result = changeDTOs.changeDTOtoOrders(ordersDTO);
 
         // Assert
         assertNotNull(result);
-        assertEquals(BigDecimal.valueOf(-100), result.getTotalAmount());
-        assertEquals(BigDecimal.valueOf(-10), result.getDiscountAmount());
+        assertEquals(-100.00f, result.getTotalAmount(), 0.001);
+        assertEquals(-10.00f, result.getDiscountAmount(), 0.001);
     }
 
     // -------------------- Additional coverage for remaining methods
@@ -235,9 +234,9 @@ class ChangeDTOsTest {
                 .OrderId("ORD-001")
                 .orderNumber("ON-001")
                 .userId("USER-001")
-                .totalAmount(BigDecimal.valueOf(150.00))
-                .discountAmount(BigDecimal.valueOf(10.00))
-                .finalAmount(BigDecimal.valueOf(140.00))
+                .totalAmount(150.00f)
+                .discountAmount(10.00f)
+                .finalAmount(140.00f)
                 .orderStatus(OrderStatus.CREATED)
                 .build();
 
@@ -246,27 +245,19 @@ class ChangeDTOsTest {
 
         // Assert
         assertNotNull(result);
-        // The method currently returns an empty DTO (builder without fields)
-        assertNull(result.getOrderId());
-        assertNull(result.getUserId());
-        assertNull(result.getTotalAmount());
-        assertNull(result.getDiscountAmount());
-        assertNull(result.getItems());
+        // The method currently returns a DTO with the order fields populated
+        assertEquals("ORD-001", result.getOrderId());
+        assertEquals("USER-001", result.getUserId());
+        assertEquals(150.00f, result.getTotalAmount(), 0.001);
+        assertEquals(10.00f, result.getDiscountAmount(), 0.001);
     }
 
     @Test
     void changeOrdersToDto_shouldHandleNullOrders() {
-        // Act
-        OrdersDTO result = changeDTOs.changeOrdersToDto(null);
-
-        // Assert
-        assertNotNull(result);
-        // The method ignores the input parameter and returns an empty DTO
-        assertNull(result.getOrderId());
-        assertNull(result.getUserId());
-        assertNull(result.getTotalAmount());
-        assertNull(result.getDiscountAmount());
-        assertNull(result.getItems());
+        // Act & Assert
+        assertThrows(NullPointerException.class, () -> {
+            changeDTOs.changeOrdersToDto(null);
+        });
     }
 
     @Test
@@ -283,9 +274,8 @@ class ChangeDTOsTest {
         // The method currently returns an empty DTO (builder without fields)
         assertNull(result.getOrderId());
         assertNull(result.getUserId());
-        assertNull(result.getTotalAmount());
-        assertNull(result.getDiscountAmount());
-        assertNull(result.getItems());
+        assertEquals(0.0f, result.getTotalAmount());
+        assertEquals(0.0f, result.getDiscountAmount());
     }
 
     @Test
@@ -297,8 +287,7 @@ class ChangeDTOsTest {
         assertNotNull(result);
         assertNull(result.getOrderId());
         assertNull(result.getUserId());
-        assertNull(result.getTotalAmount());
-        assertNull(result.getDiscountAmount());
-        assertNull(result.getItems());
+        assertEquals(0.0f, result.getTotalAmount());
+        assertEquals(0.0f, result.getDiscountAmount());
     }
 }

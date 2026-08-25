@@ -10,8 +10,8 @@ import com.EComMicroService.OrdersServices.Enums.OrderStatus;
 @Service
 public class ChangeDTOs {
 
-    public Address changeDTOtoAddress(AddressDTO address){
-         return Address.builder()
+    public Address changeDTOtoAddress(AddressDTO address) {
+        return Address.builder()
                 .id(address.getId())
                 .name(address.getName())
                 .number(address.getNumber())
@@ -25,7 +25,7 @@ public class ChangeDTOs {
                 .build();
     }
 
-    public AddressDTO changAddressToDTO(Address address){
+    public AddressDTO changAddressToDTO(Address address) {
         return AddressDTO.builder()
                 .Id(address.getId())
                 .name(address.getName())
@@ -40,26 +40,34 @@ public class ChangeDTOs {
                 .build();
     }
 
-    public  Orders changeDTOtoOrders(OrdersDTO dto) {
+    public Orders changeDTOtoOrders(OrdersDTO dto) {
         return Orders.builder()
                 .OrderId(UUID.randomUUID().toString())
                 .userId(dto.getUserId())
+                .userEmail(dto.getUserEmail())
                 .orderNumber(UUID.randomUUID().toString())
                 .totalAmount(dto.getTotalAmount())
                 .discountAmount(dto.getDiscountAmount())
                 .finalAmount(dto.getTotalAmount())
                 .orderStatus(OrderStatus.CREATED)
+                .addressId(dto.getAddressId())
                 .build();
     }
 
-    public  OrdersDTO changeOrdersToDto(Orders orders) {
+    public OrdersDTO changeOrdersToDto(Orders orders) {
         OrdersDTO ordersDTO = OrdersDTO.builder()
-                // .orderId(orders.getOrderId())
+                .orderId(orders.getOrderId())
+                .userId(orders.getUserId())
+                .userEmail(orders.getUserEmail())
+                .orderNumber(orders.getOrderNumber())
+                .totalAmount(orders.getTotalAmount())
+                .discountAmount(orders.getDiscountAmount())
+                .addressId(orders.getAddressId())
                 .build();
         return ordersDTO;
     }
 
-    public  OrdersDTO changeEvtToDto(String orderId, String orders) {
+    public OrdersDTO changeEvtToDto(String orderId, String orders) {
         OrdersDTO ordersDTO = OrdersDTO.builder()
                 .build();
         return ordersDTO;

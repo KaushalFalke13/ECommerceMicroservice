@@ -3,7 +3,6 @@ package com.EComMicroService.OrdersServices.Repository;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +43,7 @@ class OrderRepositoryTest {
                 .OrderId(ORDER_ID_1)
                 .userId(USER_ID_1)
                 .orderNumber("ORD-001")
-                .totalAmount(BigDecimal.valueOf(150.00))
+                .totalAmount(150.00f)
                 .orderStatus(OrderStatus.CREATED)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -53,8 +52,8 @@ class OrderRepositoryTest {
                 .OrderId(ORDER_ID_2)
                 .userId(USER_ID_1)
                 .orderNumber("ORD-002")
-                .totalAmount(BigDecimal.valueOf(250.00))
-                .orderStatus(OrderStatus.DELEVERED)
+                .totalAmount(250.00f)
+                .orderStatus(OrderStatus.DELIVERED)
                 .createdAt(LocalDateTime.now())
                 .build();
     }
@@ -131,8 +130,8 @@ class OrderRepositoryTest {
                 .OrderId("ord-003")
                 .userId(USER_ID_1)
                 .orderNumber("ORD-003")
-                .totalAmount(BigDecimal.valueOf(100.00))
-                .orderStatus(OrderStatus.IN_PROGRESS)
+                .totalAmount(100.00f)
+                .orderStatus(OrderStatus.PROCESSING)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -140,8 +139,8 @@ class OrderRepositoryTest {
                 .OrderId("ord-004")
                 .userId(USER_ID_2)
                 .orderNumber("ORD-004")
-                .totalAmount(BigDecimal.valueOf(50.00))
-                .orderStatus(OrderStatus.CANCELED)
+                .totalAmount(50.00f)
+                .orderStatus(OrderStatus.CANCELLED)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -192,8 +191,8 @@ class OrderRepositoryTest {
                 .OrderId("ord-005")
                 .userId(USER_ID_1)
                 .orderNumber("ORD-005")
-                .totalAmount(BigDecimal.valueOf(300.00))
-                .orderStatus(OrderStatus.DELEVERED)
+                .totalAmount(300.00f)
+                .orderStatus(OrderStatus.DELIVERED)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -201,8 +200,8 @@ class OrderRepositoryTest {
                 .OrderId("ord-006")
                 .userId(USER_ID_1)
                 .orderNumber("ORD-006")
-                .totalAmount(BigDecimal.valueOf(75.00))
-                .orderStatus(OrderStatus.CANCELED)
+                .totalAmount(75.00f)
+                .orderStatus(OrderStatus.CANCELLED)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -218,8 +217,8 @@ class OrderRepositoryTest {
         assertNotNull(userOrders);
         assertEquals(3, userOrders.size());
         assertTrue(userOrders.stream().anyMatch(o -> OrderStatus.CREATED.equals(o.getOrderStatus())));
-        assertTrue(userOrders.stream().anyMatch(o -> OrderStatus.DELEVERED.equals(o.getOrderStatus())));
-        assertTrue(userOrders.stream().anyMatch(o -> OrderStatus.CANCELED.equals(o.getOrderStatus())));
+        assertTrue(userOrders.stream().anyMatch(o -> OrderStatus.DELIVERED.equals(o.getOrderStatus())));
+        assertTrue(userOrders.stream().anyMatch(o -> OrderStatus.CANCELLED.equals(o.getOrderStatus())));
     }
 
     // ==================== Delete Tests ====================
@@ -254,7 +253,7 @@ class OrderRepositoryTest {
                 .OrderId("ord-007")
                 .userId(USER_ID_2)
                 .orderNumber("ORD-007")
-                .totalAmount(BigDecimal.valueOf(200.00))
+                .totalAmount(200.00f)
                 .orderStatus(OrderStatus.CREATED)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -281,13 +280,13 @@ class OrderRepositoryTest {
 
         // Act
         savedOrder.setOrderStatus(OrderStatus.COMPLETED);
-        savedOrder.setTotalAmount(BigDecimal.valueOf(200.00));
+        savedOrder.setTotalAmount(200.00f);
         Orders updatedOrder = orderRepository.save(savedOrder);
         entityManager.flush();
 
         // Assert
         assertEquals(OrderStatus.COMPLETED, updatedOrder.getOrderStatus());
-        assertEquals(BigDecimal.valueOf(200.00), updatedOrder.getTotalAmount());
+        assertEquals(200.00f, updatedOrder.getTotalAmount(), 0.001);
     }
 
     // ==================== Edge Cases ====================
@@ -299,8 +298,8 @@ class OrderRepositoryTest {
                 .OrderId("ord-008")
                 .userId(USER_ID_1)
                 .orderNumber("ORD-008")
-                .totalAmount(BigDecimal.valueOf(999.99))
-                .orderStatus(OrderStatus.PAIDED)
+                .totalAmount(999.99f)
+                .orderStatus(OrderStatus.PAID)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -310,8 +309,8 @@ class OrderRepositoryTest {
         // Assert
         assertNotNull(savedOrder);
         assertEquals("ord-008", savedOrder.getOrderId());
-        assertEquals(OrderStatus.PAIDED, savedOrder.getOrderStatus());
-        assertEquals(BigDecimal.valueOf(999.99), savedOrder.getTotalAmount());
+        assertEquals(OrderStatus.PAID, savedOrder.getOrderStatus());
+        assertEquals(999.99f, savedOrder.getTotalAmount(), 0.001);
     }
 
     @Test
@@ -322,7 +321,7 @@ class OrderRepositoryTest {
                     .OrderId("ord-" + String.format("%03d", i))
                     .userId(USER_ID_1)
                     .orderNumber("ORD-" + String.format("%03d", i))
-                    .totalAmount(BigDecimal.valueOf(i * 10.0))
+                    .totalAmount(i * 10.0f)
                     .orderStatus(OrderStatus.CREATED)
                     .createdAt(LocalDateTime.now())
                     .build();
@@ -345,7 +344,7 @@ class OrderRepositoryTest {
                 .OrderId("ord-009")
                 .userId(USER_ID_1)
                 .orderNumber("ORD-009")
-                .totalAmount(BigDecimal.ZERO)
+                .totalAmount(0.0f)
                 .orderStatus(OrderStatus.CREATED)
                 .build();
 
@@ -354,7 +353,7 @@ class OrderRepositoryTest {
 
         // Assert
         assertNotNull(savedOrder);
-        assertEquals(BigDecimal.ZERO, savedOrder.getTotalAmount());
+        assertEquals(0.0f, savedOrder.getTotalAmount(), 0.001);
         assertNull(savedOrder.getCreatedAt());
     }
 }

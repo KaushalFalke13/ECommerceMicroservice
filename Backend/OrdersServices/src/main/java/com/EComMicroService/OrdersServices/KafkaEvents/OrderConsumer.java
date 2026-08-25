@@ -44,7 +44,7 @@ public class OrderConsumer {
 
             switch (Event.getEventType().toString()) {
                 case "PAYMENT_SUCCESS":
-                    orderService.updateOrderStatus(Event.getOrderId(), OrderStatus.PAIDED);
+                    orderService.updateOrderStatus(Event.getOrderId(), OrderStatus.PAID);
                     break;
                 default:
                     // System.out.println("Unknown eventType: " + Event.getEventType());

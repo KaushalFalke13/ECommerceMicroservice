@@ -1,8 +1,13 @@
 package com.EComMicroService.OrdersServices.Services;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.EComMicroService.OrdersServices.Client.ProductsServiceClient;
+import com.EComMicroService.OrdersServices.DTO.ApiResponse;
+import com.EComMicroService.OrdersServices.DTO.BagItemDTO;
 import com.EComMicroService.OrdersServices.DTO.ChangeDTOs;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
 import com.EComMicroService.OrdersServices.Entity.Orders;
@@ -20,20 +25,50 @@ public class OrderServiceImpl implements OrderService {
     private final ChangeDTOs changeDTOs;
     private final OrderRepository orderRepository;
     private final OrderEventService orderEventService;
+    private final ProductsServiceClient productsServiceClient;
+    private final NotificationService notificationService;
 
     public OrderServiceImpl(OrderRepository orderRepository, OrderEventService orderEventService,
-            ChangeDTOs changeDTOs) {
+            ChangeDTOs changeDTOs, ProductsServiceClient productsServiceClient,
+            NotificationService notificationService) {
         this.orderRepository = orderRepository;
         this.orderEventService = orderEventService;
         this.changeDTOs = changeDTOs;
+        this.productsServiceClient = productsServiceClient;
+        this.notificationService = notificationService;
     }
 
     @Override
     @Transactional
-    public String createOrder(OrdersDTO order) throws JsonProcessingException {
+    public String createOrder(OrdersDTO order, String authHeader) throws JsonProcessingException {
+        // Validate bag items from Products service
+        ApiResponse<List<BagItemDTO>> bagResponse = productsServiceClient.getBagItems(authHeader);
+        if (bagResponse == null || bagResponse.getData() == null || bagResponse.getData().isEmpty()) {
+            throw new RuntimeException("Bag is empty or invalid");
+        }
+
+        // Calculate total from bag items
+        Float bagTotal = bagResponse.getData().stream()
+                .map(BagItemDTO::getTotalPrice)
+                .reduce(0f, Float::sum);
+
+        // Set order total and items
+        order.setTotalAmount(bagTotal);
+        order.setItems(bagResponse.getData().stream().collect(Collectors.toMap(BagItemDTO::getProductId, BagItemDTO::getQuantity)));
+
         Orders newOrder = changeDTOs.changeDTOtoOrders(order);
+        newOrder.setOrderStatus(OrderStatus.PAYMENT_PENDING);
         String orderId = orderRepository.save(newOrder).getOrderId();
+
+        // Publish order created event
         orderEventService.saveOrderEvent(order);
+
+        // Clear the bag after successful order creation
+        productsServiceClient.clearBag(authHeader);
+
+        // Send order confirmation notification
+        notificationService.sendOrderConfirmation(newOrder, order.getUserEmail());
+
         return orderId;
     }
 
@@ -53,14 +88,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Boolean cancelOrder(String orderId) {
+    @Transactional
+    public Boolean cancelOrder(String orderId) throws JsonProcessingException {
         Orders order = orderRepository.findById(orderId).orElse(null);
         if (order == null) {
             return false;
         }
-        if (!order.getOrderStatus().equals(OrderStatus.DELEVERED)) {
-            order.setOrderStatus(OrderStatus.CANCELED);
+        if (!order.getOrderStatus().equals(OrderStatus.DELIVERED)) {
+            order.setOrderStatus(OrderStatus.CANCELLED);
             orderRepository.save(order);
+
+            // Publish cancellation event to release inventory
+            orderEventService.saveOrderEvent(changeDTOs.changeOrdersToDto(order));
             return true;
         }
         return false;

@@ -28,10 +28,10 @@ public class OrderEventServiceImpl implements OrderEventService {
                 .orderId(ordersDTO.getOrderId())
                 .eventType(EventType.ORDER_PENDING)
                 // .shippingAddress(ordersDTO.())
-                .discountAmount(ordersDTO.getDiscountAmount().longValue())
+                .discountAmount(ordersDTO.getDiscountAmount())
                 .userId(ordersDTO.getUserId())
                 .items(ordersDTO.getItems())
-                .total(ordersDTO.getTotalAmount().longValue())
+                .total(ordersDTO.getTotalAmount())
                 .build();
 
         OrdersEventsLog ordersEvents = OrdersEventsLog.builder()

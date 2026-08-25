@@ -1,6 +1,5 @@
 package com.EComMicroService.OrdersServices.Entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.EComMicroService.OrdersServices.Enums.OrderStatus;
@@ -33,9 +32,11 @@ public class Orders {
     @Column(nullable = false)
     private String userId;
 
-    private BigDecimal totalAmount;
-    private BigDecimal discountAmount;
-    private BigDecimal finalAmount;
+    private String userEmail;
+
+    private float totalAmount;
+    private float discountAmount;
+    private float finalAmount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;

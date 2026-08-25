@@ -20,8 +20,8 @@ public class Events {
     private String orderNumber;
     private EventType eventType;
     private Map<String,Integer> items;
-    private long discountAmount;
-    private long total;
+    private float discountAmount;
+    private float total;
     private Address shippingAddress;
 }
 

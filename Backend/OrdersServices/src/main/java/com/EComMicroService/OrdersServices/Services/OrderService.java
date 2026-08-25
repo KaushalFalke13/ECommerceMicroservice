@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface OrderService {
 
-    String createOrder(OrdersDTO order) throws JsonProcessingException;
+    String createOrder(OrdersDTO order, String authHeader) throws JsonProcessingException;
 
     List<Orders> getOrdersByUserId(String userId);
 
@@ -18,7 +18,7 @@ public interface OrderService {
 
     Object getOrderDetails(String orderId);
 
-    Boolean cancelOrder(String orderId);
+    Boolean cancelOrder(String orderId) throws JsonProcessingException;
 
     Boolean deleteOrder(String orderId);
 

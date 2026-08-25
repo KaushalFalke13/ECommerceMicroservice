@@ -2,7 +2,6 @@ package com.EComMicroService.OrdersServices.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,8 +35,8 @@ class OrderEventServiceImplTest {
         ordersDTO = OrdersDTO.builder()
                 .orderId("1001L")
                 .userId("2001L")
-                .discountAmount(BigDecimal.valueOf(50))
-                .totalAmount(BigDecimal.valueOf(500))
+                .discountAmount(50)
+                .totalAmount(500)
                 .items(Collections.emptyMap())
                 .build();
     }
@@ -63,8 +62,8 @@ class OrderEventServiceImplTest {
         assertEquals(EventType.ORDER_PENDING, event.getEventType());
         assertEquals(ordersDTO.getOrderId(), event.getOrderId());
         assertEquals(ordersDTO.getUserId(), event.getUserId());
-        assertEquals(ordersDTO.getDiscountAmount().longValue(), event.getDiscountAmount());
-        assertEquals(ordersDTO.getTotalAmount().longValue(), event.getTotal());
+        assertEquals(ordersDTO.getDiscountAmount(), event.getDiscountAmount());
+        assertEquals(ordersDTO.getTotalAmount(), event.getTotal());
     }
 
     // -------------------- getUnpublishedEvents --------------------

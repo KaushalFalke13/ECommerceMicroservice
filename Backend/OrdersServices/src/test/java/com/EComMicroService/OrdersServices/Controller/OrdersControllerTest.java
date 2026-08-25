@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,7 +52,7 @@ class OrdersControllerTest {
                 .orderId(ORDER_ID)
                 .userId(USER_ID)
                 .orderNumber("ORD-001")
-                .totalAmount(BigDecimal.valueOf(150.00))
+                .totalAmount(150.00f)
                 .build();
 
         addressDTO = AddressDTO.builder()
@@ -226,7 +225,7 @@ class OrdersControllerTest {
     @Test
     void createOrder_shouldReturnCreatedOrderId_whenOrderCreated() throws JsonProcessingException {
         // Arrange
-        when(orderService.createOrder(any(OrdersDTO.class))).thenReturn(ORDER_ID);
+        when(orderService.createOrder(any(OrdersDTO.class), any(String.class))).thenReturn(ORDER_ID);
 
         // Act
         ResponseEntity<ApiResponse<String>> response = ordersController.createOrder(VALID_TOKEN, ordersDTO);
@@ -238,13 +237,13 @@ class OrdersControllerTest {
         assertEquals(201, response.getBody().getStatus());
         assertEquals("Order created successfully", response.getBody().getMessage());
         assertEquals(ORDER_ID, response.getBody().getData());
-        verify(orderService, times(1)).createOrder(ordersDTO);
+        verify(orderService, times(1)).createOrder(ordersDTO, VALID_TOKEN);
     }
 
     @Test
     void createOrder_shouldReturnInternalServerError_whenOrderCreationFails() throws JsonProcessingException {
         // Arrange
-        when(orderService.createOrder(any(OrdersDTO.class))).thenReturn(null);
+        when(orderService.createOrder(any(OrdersDTO.class), any(String.class))).thenReturn(null);
 
         // Act
         ResponseEntity<ApiResponse<String>> response = ordersController.createOrder(VALID_TOKEN, ordersDTO);
@@ -255,20 +254,20 @@ class OrdersControllerTest {
         assertNotNull(response.getBody());
         assertEquals(500, response.getBody().getStatus());
         assertEquals("Failed to create order", response.getBody().getMessage());
-        verify(orderService, times(1)).createOrder(ordersDTO);
+        verify(orderService, times(1)).createOrder(ordersDTO, VALID_TOKEN);
     }
 
     @Test
     void createOrder_shouldReturnInternalServerError_whenJsonProcessingExceptionThrown()
             throws JsonProcessingException {
         // Arrange
-        when(orderService.createOrder(any(OrdersDTO.class)))
+        when(orderService.createOrder(any(OrdersDTO.class), any(String.class)))
                 .thenThrow(new JsonProcessingException("JSON parsing error") {
                 });
 
         // Act & Assert
         assertThrows(JsonProcessingException.class, () -> ordersController.createOrder(VALID_TOKEN, ordersDTO));
-        verify(orderService, times(1)).createOrder(ordersDTO);
+        verify(orderService, times(1)).createOrder(ordersDTO, VALID_TOKEN);
     }
 
     @Test
@@ -277,7 +276,7 @@ class OrdersControllerTest {
         OrdersDTO incompleteOrder = OrdersDTO.builder()
                 .userId(USER_ID)
                 .build();
-        when(orderService.createOrder(any(OrdersDTO.class))).thenReturn("ord-999");
+        when(orderService.createOrder(any(OrdersDTO.class), any(String.class))).thenReturn("ord-999");
 
         // Act
         ResponseEntity<ApiResponse<String>> response = ordersController.createOrder(VALID_TOKEN, incompleteOrder);
@@ -285,7 +284,7 @@ class OrdersControllerTest {
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        verify(orderService, times(1)).createOrder(incompleteOrder);
+        verify(orderService, times(1)).createOrder(incompleteOrder, VALID_TOKEN);
     }
 
     // ==================== listOrders Tests ====================
@@ -397,7 +396,7 @@ class OrdersControllerTest {
     // ==================== cancelOrder Tests ====================
 
     @Test
-    void cancelOrder_shouldReturnSuccess_whenOrderCanceled() {
+    void cancelOrder_shouldReturnSuccess_whenOrderCanceled() throws JsonProcessingException {
         // Arrange
         when(orderService.cancelOrder(ORDER_ID)).thenReturn(true);
 
@@ -414,7 +413,7 @@ class OrdersControllerTest {
     }
 
     @Test
-    void cancelOrder_shouldReturnBadRequest_whenCancelFails() {
+    void cancelOrder_shouldReturnBadRequest_whenCancelFails() throws JsonProcessingException {
         // Arrange
         when(orderService.cancelOrder(ORDER_ID)).thenReturn(false);
 
@@ -436,17 +435,19 @@ class OrdersControllerTest {
     void updateAddress_shouldReturnSuccess_whenOrderExists() {
         // Arrange
         String orderId = "ord-456";
-        String newAddress = "456 New St, Springfield, IL 62701";
+        String addressId = "1";
+        when(orderService.updateOrderAddress(orderId, addressId)).thenReturn(true);
 
         // Act
-        ResponseEntity<ApiResponse<Void>> response = ordersController.updateAddress(orderId, newAddress);
+        ResponseEntity<ApiResponse<Void>> response = ordersController.updateAddress(orderId, addressId);
 
         // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals(200, response.getBody().getStatus());
-        assertEquals("Order address updatedsuccessfully", response.getBody().getMessage());
+        assertEquals("Order address updated successfully", response.getBody().getMessage());
+        verify(orderService, times(1)).updateOrderAddress(orderId, addressId);
     }
 
     @Test
@@ -469,7 +470,7 @@ class OrdersControllerTest {
     }
 
     @Test
-    void cancelOrder_shouldHandleNullOrderId() {
+    void cancelOrder_shouldHandleNullOrderId() throws JsonProcessingException {
         // Arrange
         when(orderService.cancelOrder(null)).thenReturn(false);
 
@@ -509,12 +510,12 @@ class OrdersControllerTest {
     @Test
     void createOrder_shouldHandleOrderServiceException() throws JsonProcessingException {
         // Arrange
-        when(orderService.createOrder(any(OrdersDTO.class)))
+        when(orderService.createOrder(any(OrdersDTO.class), any(String.class)))
                 .thenThrow(new RuntimeException("Order service error"));
 
         // Act & Assert
         assertThrows(RuntimeException.class, () -> ordersController.createOrder(VALID_TOKEN, ordersDTO));
-        verify(orderService, times(1)).createOrder(ordersDTO);
+        verify(orderService, times(1)).createOrder(ordersDTO, VALID_TOKEN);
     }
 
     @Test

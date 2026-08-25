@@ -3,7 +3,6 @@ package com.EComMicroService.OrdersServices.Service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,14 +12,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.EComMicroService.OrdersServices.Client.ProductsServiceClient;
+import com.EComMicroService.OrdersServices.DTO.ApiResponse;
+import com.EComMicroService.OrdersServices.DTO.BagItemDTO;
 import com.EComMicroService.OrdersServices.DTO.ChangeDTOs;
 import com.EComMicroService.OrdersServices.DTO.OrdersDTO;
 import com.EComMicroService.OrdersServices.Entity.Orders;
 import com.EComMicroService.OrdersServices.Enums.OrderStatus;
 import com.EComMicroService.OrdersServices.Repositorys.OrderRepository;
+import com.EComMicroService.OrdersServices.Services.NotificationService;
 import com.EComMicroService.OrdersServices.Services.OrderEventService;
 import com.EComMicroService.OrdersServices.Services.OrderServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.ArrayList;
 
 @ExtendWith(MockitoExtension.class)
 class OrderServiceImplTest {
@@ -30,6 +34,12 @@ class OrderServiceImplTest {
 
         @Mock
         private OrderEventService orderEventService;
+
+        @Mock
+        private ProductsServiceClient productsServiceClient;
+
+        @Mock
+        private NotificationService notificationService;
 
         @InjectMocks
         private OrderServiceImpl orderService;
@@ -44,7 +54,7 @@ class OrderServiceImplTest {
         void setup() {
                 ordersDTO = OrdersDTO.builder()
                                 .userId("USER-1")
-                                .totalAmount(BigDecimal.valueOf(500))
+                                .totalAmount(500f)
                                 .build();
 
                 order = Orders.builder()
@@ -60,13 +70,26 @@ class OrderServiceImplTest {
         void createOrder_shouldSaveOrderAndPublishEvent()
                         throws JsonProcessingException {
 
+                // Mock bag items response
+                List<BagItemDTO> bagItems = new ArrayList<>();
+                BagItemDTO item = BagItemDTO.builder()
+                                .productId("prod-1")
+                                .quantity(2)
+                                .totalPrice(500f)
+                                .build();
+                bagItems.add(item);
+                ApiResponse<List<BagItemDTO>> bagResponse = new ApiResponse<>(200, "Success", bagItems);
+                when(productsServiceClient.getBagItems("ORD-1")).thenReturn(bagResponse);
+
                 when(changeDTOs.changeDTOtoOrders(ordersDTO))
                                 .thenReturn(order);
 
                 when(orderRepository.save(any(Orders.class)))
                                 .thenReturn(order);
 
-                String orderId = orderService.createOrder(ordersDTO);
+                doNothing().when(notificationService).sendOrderConfirmation(any(Orders.class), any());
+
+                String orderId = orderService.createOrder(ordersDTO, "ORD-1");
 
                 // Assert
                 assertEquals("ORD-1", orderId);
@@ -135,7 +158,7 @@ class OrderServiceImplTest {
         // -------------------- cancelOrder --------------------
 
         @Test
-        void cancelOrder_shouldReturnFalse_whenOrderNotFound() {
+        void cancelOrder_shouldReturnFalse_whenOrderNotFound() throws JsonProcessingException {
                 when(orderRepository.findById("ORD-1"))
                                 .thenReturn(Optional.empty());
 
@@ -146,7 +169,7 @@ class OrderServiceImplTest {
         }
 
         @Test
-        void cancelOrder_shouldCancelOrder_whenNotDelivered() {
+        void cancelOrder_shouldCancelOrder_whenNotDelivered() throws JsonProcessingException {
                 order.setOrderStatus(OrderStatus.CREATED);
 
                 when(orderRepository.findById("ORD-1"))
@@ -157,14 +180,14 @@ class OrderServiceImplTest {
                 Boolean result = orderService.cancelOrder("ORD-1");
 
                 assertTrue(result);
-                assertEquals(OrderStatus.CANCELED,
+                assertEquals(OrderStatus.CANCELLED,
                                 order.getOrderStatus());
                 verify(orderRepository, times(1)).save(order);
         }
 
         @Test
-        void cancelOrder_shouldReturnFalse_whenOrderDelivered() {
-                order.setOrderStatus(OrderStatus.DELEVERED);
+        void cancelOrder_shouldReturnFalse_whenOrderDelivered() throws JsonProcessingException {
+                order.setOrderStatus(OrderStatus.DELIVERED);
 
                 when(orderRepository.findById("ORD-1"))
                                 .thenReturn(Optional.of(order));
@@ -178,7 +201,7 @@ class OrderServiceImplTest {
         // -------------------- deleteOrder --------------------
 
         @Test
-        void deleteOrder_shouldReturnFalse_whenOrderNotFound() {
+        void deleteOrder_shouldReturnFalse_whenOrderNotFound() throws JsonProcessingException {
                 when(orderRepository.findById("ORD-1"))
                                 .thenReturn(Optional.empty());
 

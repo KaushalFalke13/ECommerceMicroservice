@@ -78,7 +78,7 @@ public class OrdersController {
             @Valid @RequestBody OrdersDTO orderDTO)
             throws JsonProcessingException {
 
-        String createdOrderId = orderService.createOrder(orderDTO);
+        String createdOrderId = orderService.createOrder(orderDTO, authHeader);
         if (createdOrderId != null) {
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new ApiResponse<>(201, "Order created successfully", createdOrderId));
@@ -111,7 +111,7 @@ public class OrdersController {
 
     @DeleteMapping("/cancel")
     public ResponseEntity<ApiResponse<Void>> cancelOrder(
-            @RequestParam @NotBlank(message = "orderId is required") String orderId) {
+            @RequestParam @NotBlank(message = "orderId is required") String orderId) throws JsonProcessingException {
 
         boolean cancelled = orderService.cancelOrder(orderId);
         if (cancelled) {

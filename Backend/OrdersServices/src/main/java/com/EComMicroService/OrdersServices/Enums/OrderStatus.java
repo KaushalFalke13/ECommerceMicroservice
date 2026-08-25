@@ -1,5 +1,16 @@
 package com.EComMicroService.OrdersServices.Enums;
 
 public enum OrderStatus {
-    CREATED, CANCELED, DELEVERED , IN_PROGRESS , COMPLETED, RETURNED, REFUNDED,PAIDED, SHIPPED
+    CREATED,
+    PAYMENT_PENDING,
+    PAID,
+    PROCESSING,
+    SHIPPED,
+    DELIVERED,
+    COMPLETED,
+    CANCELLED,
+    PAYMENT_FAILED,
+    OUT_OF_STOCK,
+    RETURNED,
+    REFUNDED
 }
