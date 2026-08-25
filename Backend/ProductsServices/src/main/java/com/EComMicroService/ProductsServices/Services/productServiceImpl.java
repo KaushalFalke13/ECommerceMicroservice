@@ -28,6 +28,9 @@ public class productServiceImpl implements productService {
     @Override
     public productDTO getProductById(String id) {
         products products = productRepository.findById(id).orElse(null);
+        if (products == null) {
+            return null;
+        }
         return helperServices.changeProductToDto(products);
     }
 
@@ -57,11 +60,13 @@ public class productServiceImpl implements productService {
             existingProduct.setPrice(product.getPrice());
             existingProduct.setStock(product.getStock());
             existingProduct.setDiscount(product.getDiscount());
-            existingProduct.getImages().setImage1(product.getImages1());
-            existingProduct.getImages().setImage2(product.getImages2());
-            existingProduct.getImages().setImage3(product.getImages3());
-            existingProduct.getImages().setImage4(product.getImages4());
-            existingProduct.getImages().setImage5(product.getImages5());
+            if (existingProduct.getImages() != null) {
+                existingProduct.getImages().setImage1(product.getImages1());
+                existingProduct.getImages().setImage2(product.getImages2());
+                existingProduct.getImages().setImage3(product.getImages3());
+                existingProduct.getImages().setImage4(product.getImages4());
+                existingProduct.getImages().setImage5(product.getImages5());
+            }
             return productRepository.save(existingProduct);
         }
         return null;

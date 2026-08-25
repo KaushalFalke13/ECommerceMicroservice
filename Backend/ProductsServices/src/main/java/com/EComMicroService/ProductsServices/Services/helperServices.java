@@ -40,11 +40,11 @@ public class helperServices {
                 .stock(products.getStock())
                 .reservedStock(products.getReservedStock())
                 .discount(products.getDiscount())
-                .images1(products.getImages().getImage1())
-                .images2(products.getImages().getImage2())
-                .images3(products.getImages().getImage3())
-                .images4(products.getImages().getImage4())
-                .images5(products.getImages().getImage5())
+                .images1(products.getImages() != null ? products.getImages().getImage1() : null)
+                .images2(products.getImages() != null ? products.getImages().getImage2() : null)
+                .images3(products.getImages() != null ? products.getImages().getImage3() : null)
+                .images4(products.getImages() != null ? products.getImages().getImage4() : null)
+                .images5(products.getImages() != null ? products.getImages().getImage5() : null)
                 .build();
     }
 
