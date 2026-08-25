@@ -20,16 +20,16 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String name;
     private Long number;
     private String street;
     private String city;
     private String state;
     private Long pincode;
-    private boolean isDefault; 
+    private boolean isDefault;
     private String type;
-    
+
     private String userId;
 
 }

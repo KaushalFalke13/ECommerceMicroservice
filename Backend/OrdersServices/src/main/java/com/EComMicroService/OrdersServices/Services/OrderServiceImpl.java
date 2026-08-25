@@ -21,10 +21,11 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderEventService orderEventService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderEventService orderEventService, ChangeDTOs changeDTOs) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderEventService orderEventService,
+            ChangeDTOs changeDTOs) {
         this.orderRepository = orderRepository;
         this.orderEventService = orderEventService;
-        this.changeDTOs = changeDTOs;  
+        this.changeDTOs = changeDTOs;
     }
 
     @Override
@@ -86,4 +87,15 @@ public class OrderServiceImpl implements OrderService {
         return null;
     }
 
+    @Override
+    @Transactional
+    public Boolean updateOrderAddress(String orderId, String addressId) {
+        Orders order = orderRepository.findById(orderId).orElse(null);
+        if (order == null) {
+            return false;
+        }
+        order.setAddressId(addressId);
+        orderRepository.save(order);
+        return true;
+    }
 }

@@ -22,4 +22,6 @@ public interface OrderService {
 
     Boolean deleteOrder(String orderId);
 
+    Boolean updateOrderAddress(String orderId, String addressId);
+
 }

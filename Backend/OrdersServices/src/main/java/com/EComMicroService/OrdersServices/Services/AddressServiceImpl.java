@@ -19,29 +19,29 @@ public class AddressServiceImpl implements AddressService {
     private final ChangeDTOs changeDTOs;
     private final jwtUtil jwtUtil;
 
-    public AddressServiceImpl(AddressRepository addressRepository,ChangeDTOs changeDTOs,jwtUtil jwtUtil){
+    public AddressServiceImpl(AddressRepository addressRepository, ChangeDTOs changeDTOs, jwtUtil jwtUtil) {
         this.addressRepository = addressRepository;
         this.changeDTOs = changeDTOs;
         this.jwtUtil = jwtUtil;
     }
 
     @Override
-    public Address addAddress(AddressDTO addressDTO,String authHeader) {
+    public Address addAddress(AddressDTO addressDTO, String authHeader) {
         String userId = getUserIdFromAuthHeader(authHeader);
         addressDTO.setUserId(userId);
         Address address = changeDTOs.changeDTOtoAddress(addressDTO);
-        return addressRepository.save(address);    
+        return addressRepository.save(address);
     }
 
-   @Override
-    public void removeAddress(Long addressId) {
+    @Override
+    public void removeAddress(String addressId) {
         addressRepository.deleteById(addressId);
     }
 
     @Override
     public List<AddressDTO> getAddressesByUserId(String authHeader) {
         String userId = getUserIdFromAuthHeader(authHeader);
-        List<Address> address =addressRepository.findAllByUserId(userId);
+        List<Address> address = addressRepository.findAllByUserId(userId);
         return address.stream().map(item -> changeDTOs.changAddressToDTO(item)).toList();
     }
 
@@ -52,7 +52,6 @@ public class AddressServiceImpl implements AddressService {
         throw new UnsupportedOperationException("Unimplemented method 'updateAddress'");
     }
 
-
     private String getUserIdFromAuthHeader(String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         if (token == null) {
@@ -61,5 +60,4 @@ public class AddressServiceImpl implements AddressService {
         return jwtUtil.getUserIdFromToken(token);
     }
 
- 
 }

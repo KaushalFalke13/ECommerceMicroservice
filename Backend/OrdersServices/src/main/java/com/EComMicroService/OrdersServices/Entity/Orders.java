@@ -56,7 +56,7 @@ public class Orders {
     // @Column(columnDefinition = "TEXT")
     // private String shippingAddressJson;
 
-    // private Long addressId;
+    private String addressId;
 
     // private String trackingNumber;
     // private String carrier;

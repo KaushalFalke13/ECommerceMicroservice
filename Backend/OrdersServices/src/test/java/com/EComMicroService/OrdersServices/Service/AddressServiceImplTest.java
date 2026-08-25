@@ -41,7 +41,7 @@ class AddressServiceImplTest {
 
     private final String VALID_TOKEN = "Bearer valid.jwt.token";
     private final String USER_ID = "user123";
-    private final Long ADDRESS_ID = 1L;
+    private final String ADDRESS_ID = "1";
 
     private AddressDTO addressDTO;
     private Address address;
@@ -195,7 +195,7 @@ class AddressServiceImplTest {
     @Test
     void removeAddress_ShouldHandleNonExistentAddressGracefully() {
         // Arrange
-        Long nonExistentId = 999L;
+        String nonExistentId = "999";
         doNothing().when(addressRepository).deleteById(nonExistentId);
 
         // Act
@@ -286,7 +286,7 @@ class AddressServiceImplTest {
     void getAddressesByUserId_ShouldReturnMultipleAddresses() {
         // Arrange
         Address address2 = new Address();
-        address2.setId(2L);
+        address2.setId("2");
         address2.setStreet("456 Oak Ave");
         address2.setCity("Chicago");
         address2.setState("IL");
@@ -332,7 +332,7 @@ class AddressServiceImplTest {
     void getAddressesByUserId_ShouldHandleAddressWithNullFields() {
         // Arrange
         Address addressWithNulls = new Address();
-        addressWithNulls.setId(3L);
+        addressWithNulls.setId("3");
         addressWithNulls.setStreet(null);
         addressWithNulls.setCity(null);
         addressWithNulls.setState(null);

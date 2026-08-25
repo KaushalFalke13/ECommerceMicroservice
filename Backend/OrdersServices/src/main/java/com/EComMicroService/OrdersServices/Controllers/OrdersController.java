@@ -37,21 +37,21 @@ public class OrdersController {
     @GetMapping("/status")
     public ResponseEntity<ApiResponse<String>> getOrderStatus() {
 
-        return ResponseEntity.ok(new ApiResponse<>(200, "Order service is up and running!", "Order service is up and running!"));
+        return ResponseEntity
+                .ok(new ApiResponse<>(200, "Order service is up and running!", "Order service is up and running!"));
     }
 
     @PatchMapping("/updateAddress")
     public ResponseEntity<ApiResponse<Void>> updateAddress(
-    @RequestParam @NotBlank(message = "orderId is required") String orderId,
-    @RequestParam @NotBlank(message = "address is required") String newAddress) {
-    // boolean updated = orderService(orderId, newAddress);
-    boolean updated = true;
-    if (updated) {
-    return ResponseEntity.ok(new ApiResponse<>(200, "Order address updatedsuccessfully"));
-    } else {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body(new ApiResponse<>(400, "Failed to update order address"));
-    }
+            @RequestParam @NotBlank(message = "orderId is required") String orderId,
+            @RequestParam @NotBlank(message = "addressId is required") String addressId) {
+        boolean updated = orderService.updateOrderAddress(orderId, addressId);
+        if (updated) {
+            return ResponseEntity.ok(new ApiResponse<>(200, "Order address updated successfully"));
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse<>(400, "Failed to update order address"));
+        }
     }
 
     @PostMapping("/addNewAddress")
@@ -62,7 +62,7 @@ public class OrdersController {
     }
 
     @PostMapping("/removeAddress")
-    public ResponseEntity<ApiResponse<String>> removeAddress(@RequestBody Long addressId) {
+    public ResponseEntity<ApiResponse<String>> removeAddress(@RequestBody String addressId) {
         addressService.removeAddress(addressId);
         return ResponseEntity.ok(new ApiResponse<>(200, "Address Removed Sucessfully", "Address Removed Sucessfully"));
     }
@@ -74,9 +74,10 @@ public class OrdersController {
     }
 
     @PostMapping("/place")
-    public ResponseEntity<ApiResponse<String>> createOrder(@RequestHeader("Authorization") String authHeader ,@Valid @RequestBody OrdersDTO orderDTO)
+    public ResponseEntity<ApiResponse<String>> createOrder(@RequestHeader("Authorization") String authHeader,
+            @Valid @RequestBody OrdersDTO orderDTO)
             throws JsonProcessingException {
-            
+
         String createdOrderId = orderService.createOrder(orderDTO);
         if (createdOrderId != null) {
             return ResponseEntity.status(HttpStatus.CREATED)
@@ -84,7 +85,7 @@ public class OrdersController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponse<>(500, "Failed to create order"));
-        }   
+        }
     }
 
     @GetMapping("/listOrders")

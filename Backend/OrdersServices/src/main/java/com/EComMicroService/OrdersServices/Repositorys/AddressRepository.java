@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 import com.EComMicroService.OrdersServices.Entity.Address;
 
 @Repository
-public interface AddressRepository extends JpaRepository<Address,Long>{
+public interface AddressRepository extends JpaRepository<Address, String> {
 
     List<Address> findAllByUserId(String userId);
-
 
 }

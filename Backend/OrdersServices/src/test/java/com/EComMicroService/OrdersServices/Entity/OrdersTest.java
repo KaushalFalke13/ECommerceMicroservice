@@ -92,9 +92,10 @@ class OrdersTest {
         BigDecimal discountAmount = BigDecimal.valueOf(20.00);
         BigDecimal finalAmount = BigDecimal.valueOf(180.00);
         OrderStatus status = OrderStatus.COMPLETED;
+        String addressId = "ADDR-001";
 
         // Act
-        Orders order = new Orders(orderId, orderNumber, userId, totalAmount, discountAmount, finalAmount, status, now);
+        Orders order = new Orders(orderId, orderNumber, userId, totalAmount, discountAmount, finalAmount, status, now, addressId);
 
         // Assert
         assertEquals(orderId, order.getOrderId());
@@ -105,6 +106,7 @@ class OrdersTest {
         assertEquals(finalAmount, order.getFinalAmount());
         assertEquals(status, order.getOrderStatus());
         assertEquals(now, order.getCreatedAt());
+        assertEquals(addressId, order.getAddressId());
     }
 
     @Test

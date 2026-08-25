@@ -31,7 +31,7 @@ class ChangeDTOsTest {
                 .build();
 
         addressDTO = AddressDTO.builder()
-                .Id(1L)
+                .Id("1")
                 .name("John Doe")
                 .street("123 Main St")
                 .city("Springfield")
@@ -142,7 +142,7 @@ class ChangeDTOsTest {
     void changAddressToDTO_shouldConvertEntityToDTO() {
         // Arrange
         Address address = Address.builder()
-                .id(1L)
+                .id("1")
                 .name("John Doe")
                 .street("123 Main St")
                 .city("Springfield")

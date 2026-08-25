@@ -57,7 +57,7 @@ class OrdersControllerTest {
                 .build();
 
         addressDTO = AddressDTO.builder()
-                .Id(1L)
+                .Id("1")
                 .name("John Doe")
                 .street("123 Main St")
                 .city("Springfield")
@@ -87,7 +87,7 @@ class OrdersControllerTest {
     @Test
     void addNewAddress_shouldAddAddressAndReturnSuccess() {
         // Arrange
-        Address mockAddress = Address.builder().id(1L).name("John Doe").build();
+        Address mockAddress = Address.builder().id("1").name("John Doe").build();
         when(addressService.addAddress(any(AddressDTO.class), anyString())).thenReturn(mockAddress);
 
         // Act
@@ -105,7 +105,7 @@ class OrdersControllerTest {
     @Test
     void addNewAddress_shouldHandleNullAuthHeader() {
         // Arrange
-        Address mockAddress = Address.builder().id(1L).name("John Doe").build();
+        Address mockAddress = Address.builder().id("1").name("John Doe").build();
         when(addressService.addAddress(any(AddressDTO.class), nullable(String.class))).thenReturn(mockAddress);
 
         // Act
@@ -121,10 +121,10 @@ class OrdersControllerTest {
     void addNewAddress_shouldHandleAddressDTOWithNullFields() {
         // Arrange
         AddressDTO incompleteAddress = AddressDTO.builder()
-                .Id(1L)
+                .Id("1")
                 .name("John Doe")
                 .build();
-        Address mockAddress = Address.builder().id(1L).name("John Doe").build();
+        Address mockAddress = Address.builder().id("1").name("John Doe").build();
         when(addressService.addAddress(any(AddressDTO.class), nullable(String.class))).thenReturn(mockAddress);
 
         // Act
@@ -141,7 +141,7 @@ class OrdersControllerTest {
     @Test
     void removeAddress_shouldRemoveAddressAndReturnSuccess() {
         // Arrange
-        Long addressId = 1L;
+        String addressId = "1";
         doNothing().when(addressService).removeAddress(addressId);
 
         // Act
@@ -452,12 +452,20 @@ class OrdersControllerTest {
     @Test
     void updateAddress_shouldReturnBadRequest_whenOrderNotFound() {
         // Arrange
-        // The current implementation always returns true, but we'll test the else
-        // branch
-        // by mocking the orderService method if it were used
-        // For now, this test is a placeholder since the method is hardcoded to return
-        // true
-        // If the implementation changes to call orderService, we can mock it
+        String orderId = "ord-999";
+        String addressId = "999";
+        when(orderService.updateOrderAddress(orderId, addressId)).thenReturn(false);
+
+        // Act
+        ResponseEntity<ApiResponse<Void>> response = ordersController.updateAddress(orderId, addressId);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(400, response.getBody().getStatus());
+        assertEquals("Failed to update order address", response.getBody().getMessage());
+        verify(orderService, times(1)).updateOrderAddress(orderId, addressId);
     }
 
     @Test

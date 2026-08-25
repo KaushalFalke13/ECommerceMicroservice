@@ -10,12 +10,12 @@ import com.EComMicroService.OrdersServices.Entity.Address;
 @Service
 public interface AddressService {
 
-    Address addAddress(AddressDTO addressDTO,String authHeader);
-    
+    Address addAddress(AddressDTO addressDTO, String authHeader);
+
     List<AddressDTO> getAddressesByUserId(String authHeader);
 
-    AddressDTO updateAddress(AddressDTO updatedAddress , String authHeader); 
+    AddressDTO updateAddress(AddressDTO updatedAddress, String authHeader);
 
-    void removeAddress(Long addressId);
+    void removeAddress(String addressId);
 
 }
