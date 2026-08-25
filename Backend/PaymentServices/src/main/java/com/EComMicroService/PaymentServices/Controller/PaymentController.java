@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.EComMicroService.PaymentServices.DTO.PaymentRequestDTO;
 import com.EComMicroService.PaymentServices.Entity.Payment;
+import com.EComMicroService.PaymentServices.Exception.PaymentNotFoundException;
 import com.EComMicroService.PaymentServices.Service.PaymentService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +33,9 @@ public class PaymentController {
     public ResponseEntity<Payment> getPaymentByOrderId(@PathVariable long orderId) {
         log.info("Received request to get payment for orderId: {}", orderId);
         Payment payment = paymentService.getPaymentDetailsByOrderId(orderId);
+        if (payment == null) {
+            throw new PaymentNotFoundException("Payment not found for orderId: " + orderId);
+        }
         return ResponseEntity.ok(payment);
     }
 
@@ -48,13 +54,13 @@ public class PaymentController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<Boolean> startPayment(
-            @RequestParam String orderId,
-            @RequestParam long amount,
-            @RequestParam String paymentMode) {
+    public ResponseEntity<Boolean> startPayment(@Valid @RequestBody PaymentRequestDTO paymentRequest) {
         log.info("Received request to start payment for orderId: {}, amount: {}, paymentMode: {}",
-                orderId, amount, paymentMode);
-        Boolean result = paymentService.startPayent(orderId, amount, paymentMode);
+                paymentRequest.getOrderId(), paymentRequest.getAmount(), paymentRequest.getPaymentMode());
+        Boolean result = paymentService.startPayent(
+                paymentRequest.getOrderId(),
+                paymentRequest.getAmount(),
+                paymentRequest.getPaymentMode());
         return ResponseEntity.status(result ? HttpStatus.OK : HttpStatus.BAD_REQUEST).body(result);
     }
 }

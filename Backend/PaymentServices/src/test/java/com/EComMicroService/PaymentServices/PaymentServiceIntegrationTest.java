@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,12 +32,12 @@ class PaymentServiceIntegrationTest {
     private final String TEST_ORDER_ID = "12345";
     private final long TEST_ORDER_ID_LONG = 12345L;
     private final String TEST_USER_ID = "user-123";
-    private Payment testPayment;
+    // private Payment testPayment;
 
-    @BeforeEach
-    void setUp() {
-        testPayment = createPayment(5000, "CREDIT_CARD", "SUCCESS");
-    }
+    // @BeforeEach
+    // void setUp() {
+    //     testPayment = createPayment(5000, "CREDIT_CARD", "SUCCESS");
+    // }
 
     @Test
     @DisplayName("Should start payment and return success for amount less than threshold")

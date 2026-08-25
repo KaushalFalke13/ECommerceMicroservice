@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.EComMicroService.PaymentServices.Entity.Payment;
+import com.EComMicroService.PaymentServices.Exception.PaymentNotFoundException;
 import com.EComMicroService.PaymentServices.Repository.PaymentRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class PaymentServiceImpl implements PaymentService {
     public Payment getPaymentDetailsByOrderId(long orderId) {
         log.info("Fetching payment details for orderId: {}", orderId);
         return paymentRepository.findByOrderid(orderId)
-                .orElseThrow(() -> new RuntimeException("Payment not found for orderId: " + orderId));
+                .orElseThrow(() -> new PaymentNotFoundException("Payment not found for orderId: " + orderId));
     }
 
     @Override
