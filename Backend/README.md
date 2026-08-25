@@ -12,7 +12,30 @@ discovery, and an event-driven saga over Apache Kafka.
 
 ---
 
+## Table of Contents
+
+1. [Architecture Overview](#-architecture-overview)
+2. [High-Level Design (HLD)](#-high-level-design-hld)
+3. [Service-Level Low-Level Design (LLD)](#-service-level-low-level-design-lld)
+   - [API Gateway](#1-api-gateway)
+   - [Auth Service](#2-auth-service)
+   - [User Service](#3-user-service)
+   - [Product Service](#4-product-service)
+   - [Order Service](#5-order-service)
+   - [Payment Service](#6-payment-service)
+   - [Eureka Service Discovery](#7-eureka-service-discovery)
+4. [Event-Driven Architecture](#-event-driven-architecture)
+5. [Database Schema](#-database-schema)
+6. [Resilience Patterns](#-resilience-patterns)
+7. [Deployment](#-deployment)
+
+---
+
 ## 📐 Architecture Overview
+
+![System Architecture Diagram](docs/diagrams/system-architecture.png)
+
+_Figure 1: High-level system architecture showing all microservices and their interactions_
 
 ```mermaid
 flowchart LR
@@ -60,16 +83,16 @@ saga so that no single service needs to know about the others' internals.
 
 ## 🧩 Services
 
-| Service | Port | Responsibility | Datastore |
-|---|---|---|---|
-| **Eureka Server** | 8761 | Service registry / discovery | — |
-| **API Gateway** | 8080 | Single entry point, routing, JWT pass-through | — |
-| **Auth Service** | 8081 | Registration, login, OTP email verification, JWT issuance, role management | PostgreSQL, Redis |
-| **User Service** | 8085 | User profile data | MySQL |
-| **Product Service** | 8084 | Product catalog, bag/cart, watchlist, stock reservation | MySQL, Redis |
-| **Order Service** | 8082 | Order lifecycle, addresses, saga orchestration (producer side) | PostgreSQL/MySQL |
-| **Payment Service** | 8083 | Payment processing, payment history | MySQL |
-| **Notification Service** 🚧 | 8086 | Order/payment/shipping emails, driven by Kafka events | — |
+| Service                     | Port | Responsibility                                                             | Datastore         |
+| --------------------------- | ---- | -------------------------------------------------------------------------- | ----------------- |
+| **Eureka Server**           | 8761 | Service registry / discovery                                               | —                 |
+| **API Gateway**             | 8080 | Single entry point, routing, JWT pass-through                              | —                 |
+| **Auth Service**            | 8081 | Registration, login, OTP email verification, JWT issuance, role management | PostgreSQL, Redis |
+| **User Service**            | 8085 | User profile data                                                          | MySQL             |
+| **Product Service**         | 8084 | Product catalog, bag/cart, watchlist, stock reservation                    | MySQL, Redis      |
+| **Order Service**           | 8082 | Order lifecycle, addresses, saga orchestration (producer side)             | PostgreSQL/MySQL  |
+| **Payment Service**         | 8083 | Payment processing, payment history                                        | MySQL             |
+| **Notification Service** 🚧 | 8086 | Order/payment/shipping emails, driven by Kafka events                      | —                 |
 
 ---
 
@@ -138,6 +161,7 @@ leaving stock reserved or payments orphaned.
 ## 🚀 Getting Started
 
 ### Prerequisites
+
 - Java 17+
 - Maven 3.9+
 - Docker & Docker Compose 🚧
@@ -145,13 +169,16 @@ leaving stock reserved or payments orphaned.
   docker-compose stack below once available)
 
 ### Run everything with Docker Compose 🚧
+
 ```bash
 docker compose up -d
 ```
+
 This will start Zookeeper/Kafka, PostgreSQL, MySQL, Redis, Eureka, the
 Gateway, and all five business services, in the correct order.
 
 ### Run manually (current state)
+
 Start infrastructure (Postgres, MySQL, Redis, Kafka) yourself, then bring
 services up in this order so registration/discovery works cleanly:
 
@@ -178,14 +205,14 @@ e.g. `http://localhost:8080/products/Allproducts`.
 Each service reads its secrets from the environment (never commit real
 values — use a local `.env` file, excluded via `.gitignore`).
 
-| Variable | Used by | Example |
-|---|---|---|
-| `DB_URL` / `ECOMDB_URL` | all services | `jdbc:postgresql://localhost:5432` |
-| `DB_USERNAME` / `ECOMDB_USERNAME` | all services | `postgres` |
-| `DB_PASSWORD` / `ECOMDB_PASSWORD` | all services | `••••••••` |
-| `JWT_SECRET` | Auth, Order, Payment, Product, User | 256-bit+ random string |
-| `JWT_EXPIRATION` | Auth, Order, Payment, Product, User | `86400` (seconds) |
-| `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` | Auth | SMTP creds for OTP email |
+| Variable                                                   | Used by                             | Example                            |
+| ---------------------------------------------------------- | ----------------------------------- | ---------------------------------- |
+| `DB_URL` / `ECOMDB_URL`                                    | all services                        | `jdbc:postgresql://localhost:5432` |
+| `DB_USERNAME` / `ECOMDB_USERNAME`                          | all services                        | `postgres`                         |
+| `DB_PASSWORD` / `ECOMDB_PASSWORD`                          | all services                        | `••••••••`                         |
+| `JWT_SECRET`                                               | Auth, Order, Payment, Product, User | 256-bit+ random string             |
+| `JWT_EXPIRATION`                                           | Auth, Order, Payment, Product, User | `86400` (seconds)                  |
+| `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` | Auth                                | SMTP creds for OTP email           |
 
 ---
 
@@ -194,13 +221,13 @@ values — use a local `.env` file, excluded via `.gitignore`).
 Each service exposes interactive Swagger docs once `springdoc-openapi` is
 added:
 
-| Service | Swagger UI |
-|---|---|
-| Auth | `http://localhost:8081/swagger-ui.html` |
-| Order | `http://localhost:8082/swagger-ui.html` |
+| Service | Swagger UI                              |
+| ------- | --------------------------------------- |
+| Auth    | `http://localhost:8081/swagger-ui.html` |
+| Order   | `http://localhost:8082/swagger-ui.html` |
 | Payment | `http://localhost:8083/swagger-ui.html` |
 | Product | `http://localhost:8084/swagger-ui.html` |
-| User | `http://localhost:8085/swagger-ui.html` |
+| User    | `http://localhost:8085/swagger-ui.html` |
 
 Until then, see each service's controller package for available endpoints,
 or import the Postman collection at `docs/postman_collection.json` 🚧.

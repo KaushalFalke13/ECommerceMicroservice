@@ -1,13 +1,14 @@
 package com.EComMicroService.PaymentServices.KafkaEvents;
 
-import lombok.Getter;
-import lombok.Setter;
 import java.util.Map;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Address;
+
 import com.EComMicroService.PaymentServices.Enums.EventType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -19,10 +20,10 @@ public class Events {
     private String userId;
     private String orderNumber;
     private EventType eventType;
-    private Map<String,Integer> items;
+    private Map<String, Integer> items;
     private long discountAmount;
     private long total;
-    private Address shippingAddress;
+    private String paymentMode;
+    private String shippingAddress;
+    private String userEmail;
 }
-
-
