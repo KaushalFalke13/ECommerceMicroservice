@@ -1,17 +1,14 @@
-package com.Microservices.Api_Gateway;
+package com.ecommicroservice.eurekaclient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-
-import com.ecommicroservice.Microservices.Api_Gateway.ApiGatewayApplication;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class ApiGatewayApplicationTest {
+class EurekaClientApplicationTest {
 
     @Autowired
     private ApplicationContext applicationContext;
@@ -24,6 +21,6 @@ class ApiGatewayApplicationTest {
     @Test
     void testMainMethod() {
         // This test ensures the main method runs without throwing an exception
-        ApiGatewayApplication.main(new String[] {});
+        EurekaClientApplication.main(new String[] {});
     }
 }

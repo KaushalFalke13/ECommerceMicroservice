@@ -1,4 +1,4 @@
-package com.Microservice.EurekaClient;
+package com.ecommicroservice.eurekaclient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

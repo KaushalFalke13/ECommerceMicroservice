@@ -1,10 +1,10 @@
-package com.Microservices.Api_Gateway;
+package com.ecommicroservice.eurekaclient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiGatewayApplicationTests {
+class EurekaClientApplicationTests {
 
 	@Test
 	void contextLoads() {

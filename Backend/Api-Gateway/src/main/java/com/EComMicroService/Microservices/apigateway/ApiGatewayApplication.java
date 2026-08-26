@@ -1,4 +1,4 @@
-package com.ecommicroservice.Microservices.Api_Gateway;
+package com.ecommicroservice.Microservices.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

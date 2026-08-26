@@ -1,4 +1,4 @@
-package com.Microservices.Api_Gateway;
+package com.Microservices.apigateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
