@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Exception;
+package com.ecommicroservice.authservices.exception;
 
 import java.time.LocalDateTime;
 

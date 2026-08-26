@@ -1,11 +1,11 @@
-package com.EComMicroService.UserServices.Services;
+package com.ecommicroservice.userservices.services;
 
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.EComMicroService.UserServices.DTO.UsersDTO;
-import com.EComMicroService.UserServices.Entity.UsersDetails;
-import com.EComMicroService.UserServices.Repository.UserRepository;
+import com.ecommicroservice.userservices.dto.UsersDTO;
+import com.ecommicroservice.userservices.entity.UsersDetails;
+import com.ecommicroservice.userservices.repository.UserRepository;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;

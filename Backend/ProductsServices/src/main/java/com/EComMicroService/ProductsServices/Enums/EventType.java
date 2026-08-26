@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Enums;
+package com.EComMicroService.productsservices.Enums;
 
 public enum EventType {
     ORDER_CREATED,

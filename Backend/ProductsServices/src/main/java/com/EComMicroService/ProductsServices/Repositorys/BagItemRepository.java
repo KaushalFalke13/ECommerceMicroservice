@@ -1,11 +1,13 @@
-package com.EComMicroService.ProductsServices.Repositorys;
+package com.EComMicroService.productsservices.Repositorys;
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
-import com.EComMicroService.ProductsServices.Entity.Bag;
-import com.EComMicroService.ProductsServices.Entity.BagItem;
+
+import com.EComMicroService.productsservices.Entity.Bag;
+import com.EComMicroService.productsservices.Entity.BagItem;
+
 import jakarta.persistence.LockModeType;
 
 public interface BagItemRepository extends JpaRepository<BagItem, Long> {

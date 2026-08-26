@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.DTO;
+package com.ecommicroservice.paymentservices.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

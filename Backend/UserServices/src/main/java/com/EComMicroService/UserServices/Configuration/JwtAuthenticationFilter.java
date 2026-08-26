@@ -1,5 +1,4 @@
-package com.EComMicroService.UserServices.Configuration;
-
+package com.ecommicroservice.userservices.configuration;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,7 +43,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
 
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            username, null, authorities);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 }
@@ -56,4 +56,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
 }
-

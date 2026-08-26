@@ -1,8 +1,8 @@
-package com.EComMicroService.PaymentServices.Service;
+package com.ecommicroservice.paymentservices.service;
 
 import java.util.List;
 
-import com.EComMicroService.PaymentServices.Entity.Payment;
+import com.ecommicroservice.paymentservices.entity.Payment;
 
 public interface PaymentService {
 

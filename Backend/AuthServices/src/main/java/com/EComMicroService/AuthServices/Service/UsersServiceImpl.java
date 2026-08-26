@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Service;
+package com.ecommicroservice.authservices.service;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.EComMicroService.AuthServices.Entity.Users;
-import com.EComMicroService.AuthServices.ExceptionHandler.EmailAlreadyExistsException;
-import com.EComMicroService.AuthServices.Repository.UsersRepository;
+import com.ecommicroservice.authservices.entity.Users;
+import com.ecommicroservice.authservices.exceptionhandler.EmailAlreadyExistsException;
+import com.ecommicroservice.authservices.repository.UsersRepository;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -24,9 +24,9 @@ public class UsersServiceImpl implements UsersService {
     }
 
     public String registerUser(String email, String password) {
-         if (usersRepository.findByEmail(email) != null) {
+        if (usersRepository.findByEmail(email) != null) {
             throw new EmailAlreadyExistsException("Email already registered");
-        }   
+        }
 
         List<String> role = List.of("USER");
         Users users = Users.builder()

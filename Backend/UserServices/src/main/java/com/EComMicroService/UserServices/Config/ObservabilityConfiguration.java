@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.Config;
+package com.ecommicroservice.userservices.config;
 
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;

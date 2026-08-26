@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Configuration;
+package com.ecommicroservice.authservices.configuration;
 
 // import jakarta.servlet.FilterChain;
 // import jakarta.servlet.ServletException;
@@ -11,15 +11,15 @@ package com.EComMicroService.AuthServices.Configuration;
 // @Component
 // public class RequestLoggingFilter extends OncePerRequestFilter {
 
-//     @Override
-//     protected void doFilterInternal(
-//             HttpServletRequest request,
-//             HttpServletResponse response,
-//             FilterChain filterChain) throws ServletException, IOException {
+// @Override
+// protected void doFilterInternal(
+// HttpServletRequest request,
+// HttpServletResponse response,
+// FilterChain filterChain) throws ServletException, IOException {
 
-//         System.out.println(
-//                 "➡️ REQUEST HIT: " + request.getMethod() + " " + request.getRequestURI());
+// System.out.println(
+// "➡️ REQUEST HIT: " + request.getMethod() + " " + request.getRequestURI());
 
-//         filterChain.doFilter(request, response);
-//     }
+// filterChain.doFilter(request, response);
+// }
 // }

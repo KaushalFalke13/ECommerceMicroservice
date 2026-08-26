@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.Entity;
+package com.ecommicroservice.userservices.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsersDetails  {
+public class UsersDetails {
 
     @Id
     private String id;

@@ -1,10 +1,9 @@
-package com.EComMicroService.AuthServices.DTO;
+package com.ecommicroservice.authservices.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-
 
 @Getter
 @Setter
@@ -17,5 +16,4 @@ public class UsersDTO {
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
-    
 }

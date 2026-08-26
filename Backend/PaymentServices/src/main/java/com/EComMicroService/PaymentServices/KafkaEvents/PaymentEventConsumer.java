@@ -1,10 +1,10 @@
-package com.EComMicroService.PaymentServices.KafkaEvents;
+package com.ecommicroservice.paymentservices.kafkaevents;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-import com.EComMicroService.PaymentServices.Enums.EventType;
-import com.EComMicroService.PaymentServices.Service.PaymentService;
+import com.ecommicroservice.paymentservices.enums.EventType;
+import com.ecommicroservice.paymentservices.service.PaymentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;

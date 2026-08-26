@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Controllers;
+package com.EComMicroService.productsservices.Controllers;
 
 import java.util.List;
 
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.EComMicroService.ProductsServices.Controllers.BagController.AddToBagRequest;
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Services.WatchListService;
+import com.EComMicroService.productsservices.Controllers.BagController.AddToBagRequest;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Services.WatchListService;
 
 @RestController
 @RequestMapping("/products/watchlist")

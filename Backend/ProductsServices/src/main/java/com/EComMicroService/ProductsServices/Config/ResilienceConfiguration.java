@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Config;
+package com.EComMicroService.productsservices.Config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;

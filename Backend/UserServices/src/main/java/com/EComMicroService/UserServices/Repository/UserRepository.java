@@ -1,7 +1,7 @@
-package com.EComMicroService.UserServices.Repository;
+package com.ecommicroservice.userservices.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.EComMicroService.UserServices.Entity.UsersDetails;
+import com.ecommicroservice.userservices.entity.UsersDetails;
 
 public interface UserRepository extends JpaRepository<UsersDetails, String> {
 

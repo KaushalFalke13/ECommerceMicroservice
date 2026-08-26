@@ -1,7 +1,7 @@
-package com.EComMicroService.ProductsServices.Configuration;
+package com.EComMicroService.productsservices.Configuration;
 
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Services.productServiceImpl;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Services.productServiceImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.CommandLineRunner;
@@ -14,12 +14,13 @@ import java.util.List;
 public class ProductsFileSeeder {
 
     private static final String SEED_PATH = "templates/products.jsfs";
-    
+
     // @Bean
     CommandLineRunner seedProducts(productServiceImpl productService) {
         return args -> {
             ObjectMapper om = new ObjectMapper();
-            // om.configure(com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            // om.configure(com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES,
+            // true);
             om.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
             ClassPathResource resource = new ClassPathResource(SEED_PATH);
@@ -30,7 +31,8 @@ public class ProductsFileSeeder {
             }
 
             try (InputStream is = resource.getInputStream()) {
-                List<productDTO> products = om.readValue(is, new TypeReference<List<productDTO>>() {});
+                List<productDTO> products = om.readValue(is, new TypeReference<List<productDTO>>() {
+                });
                 System.out.println("Loaded " + products.size() + " products from seed file.");
 
                 int count = 0;

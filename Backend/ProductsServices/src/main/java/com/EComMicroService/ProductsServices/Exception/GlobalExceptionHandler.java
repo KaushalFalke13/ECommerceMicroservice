@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Exception;
+package com.EComMicroService.productsservices.Exception;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

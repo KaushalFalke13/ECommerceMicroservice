@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Service;
+package com.ecommicroservice.authservices.service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

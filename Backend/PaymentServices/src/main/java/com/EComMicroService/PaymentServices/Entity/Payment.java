@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Entity;
+package com.ecommicroservice.paymentservices.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

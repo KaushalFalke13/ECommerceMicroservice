@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Service;
+package com.ecommicroservice.paymentservices.service;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.EComMicroService.PaymentServices.Entity.Payment;
-import com.EComMicroService.PaymentServices.Exception.PaymentNotFoundException;
-import com.EComMicroService.PaymentServices.Repository.PaymentRepository;
+import com.ecommicroservice.paymentservices.entity.Payment;
+import com.ecommicroservice.paymentservices.exception.PaymentNotFoundException;
+import com.ecommicroservice.paymentservices.repository.PaymentRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices;
+package com.ecommicroservice.paymentservices;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -15,9 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.EComMicroService.PaymentServices.Entity.Payment;
-import com.EComMicroService.PaymentServices.Repository.PaymentRepository;
-import com.EComMicroService.PaymentServices.Service.PaymentServiceImpl;
+import com.ecommicroservice.paymentservices.entity.Payment;
+import com.ecommicroservice.paymentservices.repository.PaymentRepository;
+import com.ecommicroservice.paymentservices.service.PaymentServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Payment Service Tests")
@@ -36,7 +36,7 @@ class PaymentServiceIntegrationTest {
 
     // @BeforeEach
     // void setUp() {
-    //     testPayment = createPayment(5000, "CREDIT_CARD", "SUCCESS");
+    // testPayment = createPayment(5000, "CREDIT_CARD", "SUCCESS");
     // }
 
     @Test

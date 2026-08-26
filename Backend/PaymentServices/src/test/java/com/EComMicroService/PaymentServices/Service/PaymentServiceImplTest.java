@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Service;
+package com.ecommicroservice.paymentservices.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -18,8 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.EComMicroService.PaymentServices.Entity.Payment;
-import com.EComMicroService.PaymentServices.Repository.PaymentRepository;
+import com.ecommicroservice.paymentservices.entity.Payment;
+import com.ecommicroservice.paymentservices.repository.PaymentRepository;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Payment Service Unit Tests")

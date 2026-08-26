@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Configuration;
+package com.EComMicroService.productsservices.Configuration;
 
 
 import java.security.Key;

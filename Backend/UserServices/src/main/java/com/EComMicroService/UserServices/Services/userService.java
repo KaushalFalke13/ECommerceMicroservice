@@ -1,12 +1,12 @@
-package com.EComMicroService.UserServices.Services;
+package com.ecommicroservice.userservices.services;
 
-import com.EComMicroService.UserServices.DTO.UsersDTO;
-import com.EComMicroService.UserServices.Entity.UsersDetails;
-
+import com.ecommicroservice.userservices.dto.UsersDTO;
+import com.ecommicroservice.userservices.entity.UsersDetails;
 
 public interface userService {
 
-    UsersDetails saveUser(UsersDTO usersDTO);  
-    UsersDTO getUserById(String id);  
+    UsersDetails saveUser(UsersDTO usersDTO);
+
+    UsersDTO getUserById(String id);
 
 }

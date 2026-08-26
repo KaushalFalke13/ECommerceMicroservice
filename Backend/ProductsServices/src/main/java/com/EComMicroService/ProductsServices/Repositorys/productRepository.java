@@ -1,11 +1,11 @@
-package com.EComMicroService.ProductsServices.Repositorys;
+package com.EComMicroService.productsservices.Repositorys;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import com.EComMicroService.ProductsServices.Entity.products;
+import com.EComMicroService.productsservices.Entity.products;
 import jakarta.transaction.Transactional;
 
 @Repository

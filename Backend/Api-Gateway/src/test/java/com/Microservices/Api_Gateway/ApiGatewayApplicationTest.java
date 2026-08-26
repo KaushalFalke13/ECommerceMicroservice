@@ -3,6 +3,9 @@ package com.Microservices.Api_Gateway;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
+
+import com.ecommicroservice.Microservices.Api_Gateway.ApiGatewayApplication;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;

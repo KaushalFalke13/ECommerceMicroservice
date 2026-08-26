@@ -1,9 +1,9 @@
-package com.EComMicroService.ProductsServices.Repositorys;
+package com.EComMicroService.productsservices.Repositorys;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.EComMicroService.ProductsServices.Entity.Bag;
+import com.EComMicroService.productsservices.Entity.Bag;
 
 
 @Repository

@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.Controller;
+package com.ecommicroservice.userservices.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -14,9 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.EComMicroService.UserServices.DTO.UsersDTO;
-import com.EComMicroService.UserServices.Entity.UsersDetails;
-import com.EComMicroService.UserServices.Services.userService;
+import com.ecommicroservice.userservices.dto.UsersDTO;
+import com.ecommicroservice.userservices.entity.UsersDetails;
+import com.ecommicroservice.userservices.services.userService;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("User Controller Unit Tests")

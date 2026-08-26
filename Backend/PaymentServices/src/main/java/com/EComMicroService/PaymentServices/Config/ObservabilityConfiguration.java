@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Config;
+package com.ecommicroservice.paymentservices.config;
 
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;

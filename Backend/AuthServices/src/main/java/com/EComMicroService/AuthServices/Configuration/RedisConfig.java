@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Configuration;
+package com.ecommicroservice.authservices.configuration;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

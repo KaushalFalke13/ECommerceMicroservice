@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.DTO;
+package com.ecommicroservice.userservices.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

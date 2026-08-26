@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Entity;
+package com.EComMicroService.productsservices.Entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

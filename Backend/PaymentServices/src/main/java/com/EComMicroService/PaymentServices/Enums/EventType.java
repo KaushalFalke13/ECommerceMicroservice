@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Enums;
+package com.ecommicroservice.paymentservices.enums;
 
 public enum EventType {
     ORDER_CREATED,

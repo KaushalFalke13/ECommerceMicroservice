@@ -1,9 +1,9 @@
-package com.EComMicroService.ProductsServices.Kafka;
+package com.EComMicroService.productsservices.Kafka;
 
 import org.springframework.kafka.annotation.KafkaListener;
 
-import com.EComMicroService.ProductsServices.Enums.EventType;
-import com.EComMicroService.ProductsServices.Services.KafkaHelperService;
+import com.EComMicroService.productsservices.Enums.EventType;
+import com.EComMicroService.productsservices.Services.KafkaHelperService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ProductEventConsumer {
@@ -53,7 +53,7 @@ public class ProductEventConsumer {
     }
 
     @KafkaListener(topics = "payment-events", groupId = "ProductServiceGroup")
-      public void PaymentListener(String message) {
+    public void PaymentListener(String message) {
         try {
             Events orderEvent = mapper.readValue(message, Events.class);
 
@@ -74,6 +74,5 @@ public class ProductEventConsumer {
             e.printStackTrace();
         }
     }
-
 
 }

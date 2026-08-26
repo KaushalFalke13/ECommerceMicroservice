@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Services;
+package com.EComMicroService.productsservices.Services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,14 +6,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import com.EComMicroService.ProductsServices.Configuration.jwtUtil;
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Entity.Bag;
-import com.EComMicroService.ProductsServices.Entity.BagItem;
-import com.EComMicroService.ProductsServices.Entity.products;
-import com.EComMicroService.ProductsServices.Repositorys.BagItemRepository;
-import com.EComMicroService.ProductsServices.Repositorys.BagRepository;
-import com.EComMicroService.ProductsServices.Repositorys.productRepository;
+import com.EComMicroService.productsservices.Configuration.jwtUtil;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Entity.Bag;
+import com.EComMicroService.productsservices.Entity.BagItem;
+import com.EComMicroService.productsservices.Entity.products;
+import com.EComMicroService.productsservices.Repositorys.BagItemRepository;
+import com.EComMicroService.productsservices.Repositorys.BagRepository;
+import com.EComMicroService.productsservices.Repositorys.productRepository;
 
 @Service
 @Transactional

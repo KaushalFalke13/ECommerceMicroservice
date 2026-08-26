@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Configuration;
+package com.ecommicroservice.authservices.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,5 +12,5 @@ public class PasswordEncoderConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
 }

@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices;
+package com.ecommicroservice.paymentservices;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

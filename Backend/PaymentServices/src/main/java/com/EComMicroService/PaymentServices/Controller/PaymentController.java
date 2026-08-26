@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Controller;
+package com.ecommicroservice.paymentservices.controller;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.EComMicroService.PaymentServices.DTO.PaymentRequestDTO;
-import com.EComMicroService.PaymentServices.Entity.Payment;
-import com.EComMicroService.PaymentServices.Exception.PaymentNotFoundException;
-import com.EComMicroService.PaymentServices.Service.PaymentService;
+import com.ecommicroservice.paymentservices.dto.PaymentRequestDTO;
+import com.ecommicroservice.paymentservices.entity.Payment;
+import com.ecommicroservice.paymentservices.exception.PaymentNotFoundException;
+import com.ecommicroservice.paymentservices.service.PaymentService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

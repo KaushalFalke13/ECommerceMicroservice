@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Exception;
+package com.ecommicroservice.paymentservices.exception;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

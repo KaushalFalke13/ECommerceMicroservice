@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Entity;
+package com.EComMicroService.productsservices.Entity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Controller;
+package com.ecommicroservice.authservices.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import com.EComMicroService.AuthServices.DTO.ApiResponse;
-import com.EComMicroService.AuthServices.DTO.UsersDTO;
-import com.EComMicroService.AuthServices.Entity.Users;
-import com.EComMicroService.AuthServices.Service.EmailVerificationService;
-import com.EComMicroService.AuthServices.Service.JwtToken;
-import com.EComMicroService.AuthServices.Service.UsersService;
+import com.ecommicroservice.authservices.dto.ApiResponse;
+import com.ecommicroservice.authservices.dto.UsersDTO;
+import com.ecommicroservice.authservices.entity.Users;
+import com.ecommicroservice.authservices.service.EmailVerificationService;
+import com.ecommicroservice.authservices.service.JwtToken;
+import com.ecommicroservice.authservices.service.UsersService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;

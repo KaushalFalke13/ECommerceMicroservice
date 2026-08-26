@@ -1,12 +1,12 @@
-package com.EComMicroService.ProductsServices.Services;
+package com.EComMicroService.productsservices.Services;
 
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Entity.Images;
-import com.EComMicroService.ProductsServices.Entity.products;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Entity.Images;
+import com.EComMicroService.productsservices.Entity.products;
 
 @Service
 public class helperServices {

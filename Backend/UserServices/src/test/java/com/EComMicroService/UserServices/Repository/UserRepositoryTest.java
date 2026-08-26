@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.Repository;
+package com.ecommicroservice.userservices.repository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import com.EComMicroService.UserServices.Entity.UsersDetails;
+import com.ecommicroservice.userservices.entity.UsersDetails;
 
 @DataJpaTest
 @DisplayName("User Repository Integration Tests")

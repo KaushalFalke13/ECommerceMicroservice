@@ -1,0 +1,17 @@
+package com.ecommicroservice.orderservices.enums;
+
+public enum EventType {
+    ORDER_PENDING,
+    ORDER_CREATED,
+    ORDER_PAID,
+    ORDER_CANCELLED,
+    ORDER_FAILED,
+    PAYMENT_SUCCESS,
+    PAYMENT_FAILED,
+    STOCK_RESERVED,
+    STOCK_RESERVATION_FAILED,
+    STOCK_RELEASED,
+    ORDER_COMPLETED,
+    ORDER_SHIPPED,
+    ORDER_DELIVERED
+}

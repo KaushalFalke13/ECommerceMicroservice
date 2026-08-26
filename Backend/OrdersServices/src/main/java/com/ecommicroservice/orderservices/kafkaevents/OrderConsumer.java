@@ -1,0 +1,58 @@
+package com.ecommicroservice.orderservices.kafkaevents;
+
+import com.ecommicroservice.orderservices.enums.OrderStatus;
+import com.ecommicroservice.orderservices.services.OrderService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Component;
+
+@Component
+@Profile("kafka")
+public class OrderConsumer {
+
+    private final ObjectMapper mapper = new ObjectMapper();
+    private final OrderService orderService;
+
+    public OrderConsumer(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @KafkaListener(topics = "product-events", groupId = "OrderServiceGroup")
+    public void ProductListener(String message) {
+        try {
+            Events Event = mapper.readValue(message, Events.class);
+
+            switch (Event.getEventType().toString()) {
+                case "STOCK_RESERVATION_FAILED":
+                    orderService.deleteOrder(Event.getOrderId());
+                    break;
+                default:
+                    // System.out.println("Unknown eventType: " + Event.getEventType());
+            }
+        } catch (Exception e) {
+            // System.err.println("Failed to parse OrderEvent: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @KafkaListener(topics = "payment-events", groupId = "OrderServiceGroup")
+    public void PaymentListener(String message) {
+        try {
+            Events Event = mapper.readValue(message, Events.class);
+
+            switch (Event.getEventType().toString()) {
+                case "PAYMENT_SUCCESS":
+                    orderService.updateOrderStatus(Event.getOrderId(), OrderStatus.PAID);
+                    break;
+                default:
+                    // System.out.println("Unknown eventType: " + Event.getEventType());
+            }
+        } catch (Exception e) {
+            // System.err.println("Failed to parse OrderEvent: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+}

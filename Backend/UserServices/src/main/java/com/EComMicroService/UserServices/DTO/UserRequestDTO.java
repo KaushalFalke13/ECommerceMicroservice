@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.DTO;
+package com.ecommicroservice.userservices.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

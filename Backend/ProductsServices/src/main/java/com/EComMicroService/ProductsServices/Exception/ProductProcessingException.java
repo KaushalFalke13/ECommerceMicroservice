@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Exception;
+package com.EComMicroService.productsservices.Exception;
 
 public class ProductProcessingException extends RuntimeException {
     public ProductProcessingException(String message) {

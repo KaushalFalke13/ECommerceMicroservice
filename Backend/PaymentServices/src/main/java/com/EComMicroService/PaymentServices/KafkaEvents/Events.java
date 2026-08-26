@@ -1,8 +1,8 @@
-package com.EComMicroService.PaymentServices.KafkaEvents;
+package com.ecommicroservice.paymentservices.kafkaevents;
 
 import java.util.Map;
 
-import com.EComMicroService.PaymentServices.Enums.EventType;
+import com.ecommicroservice.paymentservices.enums.EventType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Repository;
+package com.ecommicroservice.paymentservices.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.EComMicroService.PaymentServices.Entity.Payment;
+import com.ecommicroservice.paymentservices.entity.Payment;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {

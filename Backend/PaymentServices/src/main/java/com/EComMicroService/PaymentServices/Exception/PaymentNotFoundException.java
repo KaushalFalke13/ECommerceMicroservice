@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.Exception;
+package com.ecommicroservice.paymentservices.exception;
 
 public class PaymentNotFoundException extends RuntimeException {
     public PaymentNotFoundException(String message) {

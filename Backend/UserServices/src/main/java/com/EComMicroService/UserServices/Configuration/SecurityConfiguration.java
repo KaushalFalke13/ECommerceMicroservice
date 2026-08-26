@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.Configuration;
+package com.ecommicroservice.userservices.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

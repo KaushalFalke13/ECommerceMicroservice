@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.DTO;
+package com.EComMicroService.productsservices.DTO;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

@@ -1,4 +1,4 @@
-package com.EComMicroService.PaymentServices.KafkaEvents;
+package com.ecommicroservice.paymentservices.kafkaevents;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;

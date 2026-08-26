@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.Configuration;
+package com.ecommicroservice.userservices.configuration;
 
 import java.security.Key;
 import java.util.List;

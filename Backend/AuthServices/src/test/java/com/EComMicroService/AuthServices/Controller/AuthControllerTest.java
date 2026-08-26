@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Controller;
+package com.ecommicroservice.authservices.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -17,12 +17,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.EComMicroService.AuthServices.DTO.ApiResponse;
-import com.EComMicroService.AuthServices.DTO.UsersDTO;
-import com.EComMicroService.AuthServices.Entity.Users;
-import com.EComMicroService.AuthServices.Service.EmailVerificationService;
-import com.EComMicroService.AuthServices.Service.JwtToken;
-import com.EComMicroService.AuthServices.Service.UsersService;
+import com.ecommicroservice.authservices.dto.ApiResponse;
+import com.ecommicroservice.authservices.dto.UsersDTO;
+import com.ecommicroservice.authservices.entity.Users;
+import com.ecommicroservice.authservices.service.EmailVerificationService;
+import com.ecommicroservice.authservices.service.JwtToken;
+import com.ecommicroservice.authservices.service.UsersService;
 
 import jakarta.servlet.http.HttpServletResponse;
 

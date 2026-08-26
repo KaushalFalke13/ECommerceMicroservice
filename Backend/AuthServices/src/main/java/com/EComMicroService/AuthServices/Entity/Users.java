@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Entity;
+package com.ecommicroservice.authservices.entity;
 
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users", uniqueConstraints = {
-@UniqueConstraint(columnNames = "email")
+        @UniqueConstraint(columnNames = "email")
 })
 public class Users implements UserDetails {
 

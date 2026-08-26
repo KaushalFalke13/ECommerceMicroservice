@@ -1,9 +1,11 @@
-package com.EComMicroService.ProductsServices.Kafka;
+package com.EComMicroService.productsservices.Kafka;
 
 
 import java.util.Map;
 import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails.Address;
-import com.EComMicroService.ProductsServices.Enums.EventType;
+
+import com.EComMicroService.productsservices.Enums.EventType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

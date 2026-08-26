@@ -1,5 +1,4 @@
-package com.EComMicroService.PaymentServices.Configuration;
-
+package com.ecommicroservice.paymentservices.configuration;
 
 import java.security.Key;
 import java.util.List;
@@ -34,21 +33,21 @@ public class jwtUtil {
 
     public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
     }
 
     @SuppressWarnings("unchecked")
     public List<String> getRolesFromToken(String token) {
         return Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .get("roles", List.class);
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles", List.class);
     }
 
 }

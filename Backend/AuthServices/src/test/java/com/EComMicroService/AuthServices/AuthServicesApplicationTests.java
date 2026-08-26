@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices;
+package com.ecommicroservice.authservices;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

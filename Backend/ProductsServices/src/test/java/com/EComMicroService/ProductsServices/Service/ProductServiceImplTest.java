@@ -22,11 +22,12 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Entity.products;
-import com.EComMicroService.ProductsServices.Repositorys.productRepository;
-import com.EComMicroService.ProductsServices.Services.helperServices;
-import com.EComMicroService.ProductsServices.Services.productServiceImpl;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Entity.products;
+import com.EComMicroService.productsservices.Repositorys.productRepository;
+import com.EComMicroService.productsservices.Services.helperServices;
+import com.EComMicroService.productsservices.Services.productServiceImpl;
+
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Product Service Unit Tests")

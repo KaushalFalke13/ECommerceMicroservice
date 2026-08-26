@@ -1,11 +1,11 @@
-package com.EComMicroService.ProductsServices.Services;
+package com.EComMicroService.productsservices.Services;
 
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.EComMicroService.ProductsServices.Enums.EventType;
-import com.EComMicroService.ProductsServices.Kafka.Events;
+import com.EComMicroService.productsservices.Enums.EventType;
+import com.EComMicroService.productsservices.Kafka.Events;
 
 import jakarta.transaction.Transactional;
 
@@ -18,13 +18,10 @@ public class KafkaHelperService {
         this.productService = productService;
     }
 
-
     public boolean sendProductEvents(Events event) {
         event.setEventType(EventType.STOCK_RESERVED);
-        return true;    
+        return true;
     }
-
-
 
     @Transactional
     public boolean reserveProducts(Events orderEvent) {

@@ -1,12 +1,10 @@
-package com.EComMicroService.UserServices.Service;
+package com.ecommicroservice.userservices.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-
 import java.util.Optional;
 import java.util.UUID;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,11 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import com.EComMicroService.UserServices.DTO.UsersDTO;
-import com.EComMicroService.UserServices.Entity.UsersDetails;
-import com.EComMicroService.UserServices.Repository.UserRepository;
-import com.EComMicroService.UserServices.Services.userServiceImpl;
+import com.ecommicroservice.userservices.dto.UsersDTO;
+import com.ecommicroservice.userservices.entity.UsersDetails;
+import com.ecommicroservice.userservices.repository.UserRepository;
+import com.ecommicroservice.userservices.services.userServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("User Service Unit Tests")

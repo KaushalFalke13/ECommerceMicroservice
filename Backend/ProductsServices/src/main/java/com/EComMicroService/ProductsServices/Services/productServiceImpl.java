@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Services;
+package com.EComMicroService.productsservices.Services;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,9 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Entity.products;
-import com.EComMicroService.ProductsServices.Repositorys.productRepository;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Entity.products;
+import com.EComMicroService.productsservices.Repositorys.productRepository;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;

@@ -1,4 +1,4 @@
-package com.EComMicroService.UserServices.Controller;
+package com.ecommicroservice.userservices.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.EComMicroService.UserServices.DTO.UsersDTO;
-import com.EComMicroService.UserServices.Services.userService;
+import com.ecommicroservice.userservices.dto.UsersDTO;
+import com.ecommicroservice.userservices.services.userService;
 
 @RestController
 @RequestMapping("/users")

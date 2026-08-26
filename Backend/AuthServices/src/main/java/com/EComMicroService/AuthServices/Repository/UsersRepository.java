@@ -1,9 +1,9 @@
-package com.EComMicroService.AuthServices.Repository;
+package com.ecommicroservice.authservices.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.EComMicroService.AuthServices.Entity.Users;
+import com.ecommicroservice.authservices.entity.Users;
 
 @Repository
 public interface UsersRepository extends JpaRepository<Users, String> {

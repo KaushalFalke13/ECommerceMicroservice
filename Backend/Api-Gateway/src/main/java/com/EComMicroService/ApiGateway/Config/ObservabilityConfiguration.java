@@ -1,4 +1,4 @@
-package com.EComMicroService.ApiGateway.Config;
+package com.ecommicroservice.ApiGateway.Config;
 
 import io.micrometer.core.aop.TimedAspect;
 import io.micrometer.core.instrument.MeterRegistry;

@@ -1,15 +1,17 @@
-package com.EComMicroService.ProductsServices.Services;
+package com.EComMicroService.productsservices.Services;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import com.EComMicroService.ProductsServices.Configuration.jwtUtil;
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Entity.Watchlist;
-import com.EComMicroService.ProductsServices.Entity.WatchlistItem;
-import com.EComMicroService.ProductsServices.Repositorys.WatchlistItemRepository;
-import com.EComMicroService.ProductsServices.Repositorys.WatchlistRepository;
+
+import com.EComMicroService.productsservices.Configuration.jwtUtil;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Entity.Watchlist;
+import com.EComMicroService.productsservices.Entity.WatchlistItem;
+import com.EComMicroService.productsservices.Repositorys.WatchlistItemRepository;
+import com.EComMicroService.productsservices.Repositorys.WatchlistRepository;
+
 import jakarta.transaction.Transactional;
 
 @Service

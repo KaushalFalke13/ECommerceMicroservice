@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Service;
+package com.ecommicroservice.authservices.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -18,9 +18,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.EComMicroService.AuthServices.Entity.Users;
-import com.EComMicroService.AuthServices.ExceptionHandler.EmailAlreadyExistsException;
-import com.EComMicroService.AuthServices.Repository.UsersRepository;
+import com.ecommicroservice.authservices.entity.Users;
+import com.ecommicroservice.authservices.exceptionhandler.EmailAlreadyExistsException;
+import com.ecommicroservice.authservices.repository.UsersRepository;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Users Service Unit Tests")

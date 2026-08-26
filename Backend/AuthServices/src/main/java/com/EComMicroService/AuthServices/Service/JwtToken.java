@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Service;
+package com.ecommicroservice.authservices.service;
 
 import java.util.Date;
 import java.util.List;

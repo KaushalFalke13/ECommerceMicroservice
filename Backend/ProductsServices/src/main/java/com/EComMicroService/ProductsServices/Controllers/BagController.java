@@ -1,4 +1,4 @@
-package com.EComMicroService.ProductsServices.Controllers;
+package com.EComMicroService.productsservices.Controllers;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.EComMicroService.ProductsServices.DTO.productDTO;
-import com.EComMicroService.ProductsServices.Services.BagService;
+import com.EComMicroService.productsservices.DTO.productDTO;
+import com.EComMicroService.productsservices.Services.BagService;
 
 @RestController
 @RequestMapping("/products/bag")
 public class BagController {
-    
+
     private final BagService bagService;
 
     public static class AddToBagRequest {
@@ -34,12 +34,14 @@ public class BagController {
     }
 
     @PostMapping("/add")
-    public List<productDTO> addToBag(@RequestBody AddToBagRequest request, @RequestHeader("Authorization") String authHeader) {
+    public List<productDTO> addToBag(@RequestBody AddToBagRequest request,
+            @RequestHeader("Authorization") String authHeader) {
         return bagService.addItem(authHeader, request.getProductId());
     }
 
     @PostMapping("/remove")
-    public List<productDTO> removeFromBag(@RequestBody AddToBagRequest request,@RequestHeader("Authorization") String authHeader) {
+    public List<productDTO> removeFromBag(@RequestBody AddToBagRequest request,
+            @RequestHeader("Authorization") String authHeader) {
         return bagService.removeItem(authHeader, request.getProductId());
     }
 

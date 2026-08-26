@@ -1,11 +1,13 @@
-package com.EComMicroService.AuthServices.Configuration;
+package com.ecommicroservice.authservices.configuration;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.EComMicroService.AuthServices.Service.JwtToken;
-import com.EComMicroService.AuthServices.Service.UsersService;
+
+import com.ecommicroservice.authservices.service.JwtToken;
+import com.ecommicroservice.authservices.service.UsersService;
+
 import io.jsonwebtoken.JwtException;
 import java.io.IOException;
 import jakarta.servlet.FilterChain;

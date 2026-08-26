@@ -1,4 +1,4 @@
-package com.EComMicroService.AuthServices.Exception;
+package com.ecommicroservice.authservices.exception;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String message) {
